@@ -80,8 +80,12 @@ h1 {
 
 }
 
-
-
+.separation-bar {
+    width: 100%;
+    height: 20px;
+    border-radius: $widget-border-radius;
+    background-color: $sub-background-color;
+}
 
 
 

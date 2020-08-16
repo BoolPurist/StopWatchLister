@@ -6,7 +6,7 @@
   - [x] **InputFieldLableStopWatch** for the label of a stop watch
   - [ ] **ButtonSpawnStopWatch** for spawning a stop watch
   - [X] Insert Dummy **ButtonTrashAllStopWatches** for spawning
-- [ ] Insert **SeparationBar**
+- [x] Insert **separation-bar**
 - [ ] Implement **StopWatch**
   - [ ] **LabelStopWatch** for the label of the stop watch
   - [ ] Insert dummy **ResumeButtonStopWatch**
