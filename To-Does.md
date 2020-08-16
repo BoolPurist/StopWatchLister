@@ -5,7 +5,7 @@
 - [ ] Implementation for **SpawnStopWatchBox** with the following elements
   - [x] **InputFieldLableStopWatch** for the label of a stop watch
   - [ ] **ButtonSpawnStopWatch** for spawning a stop watch
-  - [ ] Insert Dummy **ButtonTrashAllStopWatches** for spawning
+  - [X] Insert Dummy **ButtonTrashAllStopWatches** for spawning
 - [ ] Insert **SeparationBar**
 - [ ] Implement **StopWatch**
   - [ ] **LabelStopWatch** for the label of the stop watch

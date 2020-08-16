@@ -42,25 +42,51 @@ h1 {
 
     display: grid;
     grid-template-rows: 1fr 1fr;
-}
+    gap: 5px;
 
-#SpawnLableField {
-    display: grid;
-    grid-template-columns: auto 1fr;
-
-    p {
-        margin-right: 10px;
-
-        font-weight: bold;
+    #SpawnLableField {
+        
+        display: grid;
+        grid-template-columns: auto 1fr;
+        
+    
+        p {
+            margin-right: 10px;
+    
+            font-weight: bold;
+        }
+    
+        input {
+            border-top-style: none;
+            border-left-style: none;
+            border-right-style: none;
+    
+            border-bottom-color: rgb(8, 8, 8);
+        }
     }
 
-    input {
-        border-top-style: none;
-        border-left-style: none;
-        border-right-style: none;
+    #SpawnManage-btnS {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
 
-        border-bottom-color: rgb(8, 8, 8);
+        #TrashAllButtons i {
+            $TrashAllButtons-padding: 5px;
+            padding-left: $TrashAllButtons-padding;
+            padding-right: $TrashAllButtons-padding;
+        }
+        
+         
     }
+
 }
+
+
+
+.fas {
+    font-size: 2rem;
+}
+
+
+
 
 

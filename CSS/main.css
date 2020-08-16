@@ -55,21 +55,33 @@ h1 {
   padding: 10px 10px;
   display: grid;
   grid-template-rows: 1fr 1fr;
+  gap: 5px;
 }
-
-#SpawnLableField {
+#SpawnStopWatchBox #SpawnLableField {
   display: grid;
   grid-template-columns: auto 1fr;
 }
-#SpawnLableField p {
+#SpawnStopWatchBox #SpawnLableField p {
   margin-right: 10px;
   font-weight: bold;
 }
-#SpawnLableField input {
+#SpawnStopWatchBox #SpawnLableField input {
   border-top-style: none;
   border-left-style: none;
   border-right-style: none;
   border-bottom-color: #080808;
+}
+#SpawnStopWatchBox #SpawnManage-btnS {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #TrashAllButtons i {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.fas {
+  font-size: 2rem;
 }
 
 /*# sourceMappingURL=main.css.map */
