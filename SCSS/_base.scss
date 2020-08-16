@@ -1,0 +1,28 @@
+@use "variables" as *;
+
+* {
+    margin: 0px;;
+    padding: 0px;
+}
+
+html {
+    font-size: $standard-font-size;
+    color: $standard-font-color;
+}
+
+body {
+    background-color: $site-background-color;
+}
+
+a {
+    color: $standard-font-color;
+    text-decoration: none;
+}
+
+#wrapper {
+    // width: 80%;
+    margin: $wrapper-margin;
+
+    display: grid;
+    grid-template-rows: auto;
+}

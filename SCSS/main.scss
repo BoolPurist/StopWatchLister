@@ -1,0 +1,29 @@
+@use "base" as *;
+@use "variables" as *;
+
+#navTop {
+    justify-self: end;
+    
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: auto;
+    
+    
+    align-items: center;
+
+    background-color: $primary-foreground-color;
+
+    a { 
+        $navTopA-height: 50px;
+
+        height: $navTopA-height;
+        line-height: $navTopA-height;
+        padding: 0 10px;
+        color: $primary-background-color
+    }
+
+    a:hover {
+        color: $primary-foreground-color;
+        background-color: grey;
+    }
+}

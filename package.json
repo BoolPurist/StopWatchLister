@@ -7,7 +7,7 @@
     "start": "run-p sass liveServer",
     "test": "jest --verbose",
     "liveServer": "live-server",
-    "sass": "sass --watch SCSS/style.scss CSS/style.css"
+    "sass": "sass --watch SCSS/main.scss CSS/main.css"
   },
   "keywords": [],
   "author": "BoolPurist",
