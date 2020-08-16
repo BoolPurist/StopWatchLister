@@ -1,8 +1,7 @@
 # To-Do before first release
 
 - [x] Navigation bar for **Data Privacy**  and **Impressum**
-- [x] Insert headline with the name of this webpage **Stop Watch Spawner**
-- [ ] Insert dummy button **ButtonSpawnButtonLegend** and container **SpawnBoxStopWatch**
+- [x] Insert headline with the name of this webpage **Stop Watch Spawner** **SpawnBoxStopWatch**
 - [ ] Implementation for **ButtonSpawnStopWatch** with the following elements
   - [ ] **InputFieldLabelStopWatch** for the label of a stop watch
   - [ ] **ButtonSpawnStopWatch** for spawning a stop watch
@@ -21,4 +20,3 @@
 - [ ] Implementation of the functions of  **ButtonTrashAllStopWatches** for removing every stop watch
 - [ ] Storing state of a watch stop in the local storage in browser
 - [ ] Make it look good in desktop resolution
-- [ ] Implementation of the function of **ButtonSpawnButtonLegend** for toggling the legend about what a button does
