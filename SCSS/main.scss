@@ -33,3 +33,34 @@ h1 {
     justify-self: center;
     font-size: 3rem;    
 }
+
+#SpawnStopWatchBox {
+    background-color: $sub-background-color;
+    color: $sub-foreground-color;
+    border-radius: $widget-border-radius;
+    padding: $widget-padding;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+#SpawnLableField {
+    display: grid;
+    grid-template-columns: auto 1fr;
+
+    p {
+        margin-right: 10px;
+
+        font-weight: bold;
+    }
+
+    input {
+        border-top-style: none;
+        border-left-style: none;
+        border-right-style: none;
+
+        border-bottom-color: rgb(8, 8, 8);
+    }
+}
+
+

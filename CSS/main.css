@@ -48,4 +48,28 @@ h1 {
   font-size: 3rem;
 }
 
+#SpawnStopWatchBox {
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  padding: 10px 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+#SpawnLableField {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+#SpawnLableField p {
+  margin-right: 10px;
+  font-weight: bold;
+}
+#SpawnLableField input {
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom-color: #080808;
+}
+
 /*# sourceMappingURL=main.css.map */

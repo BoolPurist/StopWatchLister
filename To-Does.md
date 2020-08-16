@@ -2,8 +2,8 @@
 
 - [x] Navigation bar for **Data Privacy**  and **Impressum**
 - [x] Insert headline with the name of this webpage **Stop Watch Spawner** **SpawnBoxStopWatch**
-- [ ] Implementation for **ButtonSpawnStopWatch** with the following elements
-  - [ ] **InputFieldLabelStopWatch** for the label of a stop watch
+- [ ] Implementation for **SpawnStopWatchBox** with the following elements
+  - [x] **InputFieldLableStopWatch** for the label of a stop watch
   - [ ] **ButtonSpawnStopWatch** for spawning a stop watch
   - [ ] Insert Dummy **ButtonTrashAllStopWatches** for spawning
 - [ ] Insert **SeparationBar**
