@@ -1,5 +1,11 @@
 @use "base" as *;
 @use "variables" as *;
+@use "mixin" as *;
+
+.fas {
+    font-size: 2rem;
+}
+
 
 #navTop {
     justify-self: end;
@@ -18,7 +24,7 @@
 
         height: $navTopA-height;
         line-height: $navTopA-height;
-        padding: 0 10px;
+        @include padding-sides(20px);
         color: $sub-foreground-color
     }
 
@@ -57,11 +63,7 @@ h1 {
         }
     
         input {
-            border-top-style: none;
-            border-left-style: none;
-            border-right-style: none;
-    
-            border-bottom-color: rgb(8, 8, 8);
+            @include reduce-border-to-bottom-color-bottom($border-bottom-color);
         }
     }
 
@@ -70,9 +72,7 @@ h1 {
         grid-template-columns: auto 1fr auto;
 
         #TrashAllButtons i {
-            $TrashAllButtons-padding: 5px;
-            padding-left: $TrashAllButtons-padding;
-            padding-right: $TrashAllButtons-padding;
+            @include padding-sides(10px);
         }
         
          
@@ -80,11 +80,6 @@ h1 {
 
 }
 
-
-
-.fas {
-    font-size: 2rem;
-}
 
 
 

@@ -1,0 +1,13 @@
+
+@mixin padding-sides($value) {
+    padding-left: $value;
+    padding-right: $value;
+}
+
+@mixin reduce-border-to-bottom-color-bottom($border-color) {
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+
+    border-bottom-color: $border-color;
+}
