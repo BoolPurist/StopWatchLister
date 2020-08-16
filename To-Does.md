@@ -1,7 +1,7 @@
 # To-Do before first release
 
-- [ ] Navigation bar for **Data Privacy**  and **Impressum**
-- [ ] Insert headline with the name of this webpage **SpawnerStopWatch**
+- [x] Navigation bar for **Data Privacy**  and **Impressum**
+- [x] Insert headline with the name of this webpage **Stop Watch Spawner**
 - [ ] Insert dummy button **ButtonSpawnButtonLegend** and container **SpawnBoxStopWatch**
 - [ ] Implementation for **ButtonSpawnStopWatch** with the following elements
   - [ ] **InputFieldLabelStopWatch** for the label of a stop watch

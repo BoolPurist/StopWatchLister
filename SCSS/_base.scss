@@ -24,5 +24,6 @@ a {
     margin: $wrapper-margin;
 
     display: grid;
+    gap: 20px;
     grid-template-rows: auto;
 }
