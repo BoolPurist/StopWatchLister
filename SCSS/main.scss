@@ -1,6 +1,6 @@
-@use "base" as *;
 @use "variables" as *;
 @use "mixin" as *;
+@use "base" as *;
 
 .fas {
     font-size: 2rem;
@@ -46,14 +46,7 @@ h1 {
 }
 
 #SpawnStopWatchBox {
-    background-color: $sub-background-color;
-    color: $sub-foreground-color;
-    border-radius: $widget-border-radius;
-    padding: $widget-padding;
-
-    display: grid;
-    grid-template-rows: auto 1fr;
-    gap: 5px;
+    @include mixin-render-stop-watch-body();
 
     #SpawnLableField {
         
@@ -68,7 +61,7 @@ h1 {
         }
     
         input {
-            @include reduce-border-to-bottom-color-bottom($border-bottom-color);
+            @include reduce-border-to-bottom-color-bottom();
         }
     }
 
@@ -90,12 +83,40 @@ h1 {
     height: 20px;
     border-radius: $widget-border-radius;
     background-color: $sub-background-color;
+    
+}
+
+.stop-watch {
+    @include mixin-render-stop-watch-body();
+
+    .stop-watch-row-label{
+        display: grid;
+        grid-template-columns: 1fr auto;
+
+        p {
+            @include mixin-stop-watch-font();
+        }
+    }
+
+    .stop-watch-row-timer {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        align-items: center;
+
+        
+        
+        .text-timer {
+            justify-self: center;
+            @include mixin-stop-watch-font();
+        }
+    }
+
 }
 
 
 @media screen and (max-width: 600px) {
-    
-    
+        
     #navTop {
         justify-self: center;
         

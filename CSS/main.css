@@ -104,6 +104,35 @@ h1 {
   background-color: white;
 }
 
+.stop-watch {
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  padding: 10px 10px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 5px;
+}
+.stop-watch .stop-watch-row-label {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.stop-watch .stop-watch-row-label p {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.stop-watch .stop-watch-row-timer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.stop-watch .stop-watch-row-timer .text-timer {
+  justify-self: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 600px) {
   #navTop {
     justify-self: center;

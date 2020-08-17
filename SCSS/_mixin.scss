@@ -1,13 +1,30 @@
+@use "variables" as *;
 
 @mixin padding-sides($value) {
     padding-left: $value;
     padding-right: $value;
 }
 
-@mixin reduce-border-to-bottom-color-bottom($border-color) {
+@mixin reduce-border-to-bottom-color-bottom() {
     border-top-style: none;
     border-left-style: none;
     border-right-style: none;
 
-    border-bottom-color: $border-color;
+    border-bottom-color: $border-bottom-color;
+}
+
+@mixin mixin-render-stop-watch-body() {
+    background-color: $sub-background-color;
+    color: $sub-foreground-color;
+    border-radius: $widget-border-radius;
+    padding: $widget-padding;
+
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 5px;
+}
+
+@mixin mixin-stop-watch-font {
+    font-size: $stop-watch-font-size;
+    font-weight: $stop-watch-font-weight;
 }
