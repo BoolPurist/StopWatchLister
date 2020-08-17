@@ -62,6 +62,11 @@ const _PopulateDomElementWithTextContent = (domElement,...Data) => {
     })
 }
 
+export const RemoveStopWatchViaTrashButton = (trashButton) => {
+    trashButton.parentNode.parentNode.remove();
+
+}
+
 
 export const testString = "Module 1";
 
