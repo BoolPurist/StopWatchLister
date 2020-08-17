@@ -1,5 +1,6 @@
 import * as DOM_Manipulation from "./Modules/DOM_Manipulation.js";
 (function() {
+    "use strict";
     /* Getting dom elements for reference. */     
     const stop_watch_wrapper = document.querySelector("#stop-watch-list");
     const inputFieldLableStopWatch = document.querySelector("#InputFieldLableStopWatch");
