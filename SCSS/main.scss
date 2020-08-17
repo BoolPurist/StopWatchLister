@@ -86,39 +86,45 @@ h1 {
     
 }
 
-.stop-watch {
-    @include mixin-render-stop-watch-body();
+#stop-watch-list {
+    display:grid;
+    grid-auto-rows: auto;
+    gap: 10px;
 
-    .stop-watch-row-label{
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-
-        p {
-            @include mixin-stop-watch-font();
-            text-decoration: underline;
+    .stop-watch {
+        @include mixin-render-stop-watch-body();
+    
+        .stop-watch-row-label{
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+    
+            p {
+                @include mixin-stop-watch-font();
+                text-decoration: underline;
+            }
+    
+            .trash-btn {
+                align-self: center;
+                padding: 10px;
+            }
         }
-
-        .trash-btn {
-            align-self: center;
-            padding: 10px;
+    
+        .stop-watch-row-timer {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            align-items: center;
+    
+            
+            
+            .text-timer {
+                justify-self: center;
+                @include mixin-stop-watch-font();
+            }
         }
+    
     }
-
-    .stop-watch-row-timer {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 10px;
-        align-items: center;
-
-        
-        
-        .text-timer {
-            justify-self: center;
-            @include mixin-stop-watch-font();
-        }
-    }
-
 }
 
 

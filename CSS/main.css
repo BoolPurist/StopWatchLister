@@ -105,7 +105,12 @@ h1 {
   background-color: #545a5e;
 }
 
-.stop-watch {
+#stop-watch-list {
+  display: grid;
+  grid-auto-rows: auto;
+  gap: 10px;
+}
+#stop-watch-list .stop-watch {
   background-color: white;
   color: black;
   border-radius: 10px;
@@ -114,27 +119,27 @@ h1 {
   grid-template-rows: auto 1fr;
   gap: 5px;
 }
-.stop-watch .stop-watch-row-label {
+#stop-watch-list .stop-watch .stop-watch-row-label {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 10px;
 }
-.stop-watch .stop-watch-row-label p {
+#stop-watch-list .stop-watch .stop-watch-row-label p {
   font-size: 2rem;
   font-weight: bold;
   text-decoration: underline;
 }
-.stop-watch .stop-watch-row-label .trash-btn {
+#stop-watch-list .stop-watch .stop-watch-row-label .trash-btn {
   align-self: center;
   padding: 10px;
 }
-.stop-watch .stop-watch-row-timer {
+#stop-watch-list .stop-watch .stop-watch-row-timer {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 10px;
   align-items: center;
 }
-.stop-watch .stop-watch-row-timer .text-timer {
+#stop-watch-list .stop-watch .stop-watch-row-timer .text-timer {
   justify-self: center;
   font-size: 2rem;
   font-weight: bold;
