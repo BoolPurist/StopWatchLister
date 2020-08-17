@@ -4,17 +4,17 @@
 - [x] Insert headline with the name of this webpage **Stop Watch Spawner** **SpawnBoxStopWatch**
 - [ ] Implementation for **SpawnStopWatchBox** with the following elements
   - [x] **InputFieldLableStopWatch** for the label of a stop watch
-  - [ ] **ButtonSpawnStopWatch** for spawning a stop watch
+  - [x] **ButtonSpawnStopWatch** for spawning a stop watch
   - [X] Insert Dummy **ButtonTrashAllStopWatches** for spawning
 - [x] Insert **separation-bar**
 - [ ] Implement **StopWatch**
-  - [ ] **LabelStopWatch** for the label of the stop watch
-  - [ ] Insert dummy **ResumeButtonStopWatch**
-  - [ ] Insert dummy **DeleteButtonStopWatch**
+  - [x] **LabelStopWatch** for the label of the stop watch
+  - [x] Insert dummy **ResumeButtonStopWatch**
+  - [x] Insert dummy **DeleteButtonStopWatch**
 
 ## To-Dos before Beta
 
-- [ ] Implementation of the function of **DeleteButtonStopWatch** for letting the user remove a stop watch individually
+- [x] Implementation of the function of **DeleteButtonStopWatch** for letting the user remove a stop watch individually
 - [ ] Implementation of the function of **ResumeButtonStopWatch** and **StopButtonStopWatch** for letting the user stop and resume a stop watch
 - [ ] Implementation release of the functions of  **ButtonTrashAllStopWatches** for removing every stop watch
 - [ ] Implementation of the functions of  **ButtonTrashAllStopWatches** for removing every stop watch
