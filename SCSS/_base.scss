@@ -20,11 +20,20 @@ a {
     text-decoration: none;
 }
 
-#wrapper {
-    // width: 80%;
+#wrapper {    
     margin: $wrapper-margin;
 
     display: grid;
-    gap: 20px;
+    gap: $wrapper-row-gab-desktop;
     grid-template-rows: auto;
+}
+
+@media screen and (max-width: 600px) {
+    html {
+        font-size: $mobile-font-size;
+    }
+
+    #wrapper {
+        gap: $wrapper-row-gab-mobile;
+    }
 }

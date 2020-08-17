@@ -21,11 +21,16 @@
 
     a { 
         $navTopA-height: 50px;
-
         height: $navTopA-height;
         line-height: $navTopA-height;
-        @include padding-sides(20px);
-        color: $sub-foreground-color
+
+        @include padding-sides($navBar-side-padding-desktop);
+
+        color: $sub-foreground-color;
+
+        border-style: $navbar-style;
+        border-width: $navbar-width;
+        border-color: $navBar-border-color;
     }
 
     a:hover {
@@ -47,7 +52,7 @@ h1 {
     padding: $widget-padding;
 
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto 1fr;
     gap: 5px;
 
     #SpawnLableField {
@@ -85,6 +90,20 @@ h1 {
     height: 20px;
     border-radius: $widget-border-radius;
     background-color: $sub-background-color;
+}
+
+
+@media screen and (max-width: 600px) {
+    
+    
+    #navTop {
+        justify-self: center;
+        
+        a {
+            @include padding-sides($navBar-side-padding-mobile);
+        }
+    }
+
 }
 
 

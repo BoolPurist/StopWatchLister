@@ -1,10 +1,23 @@
 $wrapper-margin: 25px 2%;
+$wrapper-row-gab-desktop: 40px;
+$wrapper-row-gab-mobile: $wrapper-row-gab-desktop / 2;
 
 $standard-font-size: 16px;
+$mobile-font-size: 12px;
+$standard-font-color: white;
+
+$site-background-color: black;
+
 $sub-background-color: white;
 $sub-foreground-color: black;
-$standard-font-color: white;
-$site-background-color: black;
+
 $border-bottom-color: rgb(3, 3, 3); 
 $widget-border-radius: 10px;
 $widget-padding: 10px 10px;
+
+$navBar-side-padding-desktop: 20px;
+$navBar-side-padding-mobile: $navBar-side-padding-desktop / 3;
+$navBar-border-color: black;
+$navbar-style: solid;
+$navbar-width: 1px;
+
