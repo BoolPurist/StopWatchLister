@@ -83,6 +83,7 @@ h1 {
   font-weight: bold;
 }
 #SpawnStopWatchBox #SpawnLableField input {
+  border-style: solid;
   border-top-style: none;
   border-left-style: none;
   border-right-style: none;
@@ -101,7 +102,7 @@ h1 {
   width: 100%;
   height: 20px;
   border-radius: 10px;
-  background-color: white;
+  background-color: #545a5e;
 }
 
 .stop-watch {
@@ -116,10 +117,16 @@ h1 {
 .stop-watch .stop-watch-row-label {
   display: grid;
   grid-template-columns: 1fr auto;
+  gap: 10px;
 }
 .stop-watch .stop-watch-row-label p {
   font-size: 2rem;
   font-weight: bold;
+  text-decoration: underline;
+}
+.stop-watch .stop-watch-row-label .trash-btn {
+  align-self: center;
+  padding: 10px;
 }
 .stop-watch .stop-watch-row-timer {
   display: grid;

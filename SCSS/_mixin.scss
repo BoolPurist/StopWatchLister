@@ -1,11 +1,12 @@
 @use "variables" as *;
 
-@mixin padding-sides($value) {
+@mixin mixin-padding-sides($value) {
     padding-left: $value;
     padding-right: $value;
 }
 
-@mixin reduce-border-to-bottom-color-bottom() {
+@mixin mixin-reduce-border-to-bottom-color-bottom() {
+    border-style: solid;
     border-top-style: none;
     border-left-style: none;
     border-right-style: none;

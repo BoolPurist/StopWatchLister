@@ -24,7 +24,7 @@
         height: $navTopA-height;
         line-height: $navTopA-height;
 
-        @include padding-sides($navBar-side-padding-desktop);
+        @include mixin-padding-sides($navBar-side-padding-desktop);
 
         color: $sub-foreground-color;
 
@@ -61,7 +61,7 @@ h1 {
         }
     
         input {
-            @include reduce-border-to-bottom-color-bottom();
+            @include mixin-reduce-border-to-bottom-color-bottom();
         }
     }
 
@@ -70,7 +70,7 @@ h1 {
         grid-template-columns: auto 1fr auto;
 
         #TrashAllButtons i {
-            @include padding-sides(10px);
+            @include mixin-padding-sides(10px);
         }
         
          
@@ -82,7 +82,7 @@ h1 {
     width: 100%;
     height: 20px;
     border-radius: $widget-border-radius;
-    background-color: $sub-background-color;
+    background-color: $separations-bar-color;
     
 }
 
@@ -92,9 +92,16 @@ h1 {
     .stop-watch-row-label{
         display: grid;
         grid-template-columns: 1fr auto;
+        gap: 10px;
 
         p {
             @include mixin-stop-watch-font();
+            text-decoration: underline;
+        }
+
+        .trash-btn {
+            align-self: center;
+            padding: 10px;
         }
     }
 
@@ -121,7 +128,7 @@ h1 {
         justify-self: center;
         
         a {
-            @include padding-sides($navBar-side-padding-mobile);
+            @include mixin-padding-sides($navBar-side-padding-mobile);
         }
     }
 
