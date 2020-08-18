@@ -40,8 +40,12 @@ describe("Unit test for the es6 module Timer.js", () => {
     
     test.each(
     [
-        [2, {seconds: 0, minutes: 0, hours: 0}, {seconds: 2, minutes: 0, hours: 0}],
-        [60, {seconds: 0, minutes: 0, hours: 0}, {seconds: 0, minutes: 1, hours: 0}]        
+        [1, {seconds: 0, minutes: 0, hours: 0}, {seconds: 1, minutes: 0, hours: 0}],        
+        [59, {seconds: 0, minutes: 0, hours: 0}, {seconds: 59, minutes: 0, hours: 0}],        
+        [60, {seconds: 0, minutes: 0, hours: 0}, {seconds: 0, minutes: 1, hours: 0}],        
+        [10, {seconds: 59, minutes: 0, hours: 0}, {seconds: 9, minutes: 1, hours: 0}],
+        [300, {seconds: 30, minutes: 0, hours: 0}, {seconds: 30, minutes: 5, hours: 0}],
+        [1, {seconds: 59, minutes: 59, hours: 0}, {seconds: 0, minutes: 0, hours: 1}],
     ]
     )("Testing _incrementSeconds method with (%i).", (
             increment, inputTime, expectedTime

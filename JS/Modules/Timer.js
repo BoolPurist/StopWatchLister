@@ -37,7 +37,17 @@ class Timer {
     }
 
     _incrementSeconds () {
-        // Implement.
+        this._seconds++;
+        this._seconds %= 60;
+        
+        if (this._seconds === 0) this._incrementMinutes();         
+    }
+
+    _incrementMinutes () {
+        this._minutes++;
+        this._minutes %= 60;
+
+        if (this._minutes === 0) this._hours++;;
     }
 
 
