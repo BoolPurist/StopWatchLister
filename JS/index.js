@@ -18,7 +18,6 @@ import {Timer} from "./Modules/Timer.js";
         stop_watch_wrapper.appendChild(stopWatch);
     });
     
-    
     /* Functions */
 
     // Adds a click event with a callback function to the trash button of a stop watch. 
