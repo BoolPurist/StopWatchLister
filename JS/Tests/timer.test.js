@@ -62,11 +62,11 @@ describe("Unit test for the es6 module Timer.js", () => {
 
     // Testing methods.
 
-    test("Method reset:Should be rested with seconds: 0, minutes: 0, hours: 0", () => {
+    test("Method resetTimer:Should be rested with seconds: 0, minutes: 0, hours: 0", () => {
         let instance = new module.Timer(8, 7, 10);
         const expectedTime = {seconds: 0, minutes: 0, hours: 0};
 
-        instance.reset();
+        instance.resetTimer();
         const actualTime = {
             seconds: instance.Seconds, minutes: instance.Minutes, hours: instance.Hours
         };
