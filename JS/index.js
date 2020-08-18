@@ -1,4 +1,6 @@
 import * as DOM_Manipulation from "./Modules/DOM_Manipulation.js";
+import {Timer} from "./Modules/Timer.js";
+
 (function() {
     "use strict";
     /* Getting dom elements for reference. */     
@@ -15,6 +17,7 @@ import * as DOM_Manipulation from "./Modules/DOM_Manipulation.js";
         AddCallbackClickTrashButton(stopWatch);
         stop_watch_wrapper.appendChild(stopWatch);
     });
+    
     
     /* Functions */
 
