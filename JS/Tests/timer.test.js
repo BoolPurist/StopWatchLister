@@ -2,27 +2,21 @@ const module = require("../Modules/Timer.js");
 
 describe("Unit test for the es6 module Timer.js", () => {
 
-    let dataParameterConstructor = [
+    test.each( [
         {Seconds: 0, Minutes: 0, Hours: 0},
         {Seconds: 9, Minutes: 5, Hours: 2}, 
         {Seconds: 18, Minutes: 5, Hours: 0}
-    ];
-
-    test.each(dataParameterConstructor)(
+    ] )(
         `Testing Constructor and Set/Get for time unit.`,
-        (testObject) => {
-        const {Seconds, Minutes, Hours} = testObject;
+        (timeUnits) => {
+        const {Seconds, Minutes, Hours} = timeUnits;
         let instance = new module.Timer(Seconds, Minutes, Hours);
                 
         let actual = {Seconds: instance.Seconds, Minutes: instance.Minutes, Hours: instance.Hours};
             
-        expect(actual).toEqual(testObject);
+        expect(actual).toEqual(timeUnits);
         }
     );
-
-    let brokenDataForConstructor = [
-                
-    ];
 
     test.each( [ 
         {seconds: null, minutes: undefined, hours: "2"},
@@ -32,12 +26,12 @@ describe("Unit test for the es6 module Timer.js", () => {
     ] )(
         "Should throw TypError if one of the parameter for the constructor is null " +
         "or not number for constructor is invalid",
-        (brokenTimeData) => {
-            const {seconds, minutes, hours} = brokenTimeData;
-            const actual = function() {
+        (parametersWithWrongType) => {
+            const {seconds, minutes, hours} = parametersWithWrongType;
+            const actualConstructor = () => {
                 new module.Timer(seconds, minutes, hours);
             };
-            expect(actual).toThrow(TypeError);
+            expect(actualConstructor).toThrow(TypeError);
         }
     );
 
@@ -51,18 +45,18 @@ describe("Unit test for the es6 module Timer.js", () => {
     ] )("Should if constructor gets a negative parameter", (negativeParameters) => {
         const {seconds, minutes, hours} = negativeParameters;
 
-        const acutal = () => {
+        const actualConstructor = () => {
             new module.Timer(seconds, minutes, hours);
         }
         
-        expect(acutal).toThrow(RangeError);
-    })
+        expect(actualConstructor).toThrow(RangeError);
+    });
     
     test("Testing getter TimeStamp", () => {
         let instance = new module.Timer(2, 0, 4);
-        let actual = instance.TimeStamp;
-        expect(actual).toBe("4:0:2");
-    })
+        let actualTimeStamp = instance.TimeStamp;
+        expect(actualTimeStamp).toBe("4:0:2");
+    });
     
     test.each(
     [
@@ -89,5 +83,5 @@ describe("Unit test for the es6 module Timer.js", () => {
                 minutes: instance.Minutes, 
                 hours: instance.Hours
             } ).toEqual(expectedTime);
-    })
+    });
 }) 
