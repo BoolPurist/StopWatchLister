@@ -2,6 +2,7 @@ const module = require("../Modules/Timer.js");
 
 describe("Unit test for the es6 module Timer.js", () => {
 
+    // Testing constructor and getter for Seconds, Minutes and Hours.
     test.each( [
         {Seconds: 0, Minutes: 0, Hours: 0},
         {Seconds: 9, Minutes: 5, Hours: 2}, 
@@ -18,6 +19,7 @@ describe("Unit test for the es6 module Timer.js", () => {
         }
     );
 
+    // Testing throwing of exceptions of the constructor.
     test.each( [ 
         {seconds: null, minutes: undefined, hours: "2"},
         {seconds: 2, minutes: null, hours: 3},
@@ -35,14 +37,12 @@ describe("Unit test for the es6 module Timer.js", () => {
         }
     );
 
-
-
     test.each( [
         {seconds: -2, minutes: 5, hours: 8},
         {seconds: -2, minutes: -5, hours: 8},
         {seconds: 2, minutes: 5, hours: -8},
         {seconds: -2, minutes: -5, hours: -8}
-    ] )("Should if constructor gets a negative parameter", (negativeParameters) => {
+    ] )("Should throw if constructor gets a negative parameter", (negativeParameters) => {
         const {seconds, minutes, hours} = negativeParameters;
 
         const actualConstructor = () => {
@@ -52,12 +52,29 @@ describe("Unit test for the es6 module Timer.js", () => {
         expect(actualConstructor).toThrow(RangeError);
     });
     
+    // Testing rest of getters and setters.
     test("Testing getter TimeStamp", () => {
         let instance = new module.Timer(2, 0, 4);
         let actualTimeStamp = instance.TimeStamp;
         expect(actualTimeStamp).toBe("4:0:2");
     });
     
+
+    // Testing methods.
+
+    test("Method reset:Should be rested with seconds: 0, minutes: 0, hours: 0", () => {
+        let instance = new module.Timer(8, 7, 10);
+        const expectedTime = {seconds: 0, minutes: 0, hours: 0};
+
+        instance.reset();
+        const actualTime = {
+            seconds: instance.Seconds, minutes: instance.Minutes, hours: instance.Hours
+        };
+
+        expect(actualTime).toEqual(expectedTime);
+
+    });
+
     test.each(
     [
         [1, {seconds: 0, minutes: 0, hours: 0}, {seconds: 1, minutes: 0, hours: 0}],        
