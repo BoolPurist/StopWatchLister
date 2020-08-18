@@ -1,4 +1,5 @@
 const module = require("../Modules/Timer.js");
+const Timer = module.Timer;
 
 describe("Unit test for the es6 module Timer.js", () => {
 
@@ -11,7 +12,7 @@ describe("Unit test for the es6 module Timer.js", () => {
         `Testing Constructor and Set/Get for time unit.`,
         (timeUnits) => {
         const {Seconds, Minutes, Hours} = timeUnits;
-        let instance = new module.Timer(Seconds, Minutes, Hours);
+        let instance = new Timer(Seconds, Minutes, Hours);
                 
         let actual = {Seconds: instance.Seconds, Minutes: instance.Minutes, Hours: instance.Hours};
             
@@ -31,7 +32,7 @@ describe("Unit test for the es6 module Timer.js", () => {
         (parametersWithWrongType) => {
             const {seconds, minutes, hours} = parametersWithWrongType;
             const actualConstructor = () => {
-                new module.Timer(seconds, minutes, hours);
+                new Timer(seconds, minutes, hours);
             };
             expect(actualConstructor).toThrow(TypeError);
         }
@@ -46,7 +47,7 @@ describe("Unit test for the es6 module Timer.js", () => {
         const {seconds, minutes, hours} = negativeParameters;
 
         const actualConstructor = () => {
-            new module.Timer(seconds, minutes, hours);
+            new Timer(seconds, minutes, hours);
         }
         
         expect(actualConstructor).toThrow(RangeError);
@@ -54,7 +55,7 @@ describe("Unit test for the es6 module Timer.js", () => {
     
     // Testing rest of getters and setters.
     test("Testing getter TimeStamp", () => {
-        let instance = new module.Timer(2, 0, 4);
+        let instance = new Timer(2, 0, 4);
         let actualTimeStamp = instance.TimeStamp;
         expect(actualTimeStamp).toBe("4:0:2");
     });
@@ -63,7 +64,7 @@ describe("Unit test for the es6 module Timer.js", () => {
     // Testing methods.
 
     test("Method resetTimer:Should be rested with seconds: 0, minutes: 0, hours: 0", () => {
-        let instance = new module.Timer(8, 7, 10);
+        let instance = new Timer(8, 7, 10);
         const expectedTime = {seconds: 0, minutes: 0, hours: 0};
 
         instance.resetTimer();
@@ -89,7 +90,7 @@ describe("Unit test for the es6 module Timer.js", () => {
         ) => {
         const {seconds, minutes, hours} =  inputTime;
 
-        let instance = new module.Timer(seconds, minutes, hours);
+        let instance = new Timer(seconds, minutes, hours);
         
         for (let i = 0; i < increment; i++) {
             instance._incrementSeconds();
