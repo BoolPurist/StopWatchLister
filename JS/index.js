@@ -19,7 +19,8 @@ import {Timer} from "./Modules/Timer.js";
     
     /* Functions */
 
-    new Timer();
+    
+    
     // Adds a click event with a callback function to the trash button of a stop watch. 
     function AddCallbackClickTrashButton(stopWatch) {
         let trashButton = stopWatch.querySelector(".trash-btn");
