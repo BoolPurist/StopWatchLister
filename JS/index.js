@@ -17,11 +17,13 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const QSTrashBtn = ".trash-btn";
     const QSLableTextSW = ".stop-watch-label-text";
     const QSPauseButton = ".pause-btn";
+    const QSResetBtn = ".reset-btn";
 
     // Names of the properties which are created on every stop watch at runtime
     const playButtonName = "playButton";
     const deleteButtonName = "trashButton";
     const pauseButtonName = "pauseButton";
+    const resetBtnName = "resetButton";
 
     const toggleClassNameFocus = "minorFocus";
 
@@ -47,9 +49,12 @@ import { StopWatch } from "./Modules/StopWatch.js";
             for (const stopWatch of stopWatchList) {
                 if (stopWatch[playButtonName] === target) {
                     
-                    if (stopWatch.start()) toggleBtnOpacity(
-                        stopWatch[playButtonName], stopWatch[pauseButtonName]
-                    );
+                    stopWatch[playButtonName].classList.add(toggleClassNameFocus);
+                    stopWatch[pauseButtonName].classList.remove(toggleClassNameFocus);
+
+                    if (stopWatch.start()) {                        
+                        stopWatch[resetBtnName].classList.remove(toggleClassNameFocus);
+                    }
                     
                 }                
             }
@@ -64,13 +69,24 @@ import { StopWatch } from "./Modules/StopWatch.js";
             for (const stopWatch of stopWatchList) {
                 if (stopWatch[pauseButtonName] === target) {                    
                     
-                    if (stopWatch.pause()) toggleBtnOpacity(
-                        stopWatch[playButtonName], stopWatch[pauseButtonName]
-                    );                    
+
+                    if (stopWatch.pause()) {
+                        stopWatch[playButtonName].classList.remove(toggleClassNameFocus);
+                        stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
+                    }
 
                 }                
             }                                    
-        } 
+        } else if (targetClass.includes(QSResetBtn.substring(1))) {
+            for (const stopWatch of stopWatchList) {
+                if (stopWatch[resetBtnName] === target) {
+                    stopWatch[playButtonName].classList.remove(toggleClassNameFocus);
+                    stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
+                    stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
+                }
+
+            }
+        }
 
     });
 
@@ -121,9 +137,13 @@ import { StopWatch } from "./Modules/StopWatch.js";
             { propertyName: playButtonName, domQuerySelector: QSPlayBtn },                       
             { propertyName: deleteButtonName, domQuerySelector:  QSTrashBtn},                       
             { propertyName: pauseButtonName, domQuerySelector:  QSPauseButton},                       
+            { propertyName: resetBtnName, domQuerySelector:  QSResetBtn},                       
         );
 
-        stopWatch[pauseButtonName].classList.toggle(toggleClassNameFocus);
+        stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
+        stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
+
+
 
         stopWatchList.push( stopWatch ); 
         populateDomElementWithTextContent(
@@ -132,9 +152,5 @@ import { StopWatch } from "./Modules/StopWatch.js";
         );
     }
 
-    function toggleBtnOpacity(btnRef1, btnRef2) {
-        btnRef1.classList.toggle(toggleClassNameFocus);
-        btnRef2.classList.toggle(toggleClassNameFocus);
-    }
     
 }) ()
