@@ -8,7 +8,9 @@ import { StopWatch } from "./Modules/StopWatch.js";
     
     // querySelector strings for accessing certain dom elements 
     const QSListSW = "#stop-watch-list";
+    const QSSpawnBox = "#SpawnStopWatchBox";
     const QSSpawnBtn = "#spawn-btn";
+    const QSTrashAllBtn = "#TrashAllButtons";
 
     const QSClassTextTimer = ".text-timer";
     const QSPlayBtn = ".play-btn";
@@ -22,33 +24,38 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const pauseButtonName = "pauseButton";
 
     const inputFieldLableStopWatch = document.querySelector("#InputFieldLableStopWatch");
+    const spawnBtn = document.querySelector(QSSpawnBtn);
+    const trashAllBtn = document.querySelector(QSTrashAllBtn);
+    
+
     /**
      * @type {Array<StopWatch>} - array of stopwatches wich are in the dom currently
      */
-    const stopWatchList = [];
-    
-
-    
+    let stopWatchList = [];
+        
     /* Attaching events */
     // Attaching events for the spawn watch box    
     // Adding event for spawn manage button
     
     document.querySelector(QSListSW).addEventListener("click", (event) => {
-        if ( event.target.className.includes(QSPlayBtn.substring(1)) ) {
+        const target = event.target;
+        const targetClass = target.className;
+        
+        if ( targetClass.includes(QSPlayBtn.substring(1)) ) {
             for (const stopWatch of stopWatchList) {
-                if (stopWatch[playButtonName] === event.target) {
+                if (stopWatch[playButtonName] === target) {
                     stopWatch.start();
                 }                
             }
-        } else if (event.target.className.includes(QSTrashBtn.substring(1))) {
+        } else if (targetClass.includes(QSTrashBtn.substring(1))) {
             for (const stopWatch of stopWatchList) {
-                if (stopWatch[deleteButtonName] === event.target) {                    
+                if (stopWatch[deleteButtonName] === target) {                    
                     stopWatch.remove();                    
                 }                
             }                                    
-        } else if (event.target.className.includes(QSPauseButton.substring(1))) {
+        } else if (targetClass.includes(QSPauseButton.substring(1))) {
             for (const stopWatch of stopWatchList) {
-                if (stopWatch[pauseButtonName] === event.target) {                    
+                if (stopWatch[pauseButtonName] === target) {                    
                     stopWatch.pause();                    
                 }                
             }                                    
@@ -56,17 +63,31 @@ import { StopWatch } from "./Modules/StopWatch.js";
 
     });
 
-    document.querySelector(QSSpawnBtn).addEventListener("click", () => {    
-        const lableText = inputFieldLableStopWatch.value.trim();
-        inputFieldLableStopWatch.value = "";
+    document.querySelector(QSSpawnBox).addEventListener("click", (event) => {    
         
-        CreateStopWatch(lableText);                
+        const target = event.target;
+
+        if (target === spawnBtn) {
+            const lableText = inputFieldLableStopWatch.value.trim();
+            inputFieldLableStopWatch.value = "";
+            
+            CreateStopWatch(lableText);
+        } else if (target.parentNode === trashAllBtn) {
+            
+            for (const stopWatch of stopWatchList) {
+                stopWatch.remove();
+            }
+            
+            stopWatchList = [];
+
+
+        }
     });
 
 
-    // Debug Area
 
-    CreateStopWatch("Stop Watch");
+    // Debug Area
+    
     
     /* Functions */
     

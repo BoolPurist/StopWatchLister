@@ -63,7 +63,7 @@ class StopWatch {
     }
 
     remove() {
-        this._timer.stop();
+        this.pause();
         this.domReference.remove();
     }
 
