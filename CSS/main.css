@@ -1,10 +1,11 @@
 * {
   margin: 0px;
   padding: 0px;
+  box-sizing: border-box;
 }
 
 html {
-  font-size: 16px;
+  font-size: 18px;
   color: white;
 }
 
@@ -35,6 +36,14 @@ a {
 }
 .fas {
   font-size: 2rem;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.btn {
+  background-color: #bebcbc;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 #navTop {
@@ -69,10 +78,11 @@ h1 {
   background-color: white;
   color: black;
   border-radius: 10px;
-  padding: 10px 10px;
+  padding: 20px;
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 5px;
+  columns: 5px;
+  row-gap: 28px;
 }
 #SpawnStopWatchBox #SpawnLableField {
   display: grid;
@@ -80,6 +90,7 @@ h1 {
 }
 #SpawnStopWatchBox #SpawnLableField p {
   margin-right: 10px;
+  font-size: 2rem;
   font-weight: bold;
 }
 #SpawnStopWatchBox #SpawnLableField input {
@@ -93,9 +104,20 @@ h1 {
   display: grid;
   grid-template-columns: auto 1fr auto;
 }
-#SpawnStopWatchBox #SpawnManage-btnS #TrashAllButtons i {
-  padding-left: 10px;
-  padding-right: 10px;
+#SpawnStopWatchBox #TrashAllButtons {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+}
+#SpawnStopWatchBox #TrashAllButtons .trash-can {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+#SpawnStopWatchBox #TrashAllButtons .btn.list {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+#SpawnStopWatchBox #TrashAllButtons .arrow-trash {
+  border-radius: 0;
 }
 
 .separation-bar {
@@ -108,16 +130,17 @@ h1 {
 #stop-watch-list {
   display: grid;
   grid-auto-rows: auto;
-  gap: 10px;
+  row-gap: 10px;
 }
 #stop-watch-list .stop-watch {
   background-color: white;
   color: black;
   border-radius: 10px;
-  padding: 10px 10px;
+  padding: 20px;
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 5px;
+  columns: 5px;
+  row-gap: 15px;
 }
 #stop-watch-list .stop-watch .stop-watch-row-label {
   display: grid;
@@ -131,11 +154,10 @@ h1 {
 }
 #stop-watch-list .stop-watch .stop-watch-row-label .trash-btn {
   align-self: center;
-  padding: 10px;
 }
 #stop-watch-list .stop-watch .stop-watch-row-timer {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto auto 1fr;
   gap: 10px;
   align-items: center;
 }
@@ -143,6 +165,7 @@ h1 {
   justify-self: center;
   font-size: 2rem;
   font-weight: bold;
+  font-size: 4rem;
 }
 
 @media screen and (max-width: 600px) {

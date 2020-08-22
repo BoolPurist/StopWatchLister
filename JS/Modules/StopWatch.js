@@ -34,18 +34,25 @@ class StopWatch {
         stopWatchRef._timeStampField.textContent = stopWatchRef._timer.TimeStamp;
     }
 
+    start() {
+        if (this._timerIsActive === false) {
+            this._timer.start();
+            this._timerIsActive = true;
+        }
+    }
+
+    pause() {
+        if (this._timerIsActive === true) {
+            this._timer.stop();
+            this._timerIsActive = false;
+        }
+    }
+
     remove() {
         this._timer.stop();
         this.domReference.remove();
     }
 
-    start() {
-        if (this._timerIsActive === false) {
-            this._timer.start();
-            this._timerIsActive = true;
-    
-        }
-    }
 
     _GetDomSubReference (querySelector) {
         return this.domReference.querySelector(querySelector);
@@ -91,10 +98,11 @@ function GetContainerForStopWatch()  {
 <div class="stop-watch">
     <div class="stop-watch-row-label">
         <p class="stop-watch-label-text"></p>
-        <i class="trash-btn fas fa-trash-alt"></i>
+        <i class="btn trash-btn fas fa-trash-alt"></i>
     </div>
     <div class="stop-watch-row-timer">
-        <i class="play-btn fas fa-play"></i>
+        <i class="btn play-btn fas fa-play"></i>
+        <i class="btn pause-btn fas fa-pause"></i>        
         <p class="text-timer">23:54:02</p>
     </div>
 </div>

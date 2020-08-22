@@ -14,7 +14,7 @@
     border-bottom-color: $border-bottom-color;
 }
 
-@mixin mixin-render-stop-watch-body() {
+@mixin mixin-render-stop-watch-body($grid-gap-row-modify: 0px) {
     background-color: $sub-background-color;
     color: $sub-foreground-color;
     border-radius: $widget-border-radius;
@@ -22,7 +22,8 @@
 
     display: grid;
     grid-template-rows: auto 1fr;
-    gap: 5px;
+    columns: $box-grid-column-gap;
+    row-gap: $box-grid-row-gap + $grid-gap-row-modify;
 }
 
 @mixin mixin-stop-watch-font {

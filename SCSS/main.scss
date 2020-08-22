@@ -4,8 +4,15 @@
 
 .fas {
     font-size: 2rem;
+    margin: 0;
+    box-sizing: border-box;
 }
 
+.btn {
+    background-color: $btn-background-color;
+    padding: $btn-padding;
+    border-radius: $btn-border-radius;
+}
 
 #navTop {
     justify-self: end;
@@ -46,7 +53,7 @@ h1 {
 }
 
 #SpawnStopWatchBox {
-    @include mixin-render-stop-watch-body();
+    @include mixin-render-stop-watch-body(8px);
 
     #SpawnLableField {
         
@@ -56,7 +63,7 @@ h1 {
     
         p {
             margin-right: 10px;
-    
+            font-size: $spawner-lable-font-size;
             font-weight: bold;
         }
     
@@ -68,12 +75,29 @@ h1 {
     #SpawnManage-btnS {
         display: grid;
         grid-template-columns: auto 1fr auto;
+                       
+    }
 
-        #TrashAllButtons i {
-            @include mixin-padding-sides(10px);
-        }
+    #TrashAllButtons {
         
-         
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        
+        .trash-can {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .btn.list {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .arrow-trash {
+            border-radius: 0;
+        }
+
+        
     }
 
 }
@@ -89,10 +113,10 @@ h1 {
 #stop-watch-list {
     display:grid;
     grid-auto-rows: auto;
-    gap: 10px;
+    row-gap: 10px;
 
     .stop-watch {
-        @include mixin-render-stop-watch-body();
+        @include mixin-render-stop-watch-body(-5px);
     
         .stop-watch-row-label{
             display: grid;
@@ -105,14 +129,14 @@ h1 {
             }
     
             .trash-btn {
-                align-self: center;
-                padding: 10px;
+                align-self: center;                
             }
         }
     
         .stop-watch-row-timer {
             display: grid;
-            grid-template-columns: auto 1fr;
+            grid-template-columns: auto auto 1fr;
+            
             gap: 10px;
             align-items: center;
     
@@ -121,6 +145,7 @@ h1 {
             .text-timer {
                 justify-self: center;
                 @include mixin-stop-watch-font();
+                font-size: $stop-watch-time-font-size;
             }
         }
     

@@ -1,7 +1,5 @@
 
-import * as DOM_Manipulation from "./Modules/DOM_Manipulation.js";
 import { StopWatch } from "./Modules/StopWatch.js";
-
 
 (function() {
     "use strict";
@@ -16,6 +14,12 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const QSPlayBtn = ".play-btn";
     const QSTrashBtn = ".trash-btn";
     const QSLableTextSW = ".stop-watch-label-text";
+    const QSPauseButton = ".pause-btn";
+
+    // Names of the properties which are created on every stop watch at runtime
+    const playButtonName = "playButton";
+    const deleteButtonName = "trashButton";
+    const pauseButtonName = "pauseButton";
 
     const inputFieldLableStopWatch = document.querySelector("#InputFieldLableStopWatch");
     /**
@@ -23,11 +27,8 @@ import { StopWatch } from "./Modules/StopWatch.js";
      */
     const stopWatchList = [];
     
-    // Names of the properties which are created on every stop watch at runtime
-    const playBtnPropertyName = "playButton";
-    const deleteButton = "trashButton";
 
-
+    
     /* Attaching events */
     // Attaching events for the spawn watch box    
     // Adding event for spawn manage button
@@ -35,38 +36,37 @@ import { StopWatch } from "./Modules/StopWatch.js";
     document.querySelector(QSListSW).addEventListener("click", (event) => {
         if ( event.target.className.includes(QSPlayBtn.substring(1)) ) {
             for (const stopWatch of stopWatchList) {
-                if (stopWatch[playBtnPropertyName] === event.target) {
+                if (stopWatch[playButtonName] === event.target) {
                     stopWatch.start();
                 }                
             }
         } else if (event.target.className.includes(QSTrashBtn.substring(1))) {
             for (const stopWatch of stopWatchList) {
-                if (stopWatch[deleteButton] === event.target) {                    
+                if (stopWatch[deleteButtonName] === event.target) {                    
                     stopWatch.remove();                    
                 }                
             }                                    
-        }
+        } else if (event.target.className.includes(QSPauseButton.substring(1))) {
+            for (const stopWatch of stopWatchList) {
+                if (stopWatch[pauseButtonName] === event.target) {                    
+                    stopWatch.pause();                    
+                }                
+            }                                    
+        } 
+
     });
 
     document.querySelector(QSSpawnBtn).addEventListener("click", () => {    
         const lableText = inputFieldLableStopWatch.value.trim();
         inputFieldLableStopWatch.value = "";
         
-        const stopWatch = new StopWatch(
-            QSListSW,
-            QSClassTextTimer, 
-            { propertyName: playBtnPropertyName, domQuerySelector: QSPlayBtn },                       
-            { propertyName: deleteButton, domQuerySelector:  QSTrashBtn},                       
-        );
-
-        stopWatchList.push( stopWatch ); 
-        populateDomElementWithTextContent(
-            stopWatch.domReference,
-            {querySelector: QSLableTextSW, textContent: lableText}
-        );
-        
-        
+        CreateStopWatch(lableText);                
     });
+
+
+    // Debug Area
+
+    CreateStopWatch("Stop Watch");
     
     /* Functions */
     
@@ -77,6 +77,23 @@ import { StopWatch } from "./Modules/StopWatch.js";
             const {querySelector, textContent} = object;
             startDomElement.querySelector(querySelector).textContent = textContent;
             }
+        );
+    }
+
+    
+    function CreateStopWatch(lableText) {
+        const stopWatch = new StopWatch(
+            QSListSW,
+            QSClassTextTimer, 
+            { propertyName: playButtonName, domQuerySelector: QSPlayBtn },                       
+            { propertyName: deleteButtonName, domQuerySelector:  QSTrashBtn},                       
+            { propertyName: pauseButtonName, domQuerySelector:  QSPauseButton},                       
+        );
+
+        stopWatchList.push( stopWatch ); 
+        populateDomElementWithTextContent(
+            stopWatch.domReference,
+            {querySelector: QSLableTextSW, textContent: lableText}
         );
     }
     
