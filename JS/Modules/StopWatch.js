@@ -52,14 +52,16 @@ class StopWatch {
         if (this._timerIsActive === false) {
             this._timer.start();
             this._timerIsActive = true;
-        }
+            return true
+        } else return false;        
     }
 
     pause() {
         if (this._timerIsActive === true) {
             this._timer.stop();
             this._timerIsActive = false;
-        }
+            return true;
+        } else return false;
     }
 
     remove() {
@@ -101,7 +103,8 @@ function GetContainerForStopWatch()  {
     </div>
     <div class="stop-watch-row-timer">
         <i class="btn play-btn fas fa-play"></i>
-        <i class="btn pause-btn fas fa-pause"></i>        
+        <i class="btn pause-btn fas fa-pause"></i>
+        <i class="btn reset-btn fas fa-stop"></i>        
         <p class="text-timer">23:54:02</p>
     </div>
 </div>

@@ -46,8 +46,11 @@ import { StopWatch } from "./Modules/StopWatch.js";
         if ( targetClass.includes(QSPlayBtn.substring(1)) ) {
             for (const stopWatch of stopWatchList) {
                 if (stopWatch[playButtonName] === target) {
-                    stopWatch.start();
-                    toggleBtnOpacity(stopWatch[playButtonName], stopWatch[pauseButtonName]);
+                    
+                    if (stopWatch.start()) toggleBtnOpacity(
+                        stopWatch[playButtonName], stopWatch[pauseButtonName]
+                    );
+                    
                 }                
             }
         } else if (targetClass.includes(QSTrashBtn.substring(1))) {
@@ -60,8 +63,11 @@ import { StopWatch } from "./Modules/StopWatch.js";
         } else if (targetClass.includes(QSPauseButton.substring(1))) {
             for (const stopWatch of stopWatchList) {
                 if (stopWatch[pauseButtonName] === target) {                    
-                    stopWatch.pause();
-                    toggleBtnOpacity(stopWatch[playButtonName], stopWatch[pauseButtonName]);                    
+                    
+                    if (stopWatch.pause()) toggleBtnOpacity(
+                        stopWatch[playButtonName], stopWatch[pauseButtonName]
+                    );                    
+
                 }                
             }                                    
         } 
