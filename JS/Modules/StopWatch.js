@@ -15,7 +15,8 @@ class StopWatch {
         
         this._timer = new Timer();
         this._timeStampField = this._GetDomSubReference(querySelectorForTimeStamp);
-        this._timeStampField.textContent = this._timer.TimeStamp;
+        this._timeStampField.textContent = StopWatch.
+        _normalizeTimeUnitAtLeast2Digits(this._timer);
         this._timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
         this._timerIsActive = false;
         
@@ -23,15 +24,28 @@ class StopWatch {
             this._CreateSubElementReference(dynamicProperty);
         }
 
-        // this._attachAllDefaultEvents();
-
         document.querySelector(whereToAppend).appendChild(this.domReference);
     }
 
 
     static _callbackUpdateTimeStamp(stopWatchRef) {
         stopWatchRef = stopWatchRef[0];
-        stopWatchRef._timeStampField.textContent = stopWatchRef._timer.TimeStamp;
+        
+        stopWatchRef._timeStampField.textContent = StopWatch.
+        _normalizeTimeUnitAtLeast2Digits(stopWatchRef._timer);
+    }
+
+    static _normalizeTimeUnitAtLeast2Digits(timer) {
+        let normalizedSeconds = timer.Seconds >= 10 ? 
+        timer.Seconds.toString() : `0${timer.Seconds.toString()}`
+
+        let normalizedMinutes = timer.Minutes >= 10 ? 
+        timer.Minutes.toString() : `0${timer.Minutes.toString()}`
+
+        let normalizedHours = timer.Hours >= 10 ? 
+        timer.Hours.toString() : `0${timer.Hours.toString()}`;
+
+        return `${normalizedHours}:${normalizedMinutes}:${normalizedSeconds}`;        
     }
 
     start() {
