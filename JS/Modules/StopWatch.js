@@ -52,7 +52,7 @@ class StopWatch {
         if (this._timerIsActive === false) {
             this._timer.start();
             this._timerIsActive = true;
-            return true
+            return true;
         } else return false;        
     }
 
@@ -62,6 +62,13 @@ class StopWatch {
             this._timerIsActive = false;
             return true;
         } else return false;
+    }
+
+    reset() {
+        if (this._timerIsActive === true) {
+            this._timer.reset();
+            this._timerIsActive = false;
+        }
     }
 
     remove() {

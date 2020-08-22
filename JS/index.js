@@ -83,6 +83,7 @@ import { StopWatch } from "./Modules/StopWatch.js";
                     stopWatch[playButtonName].classList.remove(toggleClassNameFocus);
                     stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
                     stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
+                    stopWatch.reset();
                 }
 
             }
