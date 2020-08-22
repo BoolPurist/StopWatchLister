@@ -23,6 +23,8 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const deleteButtonName = "trashButton";
     const pauseButtonName = "pauseButton";
 
+    const toggleClassNameFocus = "minorFocus";
+
     const inputFieldLableStopWatch = document.querySelector("#InputFieldLableStopWatch");
     const spawnBtn = document.querySelector(QSSpawnBtn);
     const trashAllBtn = document.querySelector(QSTrashAllBtn);
@@ -45,18 +47,21 @@ import { StopWatch } from "./Modules/StopWatch.js";
             for (const stopWatch of stopWatchList) {
                 if (stopWatch[playButtonName] === target) {
                     stopWatch.start();
+                    toggleBtnOpacity(stopWatch[playButtonName], stopWatch[pauseButtonName]);
                 }                
             }
         } else if (targetClass.includes(QSTrashBtn.substring(1))) {
             for (const stopWatch of stopWatchList) {
                 if (stopWatch[deleteButtonName] === target) {                    
-                    stopWatch.remove();                    
+                    stopWatch.remove();
+                                        
                 }                
             }                                    
         } else if (targetClass.includes(QSPauseButton.substring(1))) {
             for (const stopWatch of stopWatchList) {
                 if (stopWatch[pauseButtonName] === target) {                    
-                    stopWatch.pause();                    
+                    stopWatch.pause();
+                    toggleBtnOpacity(stopWatch[playButtonName], stopWatch[pauseButtonName]);                    
                 }                
             }                                    
         } 
@@ -88,7 +93,8 @@ import { StopWatch } from "./Modules/StopWatch.js";
 
     // Debug Area
     
-    
+    CreateStopWatch();
+
     /* Functions */
     
     function populateDomElementWithTextContent (startDomElement, ...Data) {
@@ -102,7 +108,7 @@ import { StopWatch } from "./Modules/StopWatch.js";
     }
 
     
-    function CreateStopWatch(lableText) {
+    function CreateStopWatch(lableText="Stop Watch") {
         const stopWatch = new StopWatch(
             QSListSW,
             QSClassTextTimer, 
@@ -111,11 +117,18 @@ import { StopWatch } from "./Modules/StopWatch.js";
             { propertyName: pauseButtonName, domQuerySelector:  QSPauseButton},                       
         );
 
+        stopWatch[pauseButtonName].classList.toggle(toggleClassNameFocus);
+
         stopWatchList.push( stopWatch ); 
         populateDomElementWithTextContent(
             stopWatch.domReference,
             {querySelector: QSLableTextSW, textContent: lableText}
         );
+    }
+
+    function toggleBtnOpacity(btnRef1, btnRef2) {
+        btnRef1.classList.toggle(toggleClassNameFocus);
+        btnRef2.classList.toggle(toggleClassNameFocus);
     }
     
 }) ()

@@ -12,6 +12,11 @@
     background-color: $btn-background-color;
     padding: $btn-padding;
     border-radius: $btn-border-radius;
+    opacity: 100%;
+}
+
+.btn.minorFocus {
+    opacity: 50%;
 }
 
 #navTop {

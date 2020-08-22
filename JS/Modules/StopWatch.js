@@ -11,22 +11,22 @@ class StopWatch {
      * @param {object} [DomSubReferences]
      */
     constructor(whereToAppend, querySelectorForTimeStamp , ...DomSubReferences) {
-        this.domReference = GetContainerForStopWatch().children[0];
         
+        this.domReference = GetContainerForStopWatch().children[0];        
         this._timer = new Timer();
         this._timeStampField = this._GetDomSubReference(querySelectorForTimeStamp);
+        this._timerIsActive = false;
+        
         this._timeStampField.textContent = StopWatch.
         _normalizeTimeUnitAtLeast2Digits(this._timer);
         this._timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
-        this._timerIsActive = false;
-        
+                
         for ( const dynamicProperty of DomSubReferences ) {
             this._CreateSubElementReference(dynamicProperty);
         }
 
         document.querySelector(whereToAppend).appendChild(this.domReference);
     }
-
 
     static _callbackUpdateTimeStamp(stopWatchRef) {
         stopWatchRef = stopWatchRef[0];
@@ -67,7 +67,6 @@ class StopWatch {
         this.domReference.remove();
     }
 
-
     _GetDomSubReference (querySelector) {
         return this.domReference.querySelector(querySelector);
     }
@@ -80,26 +79,12 @@ class StopWatch {
         
     }
     
-    _PopulateDomElementWithTextContent (...Data) {
-        Data.forEach(object => {
-            const {querySelector, textContent} = object;
-            this._GetDomSubReference(querySelector).textContent = textContent;
-        })
-    }
-
-    _attachAllDefaultEvents () {
-        for (const defaultEventHandler of StopWatch.prototype._defaultEventHandler) {
-            
-            const domElementReference = this.domReference.querySelector(
-                defaultEventHandler.domElementReference
-            );
-
-            const eventType = defaultEventHandler.eventType; 
-            const callbackFunction  = defaultEventHandler.callbackFunction ; 
-
-            domElementReference.addEventListener(eventType, callbackFunction, false);
-        }
-    }
+    // _PopulateDomElementWithTextContent (...Data) {
+    //     Data.forEach(object => {
+    //         const {querySelector, textContent} = object;
+    //         this._GetDomSubReference(querySelector).textContent = textContent;
+    //     })
+    // }
 
 }
 
