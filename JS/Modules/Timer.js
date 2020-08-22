@@ -9,34 +9,35 @@
 */
 class Timer {
     /**
-     * Takes the parameter parameters to determine the starting time.
+     * Takes the parameters to determine the starting time.
+     * Tip: You can just give seconds for the total amount of seconds 
+     * It is also fine to give minutes over 60.
      * 
      * @param {number} [seconds=0] - default: 0 (optional)
      * @param {number} [minutes=0] - default: 0 (optional)
      * @param {number} [hours=0] - default: 0 (optional)
      * @throws {TypeError} if 1 param is null or not of the type number 
-     * @throws {RangeError} if 1 param is negative 
      */
     constructor(seconds = 0, minutes = 0, hours = 0) {
 
         const wantedType = "number";
 
         if ( seconds === null || minutes === null || hours === null ) {
+
             throw new TypeError('Constructor does not take a parameter which is null.');
         } else if (
+
             typeof(seconds) !== wantedType || typeof(minutes) !== wantedType || 
             typeof(hours) !== wantedType
             )  {
+
             throw new TypeError(
                 `Constructor does only take parameters of the type \"${wantedType}\"`
             );
-        } else if (seconds < 0 || minutes < 0 || hours < 0) {
-            throw new RangeError("Constructor does not take negative numeric parameters");
-        }   else {
-            this._seconds = seconds;
-            this._minutes = minutes;
-            this._hours = hours;
-
+        } else {
+            
+            this._totalSeconds = seconds + (minutes * 60) + (hours * 3600);
+            
             // Used to end interval code for incrementing seconds later
             this._intervalId = null;
 
@@ -45,6 +46,8 @@ class Timer {
             this._funcs = [];
         }
                 
+        this._countDown = false;
+        this._totalSecondsStarting = this._totalSeconds; 
     }
 
     // Getters
@@ -55,7 +58,7 @@ class Timer {
      * @readonly    
      */
     get Seconds() {
-        return this._seconds;
+        return this._totalSeconds % 60;
     }
 
     /**
@@ -65,7 +68,10 @@ class Timer {
      * @member {number}   
      */
     get Minutes() {
-        return this._minutes;
+        let minutes = this._totalSeconds / 60;
+        minutes = this._totalSeconds >= 0 ? Math.floor(minutes) : Math.ceil(minutes);        
+        minutes%=60
+        return minutes === -0 ? 0 : minutes; 
     }
 
     /**
@@ -75,7 +81,9 @@ class Timer {
      * @member {number}    
      */
     get Hours() {
-        return this._hours;
+        let hours = this._totalSeconds / 3600;
+        hours = this._totalSeconds >= 0 ? Math.floor(hours) : Math.ceil(hours);        
+        return hours === -0 ? 0 : hours;
     }
 
     /**
@@ -87,12 +95,7 @@ class Timer {
      * (20 + 2*60 + 1*60*60)
      */
     get TotalSeconds() {
-        
-        return (
-            this.Seconds + 
-            (this.Minutes * 60) + 
-            (this.Hours * 60 * 60)
-        ); 
+        return this._totalSeconds;         
     }
 
     /**
@@ -103,23 +106,14 @@ class Timer {
      * // 20:45:02 for Seconds: 02, Minutes: 45, Hours: 20  
      */
     get TimeStamp() {
-        return `${this._hours}:${this._minutes}:${this._seconds}`;
+        return `${this.Hours}:${this.Minutes}:${this.Seconds}`;
     }
 
     // Routines
 
     _incrementSeconds () {
-        this._seconds++;
-        this._seconds %= 60;
-        
-        if (this._seconds === 0) this._incrementMinutes();         
-    }
-
-    _incrementMinutes () {
-        this._minutes++;
-        this._minutes %= 60;
-
-        if (this._minutes === 0) this._hours++;;
+        if (this._countDown === false) this._totalSeconds++;
+        else this._totalSeconds--;
     }
 
     // Executes all callback functions stored in this._func
@@ -134,16 +128,22 @@ class Timer {
     // Intended exposed methods.
 
     /**
-    * Starts counting the time every second.
-    * 
+    * Starts/Resume counting the time up or down every second.
+    * @param {?boolean} [countDown=null] - if true the timer counts up every second
+    * if false the timer counts down every second
+    * if null the counting direction will be the same before the time was stopped
+    * if the timer was not stopped yet then the timer counts up by default 
     * @return {void}
     */
-    start() {
+    start(countDown=null) {
+        this._countDown = countDown !==null ? countDown : this._countDown;
+        
         this._intervalId = setInterval(() => {
-           this._incrementSeconds(); 
-           this._executeFuncs();
+            this._incrementSeconds(); 
+            this._executeFuncs();
         }, 1000);
     }
+    
     
     /**
     * Stops the counting but keeps the accumulated time 
@@ -160,15 +160,20 @@ class Timer {
     }
 
     /**
-    * Stops the counting and sets time to zero.
-    * Result: Seconds: 0, Minutes: 0, Hours: 0 
+    * Stops the counting and sets time of the timer
+    * to the state it was when created
     * 
-    * @return {void} 
+    * @return {void}
+    * @example const timer = new Timer(23);
+    * timer.start();
+    * // After 5 Second
+    * timer: Seconds: 28, Minutes: 0, Hours: 0
+    * timer.reset();
+    * timer: Seconds: 23, Minutes: 0, Hours: 0 
     */    
     reset() {
-        this._seconds = 0;
-        this._minutes = 0;
-        this._hours = 0;
+        this._totalSeconds = this._totalSecondsStarting;
+        this._countDown = false;
         this._executeFuncs();
         this.stop();
     }
@@ -210,7 +215,7 @@ class Timer {
      * Removes an added callback function which is executed on timer changing  
      * If the function is not attached in the first place. Nothing happens
      * 
-     * @param {Function} func - reference of added callback function that is 
+     * @param {Function} func - reference of an added callback function that is 
      * to be executed on timer changing 
      * @returns {void} 
      */
