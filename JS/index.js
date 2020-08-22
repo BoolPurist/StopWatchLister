@@ -1,3 +1,4 @@
+
 import * as DOM_Manipulation from "./Modules/DOM_Manipulation.js";
 import {Timer} from "./Modules/Timer.js";
 
@@ -10,7 +11,9 @@ import {Timer} from "./Modules/Timer.js";
     /* Attaching events */
     // Attaching events for the spawn watch box    
     // Adding event for spawn manage button
-    document.querySelector("#SpawnManage-btnS").addEventListener("click", () => {        
+    
+    document.querySelector("#SpawnManage-btnS").addEventListener("click", () => {    
+            
         let stopWatch = DOM_Manipulation.createStopWatch(inputFieldLableStopWatch.value.trim(), "20:20:20");
         inputFieldLableStopWatch.value = "";
         AddCallbackClickTrashButton(stopWatch);
@@ -19,7 +22,7 @@ import {Timer} from "./Modules/Timer.js";
     
     /* Functions */
 
-    
+    const timer = new Timer();
     
     // Adds a click event with a callback function to the trash button of a stop watch. 
     function AddCallbackClickTrashButton(stopWatch) {
