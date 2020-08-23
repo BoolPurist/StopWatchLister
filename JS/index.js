@@ -25,6 +25,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
     const QSInputHours = "#input-hours";
     const QSCounterArrow = ".counter-arrow";
     const QSErrorBarStarTime = ".error-bar-start-time";
+    const QSCounterArrowSpawn = "#counter-arrow-spawn";
 
     // Names of the properties which are created on every stop watch at runtime
     const playButtonName = "playButton";
@@ -44,7 +45,8 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
     const startMinutesInput = document.querySelector(QSInputMinutes);
     const startHoursInput = document.querySelector(QSInputHours);
     const errorBarInDom = document.querySelector(QSErrorBarStarTime);
-     
+    const counterArrowSpawn = document.querySelector(QSCounterArrowSpawn);
+         
     let countDown = false;
     const countDirectionNames = new Map()
     countDirectionNames.set(false, "Count Down ?");
@@ -70,6 +72,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
         const targetClass = target.className;
         
         if ( targetClass.includes(QSPlayBtn.substring(1)) ) {
+
             for (const stopWatch of stopWatchList) {
 
                 if (stopWatch[playButtonName] === target) {
@@ -83,6 +86,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
                     
                 }                
             }
+
         } else if (targetClass.includes(QSTrashBtn.substring(1))) {
 
             for (const stopWatch of stopWatchList) {
@@ -91,7 +95,8 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
                     stopWatch.remove();
                                         
                 }
-            }                                    
+            } 
+
         } else if (targetClass.includes(QSPauseButton.substring(1))) {
 
             for (const stopWatch of stopWatchList) {
@@ -104,7 +109,8 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
                     }
 
                 }                
-            }                                    
+            }   
+
         } else if (targetClass.includes(QSResetBtn.substring(1))) {
 
             for (const stopWatch of stopWatchList) {
@@ -142,6 +148,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
         } else if (target === countDirectionBtn) {
 
             countDown = !countDown;
+            toggleCounterSpawnerArrow(countDown);
             countDirectionBtn.textContent = countDirectionNames.get(countDown);
         }
     });
@@ -229,6 +236,18 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
             errorBarInDom.classList.add("beGone");            
         }
 
+    }
+
+    function toggleCounterSpawnerArrow(countDown) {
+        const classListArrow = counterArrowSpawn.classList; 
+        
+        if (countDown === true) {
+            classListArrow.remove("fa-angle-double-up");
+            classListArrow.add("fa-angle-double-down");
+        } else {
+            classListArrow.add("fa-angle-double-up");
+            classListArrow.remove("fa-angle-double-down");
+        }
     }
    
 }) ()
