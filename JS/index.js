@@ -18,6 +18,7 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const QSLableTextSW = ".stop-watch-label-text";
     const QSPauseButton = ".pause-btn";
     const QSResetBtn = ".reset-btn";
+    const QSCountDirectionBtn = "#check-count-direction";
 
     // Names of the properties which are created on every stop watch at runtime
     const playButtonName = "playButton";
@@ -30,6 +31,12 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const inputFieldLableStopWatch = document.querySelector("#InputFieldLableStopWatch");
     const spawnBtn = document.querySelector(QSSpawnBtn);
     const trashAllBtn = document.querySelector(QSTrashAllBtn);
+    const countDirectionBtn = document.querySelector(QSCountDirectionBtn);
+    
+    let countDown = false;
+    const countDirectionNames = new Map()
+    countDirectionNames.set(false, "Count Down ?");
+    countDirectionNames.set(true, "Count Up ?");
     
 
     /**
@@ -107,8 +114,9 @@ import { StopWatch } from "./Modules/StopWatch.js";
             }
             
             stopWatchList = [];
-
-
+        } else if (target === countDirectionBtn) {
+            countDown = !countDown;
+            countDirectionBtn.textContent = countDirectionNames.get(countDown);
         }
     });
 

@@ -36,8 +36,7 @@ a {
 }
 .fas {
   font-size: 2rem;
-  margin: 0;
-  box-sizing: border-box;
+  margin: auto;
 }
 
 .btn {
@@ -107,21 +106,80 @@ h1 {
 }
 #SpawnStopWatchBox #SpawnManage-btnS {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template: "spawnBtn countDirectionBtn inputTimeCont . trashAllBtn" auto/auto auto auto 1fr auto;
+  column-gap: 10px;
 }
-#SpawnStopWatchBox #TrashAllButtons {
+#SpawnStopWatchBox #SpawnManage-btnS #spawn-btn {
+  grid-area: spawnBtn;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #check-count-direction {
+  grid-area: countDirectionBtn;
+  width: max-content;
+  background-color: #bebcbc;
+  border-style: solid;
+  border-radius: 5px;
+  font-weight: bold;
+  border-color: black;
+  border-width: 1px;
+  align-self: center;
+  height: 65%;
+  padding: 5px;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input {
+  grid-area: inputTimeCont;
+  background-color: #bebcbc;
+  display: grid;
+  grid-template: "startTime hours minutes seconds" auto "startTime inputHours inputMinutes inputSeconds" auto/auto;
+  align-items: center;
+  justify-items: center;
+  column-gap: 20px;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  padding: 10px;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input p {
+  font-weight: bold;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input input {
+  width: 12ch;
+  border-radius: 5px;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input #lable-start {
+  grid-area: startTime;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input #lable-seconds {
+  grid-area: seconds;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input #lable-minutes {
+  grid-area: minutes;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input #lable-hours {
+  grid-area: hours;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input #input-seconds {
+  grid-area: inputSeconds;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input #input-minutes {
+  grid-area: inputMinutes;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #cont-time-input #input-hours {
+  grid-area: inputHours;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #TrashAllButtons {
+  grid-area: trashAllBtn;
   display: grid;
   grid-template-columns: repeat(3, auto);
 }
-#SpawnStopWatchBox #TrashAllButtons .trash-can {
+#SpawnStopWatchBox #SpawnManage-btnS #TrashAllButtons .trash-can {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-#SpawnStopWatchBox #TrashAllButtons .btn.list {
+#SpawnStopWatchBox #SpawnManage-btnS #TrashAllButtons .btn.list {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-#SpawnStopWatchBox #TrashAllButtons .arrow-trash {
+#SpawnStopWatchBox #SpawnManage-btnS #TrashAllButtons .arrow-trash {
   border-radius: 0;
 }
 
@@ -173,13 +231,26 @@ h1 {
   font-size: 4rem;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 850px) {
   #navTop {
     justify-self: center;
   }
   #navTop a {
     padding-left: 6.6666666667px;
     padding-right: 6.6666666667px;
+  }
+
+  #SpawnStopWatchBox #SpawnManage-btnS {
+    display: grid;
+    grid-template: "spawnBtn countDirectionBtn . trashAllBtn" auto "inputTimeCont inputTimeCont inputTimeCont inputTimeCont" auto/auto auto 1fr auto;
+    row-gap: 15px;
+  }
+  #SpawnStopWatchBox #SpawnManage-btnS #cont-time-input {
+    column-gap: 5px;
+  }
+  #SpawnStopWatchBox #SpawnManage-btnS #TrashAllButtons i {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 

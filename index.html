@@ -23,12 +23,21 @@
             <div id="SpawnStopWatchBox">
                 <div id="SpawnLableField">
                     <p>Lable: </p>
-                    <input type="text" id="InputFieldLableStopWatch">
+                    <input type="text"  id="InputFieldLableStopWatch" class="spawn-input">
                 </div>
 
                 <div id="SpawnManage-btnS">
-                    <i id="spawn-btn" class="btn fas fa-plus" ></i>
-                    <div></div>
+                    <i id="spawn-btn" class="btn fas fa-plus" ></i>                        
+                    <button id="check-count-direction">Count Down ?</button>                        
+                    <div id="cont-time-input">
+                        <p id="lable-start">Starting Time</p>
+                        <p id="lable-seconds">Seconds</p>
+                        <p id="lable-minutes">Minutes</p>
+                        <p id="lable-hours">Hours</p>
+                        <input id="input-seconds" type="text" minlength="1" maxlength="12"/>
+                        <input id="input-minutes" type="text" minlength="1" maxlength="12"/>
+                        <input id="input-hours" type="text" minlength="1" maxlength="12"/>
+                    </div>
                     <div id="TrashAllButtons">                                                                        
                         <i class="btn trash-can fas fa-trash-alt"></i>
                         <i class="btn arrow-trash fas fa-arrow-left"></i>

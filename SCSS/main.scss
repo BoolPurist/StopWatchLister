@@ -3,9 +3,8 @@
 @use "base" as *;
 
 .fas {
-    font-size: 2rem;
-    margin: 0;
-    box-sizing: border-box;
+    font-size: 2rem;                        
+    margin: auto;
 }
 
 .btn {
@@ -79,30 +78,124 @@ h1 {
 
     #SpawnManage-btnS {
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template: 
+        "spawnBtn countDirectionBtn inputTimeCont . trashAllBtn" auto
+        / auto auto auto 1fr auto ;
+        //grid-template-columns: repeat(3, auto) 1fr auto;
+        column-gap: 10px;
+        
+        $tmp-bc: $btn-background-color;
+        $tmp-padding: 5px;
+
+        #spawn-btn {
+            grid-area: spawnBtn;
+        }
+
+        #check-count-direction {
+            grid-area: countDirectionBtn;
+            width: max-content;
+
+            background-color: $tmp-bc;
+            border-style: solid;
+            border-radius: $btn-border-radius;
+            font-weight: bold;
+            border-color: black;
+            border-width: 1px;
+            align-self: center;
+            height: 65%;
+            padding: $tmp-padding;
+                
+        }
+
+        #cont-time-input {
+            grid-area: inputTimeCont;
+            background-color: $tmp-bc;
+            display: grid;
+            grid-template: 
+            "startTime hours minutes seconds" auto
+            "startTime inputHours inputMinutes inputSeconds" auto
+            / auto; 
+            
+            align-items: center;
+            justify-items: center;
+            column-gap: 20px;
+            border-radius: $btn-border-radius;
+            border-style: solid;
+            border-width: 1px;
+            
+
+
+            //@include mixin-padding-sides(20px);
+            padding: 10px;
+
+            p {
+                font-weight: bold;
+                
+            }
+
+            input {
+                width: 12ch;
+                border-radius: 5px;                                
+            }
+
+            #lable- {
+                &start {
+                    grid-area: startTime;
+                }
+
+                &seconds {
+                    grid-area: seconds;
+                }
+
+                &minutes {
+                    grid-area: minutes;
+                }
+
+                &hours {
+                    grid-area: hours;
+                }
+            }
+
+            #input- {
+                &seconds {
+                    grid-area: inputSeconds;
+                }
+
+                &minutes {
+                    grid-area: inputMinutes;
+                }
+
+                &hours {
+                    grid-area: inputHours;
+                }   
+            }
+        }
+    
+
+
+        #TrashAllButtons {
+            grid-area: trashAllBtn;
+            display: grid;
+            grid-template-columns: repeat(3, auto);
+            
+            
+            .trash-can {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+    
+            .btn.list {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+    
+            .arrow-trash {
+                border-radius: 0;
+            }
+    
+            
+        }
                        
-    }
-
-    #TrashAllButtons {
-        
-        display: grid;
-        grid-template-columns: repeat(3, auto);
-        
-        .trash-can {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .btn.list {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-        .arrow-trash {
-            border-radius: 0;
-        }
-
-        
     }
 
 }
@@ -158,7 +251,7 @@ h1 {
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 850px) {
         
     #navTop {
         justify-self: center;
@@ -166,6 +259,30 @@ h1 {
         a {
             @include mixin-padding-sides($navBar-side-padding-mobile);
         }
+    }
+
+    #SpawnStopWatchBox {
+
+
+        #SpawnManage-btnS {
+            display: grid;
+            grid-template:
+            "spawnBtn countDirectionBtn . trashAllBtn" auto
+            "inputTimeCont inputTimeCont inputTimeCont inputTimeCont" auto
+            / auto auto 1fr auto;
+            row-gap: 15px;
+
+            #cont-time-input {
+                column-gap: 5px;
+            }
+
+            #TrashAllButtons i {
+                margin-left: 0;
+                margin-right: 0;
+            }
+            
+        }
+    
     }
 
 }
