@@ -22,12 +22,14 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const QSInputSeconds = "#input-seconds";
     const QSInputMinutes = "#input-minutes";
     const QSInputHours = "#input-hours";
+    const QSCounterArrow = ".counter-arrow";
 
     // Names of the properties which are created on every stop watch at runtime
     const playButtonName = "playButton";
     const deleteButtonName = "trashButton";
     const pauseButtonName = "pauseButton";
     const resetBtnName = "resetButton";
+    const counterArrow = "counterArrow";
 
     const toggleClassNameFocus = "minorFocus";
 
@@ -43,6 +45,9 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const countDirectionNames = new Map()
     countDirectionNames.set(false, "Count Down ?");
     countDirectionNames.set(true, "Count Up ?");
+    const countArrowClasses = new Map();
+    countArrowClasses.set(false, "fa-angle-double-up");
+    countArrowClasses.set(true, "fa-angle-double-down");
     
 
     /**
@@ -66,7 +71,7 @@ import { StopWatch } from "./Modules/StopWatch.js";
                     stopWatch[playButtonName].classList.add(toggleClassNameFocus);
                     stopWatch[pauseButtonName].classList.remove(toggleClassNameFocus);
                     
-                    if (stopWatch.start(countDown)) {                                              
+                    if (stopWatch.start()) {                                              
                         stopWatch[resetBtnName].classList.remove(toggleClassNameFocus);                        
                     }
                     
@@ -151,7 +156,6 @@ import { StopWatch } from "./Modules/StopWatch.js";
         );
     }
 
-    
     function CreateStopWatch(lableText="Stop Watch") {
         const stopWatch = new StopWatch(
             QSListSW,
@@ -160,19 +164,25 @@ import { StopWatch } from "./Modules/StopWatch.js";
             { propertyName: deleteButtonName, domQuerySelector:  QSTrashBtn},                       
             { propertyName: pauseButtonName, domQuerySelector:  QSPauseButton},                       
             { propertyName: resetBtnName, domQuerySelector:  QSResetBtn},                       
+            { propertyName: counterArrow, domQuerySelector:  QSCounterArrow},                       
         );
 
         stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
         stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
 
         // Getting values from the input fields for the starting time
-        const startingSeconds = parseInt(startSecondsInput.value);
-        const startingMinutes = parseInt(startMinutesInput.value);
-        const startingHours = parseInt(startHoursInput.value);
+        const numberOrZero = (stringValue) => {
+            const possibleNumber = Number(stringValue);
+            console.log(possibleNumber);
+            return Number.isNaN(possibleNumber) === false ? possibleNumber : 0;
+        }
 
+        let startingSeconds = numberOrZero(startSecondsInput.value);
+        let startingMinutes = numberOrZero(startMinutesInput.value);;
+        let startingHours = numberOrZero(startHoursInput.value);
 
-        stopWatch.setUpTimer(startingSeconds, startingMinutes, startingHours);
-        
+        stopWatch.setUpTimer(startingSeconds, startingMinutes, startingHours, countDown);
+        stopWatch[counterArrow].classList.add(countArrowClasses.get(countDown)); 
         startSecondsInput.value = 0;
         startMinutesInput.value = 0;
         startHoursInput.value = 0;

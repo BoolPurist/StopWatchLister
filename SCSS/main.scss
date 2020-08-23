@@ -5,7 +5,19 @@
 .fas {
     font-size: 2rem;                        
     margin: auto;
+
 }
+
+.fa-angle-double-up {
+    color: green;
+}
+
+.fa-angle-double-down {
+    color: red;
+}
+
+
+
 
 .btn {
     background-color: $btn-background-color;
@@ -226,16 +238,40 @@ h1 {
     
         .stop-watch-row-timer {
             display: grid;
-            grid-template-columns: repeat(3, auto) 1fr;
+            grid-template: 
+            "playBtn pauseBtn resetBtn . counterArrow textTimer ." auto
+            / auto auto auto 1fr auto auto 1fr;
             
             gap: 10px;
             align-items: center;
                             
             .text-timer {
-                justify-self: center;
+                justify-self: right;
                 @include mixin-stop-watch-font();
                 font-size: $stop-watch-time-font-size;
             }
+
+            .play-btn {
+                grid-area: playBtn;
+            }
+
+            .pause-btn {
+                grid-area: pauseBtn;
+            }
+
+            .reset-btn {
+                grid-area: resetBtn;
+            }
+
+            .counter-arrow {
+                grid-area: counterArrow;
+                font-size: 3rem;
+            }
+
+            .text-timer {
+                grid-area: textTimer;
+            }
+
         }
     
     }
@@ -277,5 +313,49 @@ h1 {
 
 }
 
+@media screen and (max-width: 450px) {
 
+    #SpawnStopWatchBox {
+
+        #SpawnManage-btnS {
+            display: grid;
+            grid-template:
+            "spawnBtn countDirectionBtn trashAllBtn" auto
+            "inputTimeCont inputTimeCont inputTimeCont" auto            
+            / auto auto auto;
+            row-gap: 15px;
+
+            #cont-time-input {
+                
+                grid-template: 
+                    ". startTime ." auto
+                    "seconds minutes hours" auto
+                    "inputSeconds inputMinutes inputHours" auto
+                    / auto auto auto;
+
+                
+                row-gap:  5px;
+
+
+            }
+        }
+
+    }
+
+    #stop-watch-list {
+        .stop-watch {
+
+            .stop-watch-row-timer { 
+                display: grid;                       
+                grid-template: 
+                "  playBtn pauseBtn  . " auto
+                "resetBtn  counterArrow textTimer " auto
+                / auto auto auto auto 1fr;                                   
+            }
+        
+        }
+
+    }
+    
+}
 

@@ -39,6 +39,14 @@ a {
   margin: auto;
 }
 
+.fa-angle-double-up {
+  color: green;
+}
+
+.fa-angle-double-down {
+  color: red;
+}
+
 .btn {
   background-color: #bebcbc;
   padding: 10px;
@@ -222,15 +230,31 @@ h1 {
 }
 #stop-watch-list .stop-watch .stop-watch-row-timer {
   display: grid;
-  grid-template-columns: repeat(3, auto) 1fr;
+  grid-template: "playBtn pauseBtn resetBtn . counterArrow textTimer ." auto/auto auto auto 1fr auto auto 1fr;
   gap: 10px;
   align-items: center;
 }
 #stop-watch-list .stop-watch .stop-watch-row-timer .text-timer {
-  justify-self: center;
+  justify-self: right;
   font-size: 2rem;
   font-weight: bold;
   font-size: 4rem;
+}
+#stop-watch-list .stop-watch .stop-watch-row-timer .play-btn {
+  grid-area: playBtn;
+}
+#stop-watch-list .stop-watch .stop-watch-row-timer .pause-btn {
+  grid-area: pauseBtn;
+}
+#stop-watch-list .stop-watch .stop-watch-row-timer .reset-btn {
+  grid-area: resetBtn;
+}
+#stop-watch-list .stop-watch .stop-watch-row-timer .counter-arrow {
+  grid-area: counterArrow;
+  font-size: 3rem;
+}
+#stop-watch-list .stop-watch .stop-watch-row-timer .text-timer {
+  grid-area: textTimer;
 }
 
 @media screen and (max-width: 850px) {
@@ -253,6 +277,22 @@ h1 {
   #SpawnStopWatchBox #SpawnManage-btnS #TrashAllButtons i {
     margin-left: 0px;
     margin-right: 0px;
+  }
+}
+@media screen and (max-width: 450px) {
+  #SpawnStopWatchBox #SpawnManage-btnS {
+    display: grid;
+    grid-template: "spawnBtn countDirectionBtn trashAllBtn" auto "inputTimeCont inputTimeCont inputTimeCont" auto/auto auto auto;
+    row-gap: 15px;
+  }
+  #SpawnStopWatchBox #SpawnManage-btnS #cont-time-input {
+    grid-template: ". startTime ." auto "seconds minutes hours" auto "inputSeconds inputMinutes inputHours" auto/auto auto auto;
+    row-gap: 5px;
+  }
+
+  #stop-watch-list .stop-watch .stop-watch-row-timer {
+    display: grid;
+    grid-template: "  playBtn pauseBtn  . " auto "resetBtn  counterArrow textTimer " auto/auto auto auto auto 1fr;
   }
 }
 

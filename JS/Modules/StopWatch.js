@@ -16,6 +16,7 @@ class StopWatch {
         this._timerIsActive = false;
         this._timer = null;
         this._timeStampField = this._GetDomSubReference(querySelectorForTimeStamp);
+        this._countDown = false;
         this.setUpTimer(0, 0, 0);
                         
         for ( const dynamicProperty of DomSubReferences ) {
@@ -78,18 +79,20 @@ class StopWatch {
      * @param {!number} [seconds=0] 
      * @param {!number} [minutes=0] 
      * @param {!number} [hours=0]
+     * @param {!boolean} [countDown=false]
      * @returns {void}
      */
-    setUpTimer(seconds, minutes, hours) {
+    setUpTimer(seconds, minutes, hours, countDown) {
+        this._countDown = countDown;
         this._timer = new Timer(seconds, minutes, hours);
         this._timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
         this._timeStampField.textContent = StopWatch.
         _normalizeTimeUnitAtLeast2Digits(this._timer); 
     }
 
-    start(countDown) {
+    start() {
         if (this._timerIsActive === false) {            
-            this._timer.start(countDown);
+            this._timer.start(this._countDown);
             this._timerIsActive = true;
             return true;
         } else return false;        
@@ -149,7 +152,8 @@ function GetContainerForStopWatch()  {
     <div class="stop-watch-row-timer">
         <i class="btn play-btn fas fa-play"></i>
         <i class="btn pause-btn fas fa-pause"></i>
-        <i class="btn reset-btn fas fa-stop"></i>        
+        <i class="btn reset-btn fas fa-stop"></i> 
+        <i class="fas counter-arrow"></i>       
         <p class="text-timer">23:54:02</p>
     </div>
 </div>
