@@ -33,7 +33,13 @@ $spawner-lable-font-size: 2rem;
 
 $separations-bar-color: rgb(84, 90, 94);
 
-
-
-$box-grid-column-gap: 5px;
+// box is a stopwatch or the spawn box for sw's
+$box-grid-column-gap: 5px; 
 $box-grid-row-gap: 20px;
+
+// time-input-field is the box where the user can
+// type in the starting time at which a stopwatch
+// starts.
+$time-input-field-padding: 10px;
+$time-input-field-column-gap: 20px;
+$time-input-field-input-width: 12ch;

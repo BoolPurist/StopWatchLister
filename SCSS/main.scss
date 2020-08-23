@@ -73,6 +73,7 @@ h1 {
     
         input {
             @include mixin-reduce-border-to-bottom-color-bottom();
+            width: 20ch
         }
     }
 
@@ -93,15 +94,16 @@ h1 {
 
         #check-count-direction {
             grid-area: countDirectionBtn;
+            align-self: center;
+
+
             width: max-content;
 
             background-color: $tmp-bc;
-            border-style: solid;
-            border-radius: $btn-border-radius;
+
+            @include mixin-render-alternative-rendering();
+
             font-weight: bold;
-            border-color: black;
-            border-width: 1px;
-            align-self: center;
             height: 65%;
             padding: $tmp-padding;
                 
@@ -118,15 +120,11 @@ h1 {
             
             align-items: center;
             justify-items: center;
-            column-gap: 20px;
-            border-radius: $btn-border-radius;
-            border-style: solid;
-            border-width: 1px;
+            column-gap: $time-input-field-column-gap;
             
-
-
-            //@include mixin-padding-sides(20px);
-            padding: 10px;
+            padding: $time-input-field-padding;
+            
+            @include mixin-render-alternative-rendering();
 
             p {
                 font-weight: bold;
@@ -134,7 +132,7 @@ h1 {
             }
 
             input {
-                width: 12ch;
+                width: $time-input-field-input-width;
                 border-radius: 5px;                                
             }
 
@@ -171,13 +169,10 @@ h1 {
             }
         }
     
-
-
         #TrashAllButtons {
             grid-area: trashAllBtn;
             display: grid;
-            grid-template-columns: repeat(3, auto);
-            
+            grid-template-columns: repeat(3, auto);            
             
             .trash-can {
                 border-top-right-radius: 0;
@@ -192,8 +187,7 @@ h1 {
             .arrow-trash {
                 border-radius: 0;
             }
-    
-            
+                
         }
                        
     }
@@ -204,8 +198,7 @@ h1 {
     width: 100%;
     height: 20px;
     border-radius: $widget-border-radius;
-    background-color: $separations-bar-color;
-    
+    background-color: $separations-bar-color;    
 }
 
 #stop-watch-list {
@@ -237,9 +230,7 @@ h1 {
             
             gap: 10px;
             align-items: center;
-    
-            
-            
+                            
             .text-timer {
                 justify-self: center;
                 @include mixin-stop-watch-font();
@@ -277,8 +268,7 @@ h1 {
             }
 
             #TrashAllButtons i {
-                margin-left: 0;
-                margin-right: 0;
+                @include mixin-margin-sides(0px);
             }
             
         }

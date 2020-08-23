@@ -59,7 +59,7 @@ import { StopWatch } from "./Modules/StopWatch.js";
                     stopWatch[playButtonName].classList.add(toggleClassNameFocus);
                     stopWatch[pauseButtonName].classList.remove(toggleClassNameFocus);
 
-                    if (stopWatch.start()) {                        
+                    if (stopWatch.start(countDown)) {                        
                         stopWatch[resetBtnName].classList.remove(toggleClassNameFocus);
                     }
                     
@@ -74,9 +74,7 @@ import { StopWatch } from "./Modules/StopWatch.js";
             }                                    
         } else if (targetClass.includes(QSPauseButton.substring(1))) {
             for (const stopWatch of stopWatchList) {
-                if (stopWatch[pauseButtonName] === target) {                    
-                    
-
+                if (stopWatch[pauseButtonName] === target) {                                        
                     if (stopWatch.pause()) {
                         stopWatch[playButtonName].classList.remove(toggleClassNameFocus);
                         stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
@@ -104,8 +102,8 @@ import { StopWatch } from "./Modules/StopWatch.js";
 
         if (target === spawnBtn) {
             const lableText = inputFieldLableStopWatch.value.trim();
-            inputFieldLableStopWatch.value = "";
-            
+            inputFieldLableStopWatch.value = "";            
+
             CreateStopWatch(lableText);
         } else if (target.parentNode === trashAllBtn) {
             

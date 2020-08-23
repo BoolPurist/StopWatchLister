@@ -36,21 +36,36 @@ class StopWatch {
     }
 
     static _normalizeTimeUnitAtLeast2Digits(timer) {
+        
+        let seconds = timer.Seconds;
+        let minutes = timer.Minutes;
+        let hours = timer.Hours;
+        let negative = false;
+
+        if (timer.TotalSeconds < 0) {
+            seconds *= -1;
+            minutes *= -1;
+            hours *= -1;
+            negative = true;
+        }
+
         let normalizedSeconds = timer.Seconds >= 10 ? 
-        timer.Seconds.toString() : `0${timer.Seconds.toString()}`
+        timer.Seconds.toString() : `0${seconds.toString()}`
 
         let normalizedMinutes = timer.Minutes >= 10 ? 
-        timer.Minutes.toString() : `0${timer.Minutes.toString()}`
+        timer.Minutes.toString() : `0${minutes.toString()}`
 
         let normalizedHours = timer.Hours >= 10 ? 
-        timer.Hours.toString() : `0${timer.Hours.toString()}`;
+        timer.Hours.toString() : `0${hours.toString()}`;
 
-        return `${normalizedHours}:${normalizedMinutes}:${normalizedSeconds}`;        
+        let normalizedTime = `${normalizedHours}:${normalizedMinutes}:${normalizedSeconds}`;
+
+        return negative === false ? normalizedTime : `-${normalizedTime}`         
     }
 
-    start() {
+    start(countDown) {
         if (this._timerIsActive === false) {
-            this._timer.start();
+            this._timer.start(countDown);
             this._timerIsActive = true;
             return true;
         } else return false;        

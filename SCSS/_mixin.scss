@@ -5,6 +5,11 @@
     padding-right: $value;
 }
 
+@mixin mixin-margin-sides($value) {
+    margin-left: $value;
+    margin-right: $value;
+}
+
 @mixin mixin-reduce-border-to-bottom-color-bottom() {
     border-style: solid;
     border-top-style: none;
@@ -12,6 +17,13 @@
     border-right-style: none;
 
     border-bottom-color: $border-bottom-color;
+}
+
+@mixin mixin-render-alternative-rendering() {
+    border-radius: $btn-border-radius;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
 }
 
 @mixin mixin-render-stop-watch-body($grid-gap-row-modify: 0px) {
