@@ -157,6 +157,19 @@ import { StopWatch } from "./Modules/StopWatch.js";
     }
 
     function CreateStopWatch(lableText="Stop Watch") {
+        // Getting values from the input fields for the starting time
+        const numberOrZero = (stringValue) => {
+            stringValue = stringValue.includes(",") ? 
+            stringValue.replace(",", ".") : stringValue;
+            let possibleNumber = Number(stringValue);
+            return Number.isNaN(possibleNumber) === false ? possibleNumber : 0;
+        }
+        
+        let startingSeconds =  numberOrZero(startSecondsInput.value);
+        let startingMinutes = numberOrZero(startMinutesInput.value);
+        let startingHours = numberOrZero(startHoursInput.value);
+
+
         const stopWatch = new StopWatch(
             QSListSW,
             QSClassTextTimer, 
@@ -170,16 +183,6 @@ import { StopWatch } from "./Modules/StopWatch.js";
         stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
         stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
 
-        // Getting values from the input fields for the starting time
-        const numberOrZero = (stringValue) => {
-            const possibleNumber = Number(stringValue);
-            console.log(possibleNumber);
-            return Number.isNaN(possibleNumber) === false ? possibleNumber : 0;
-        }
-
-        let startingSeconds = numberOrZero(startSecondsInput.value);
-        let startingMinutes = numberOrZero(startMinutesInput.value);;
-        let startingHours = numberOrZero(startHoursInput.value);
 
         stopWatch.setUpTimer(startingSeconds, startingMinutes, startingHours, countDown);
         stopWatch[counterArrow].classList.add(countArrowClasses.get(countDown)); 
@@ -191,6 +194,29 @@ import { StopWatch } from "./Modules/StopWatch.js";
         populateDomElementWithTextContent(
             stopWatch.domReference,
             {querySelector: QSLableTextSW, textContent: lableText}
+        );
+    }
+
+    /**
+     * 
+     * @param {!string} numberString
+     * @returns {number | NaN} 
+     */
+    function handleCommaNumber(numberString) {
+        if (numberString === null || typeof numberString !== "string") {
+            throw new TypeError("handleCommaNumber needs an argument of type string");
+        }
+        const numberParts = numberString.split(",");
+        
+        if (numberParts.length !== 2) return Number.NaN;
+
+        const leftNumber = Number(numberParts[0]);
+        const rightNumber = Number(numberParts[1]);
+
+        if (Number.isNaN(leftNumber) === false || Number.isNaN(rightNumber) ) return Number.NaN;
+
+        return (
+            Number.parseFloat(numberString.replace(",", "."))
         );
     }
 
