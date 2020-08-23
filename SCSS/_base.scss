@@ -30,6 +30,12 @@ a {
     grid-template-rows: auto;
 }
 
+.beGone {
+    position: fixed;
+    visibility: hidden;
+    
+}
+
 @media screen and (max-width: 600px) {
     html {
         font-size: $mobile-font-size;

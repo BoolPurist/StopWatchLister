@@ -68,6 +68,7 @@ h1 {
     font-size: 3rem;    
 }
 
+
 #SpawnStopWatchBox {
     @include mixin-render-stop-watch-body(8px);
 
@@ -81,11 +82,16 @@ h1 {
             margin-right: 10px;
             font-size: $spawner-lable-font-size;
             font-weight: bold;
+            
         }
     
         input {
             @include mixin-reduce-border-to-bottom-color-bottom();
-            width: 20ch
+            width: 40ch;
+            height: 20px;
+            font-size: 18px;
+            align-self: center;
+            
         }
     }
 
@@ -206,6 +212,19 @@ h1 {
 
 }
 
+.error-bar-start-time {
+  background-color: rgb(175, 28, 28);
+  border-radius: $widget-border-radius;
+  padding: 10px;
+
+  p {
+      font-weight: bold;
+      font-size: 2rem;
+      color: white;
+      text-align: center;
+  }
+}
+
 .separation-bar {
     width: 100%;
     height: 20px;
@@ -290,6 +309,13 @@ h1 {
 
     #SpawnStopWatchBox {
 
+        #SpawnLableField {
+
+            grid-template-rows: auto auto;
+            grid-template-columns: 1fr;
+            row-gap: 10px;
+        }
+
 
         #SpawnManage-btnS {
             display: grid;
@@ -313,9 +339,32 @@ h1 {
 
 }
 
+@media screen and (max-width: 550px) {
+    #SpawnStopWatchBox {
+
+        #SpawnLableField {
+
+            p {
+                font-size: 16px;
+            }
+        }
+    }
+        
+            
+
+}
+
 @media screen and (max-width: 450px) {
 
     #SpawnStopWatchBox {
+
+        
+        #SpawnLableField {
+
+            input {
+                width: 30ch;
+            }
+        }
 
         #SpawnManage-btnS {
             display: grid;
@@ -332,10 +381,8 @@ h1 {
                     "seconds minutes hours" auto
                     "inputSeconds inputMinutes inputHours" auto
                     / auto auto auto;
-
                 
                 row-gap:  5px;
-
 
             }
         }

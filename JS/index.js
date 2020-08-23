@@ -24,6 +24,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
     const QSInputMinutes = "#input-minutes";
     const QSInputHours = "#input-hours";
     const QSCounterArrow = ".counter-arrow";
+    const QSErrorBarStarTime = ".error-bar-start-time";
 
     // Names of the properties which are created on every stop watch at runtime
     const playButtonName = "playButton";
@@ -34,6 +35,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
 
     const toggleClassNameFocus = "minorFocus";
 
+    const spawnBoxStopWatch = document.querySelector(QSSpawnBox); 
     const inputFieldLableStopWatch = document.querySelector("#InputFieldLableStopWatch");
     const spawnBtn = document.querySelector(QSSpawnBtn);
     const trashAllBtn = document.querySelector(QSTrashAllBtn);
@@ -41,7 +43,8 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
     const startSecondsInput = document.querySelector(QSInputSeconds);
     const startMinutesInput = document.querySelector(QSInputMinutes);
     const startHoursInput = document.querySelector(QSInputHours);
-    
+    const errorBarInDom = document.querySelector(QSErrorBarStarTime);
+     
     let countDown = false;
     const countDirectionNames = new Map()
     countDirectionNames.set(false, "Count Down ?");
@@ -50,7 +53,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
     countArrowClasses.set(false, "fa-angle-double-up");
     countArrowClasses.set(true, "fa-angle-double-down");
     
-
+    
     /**
      * @type {Array<StopWatch>} - array of stopwatches wich are in the dom currently
      */
@@ -60,6 +63,8 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
     // Attaching events for the spawn watch box    
     // Adding event for spawn manage button
     
+    
+
     document.querySelector(QSListSW).addEventListener("click", (event) => {
         const target = event.target;
         const targetClass = target.className;
@@ -117,11 +122,12 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
 
     });
 
-    document.querySelector(QSSpawnBox).addEventListener("click", (event) => {    
+    spawnBoxStopWatch.addEventListener("click", (event) => {    
         
         const target = event.target;
 
         if (target === spawnBtn) {
+
             const lableText = inputFieldLableStopWatch.value.trim();
             inputFieldLableStopWatch.value = "";
             
@@ -134,6 +140,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
             
             stopWatchList = [];
         } else if (target === countDirectionBtn) {
+
             countDown = !countDown;
             countDirectionBtn.textContent = countDirectionNames.get(countDown);
         }
@@ -171,8 +178,11 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
         startHoursInput.value = 0;
         
         if (totalSeconds === null) {
-            console.log("Invalid input");
+            manageErrorBar(true);
             return;
+        }
+        else { 
+            manageErrorBar(false);
         }
 
         const stopWatch = new StopWatch(
@@ -200,11 +210,26 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
         );
     }
 
-    function roundUnitToTotalSec(number) {
-        if (number === null || typeof number !== "number"  ) {
-            throw new TypeError("Function roundUnitToTotalSec");
-        }
-    }
+    /**
+     * Toggles visibility and influence on the document flow for the error bar. 
+     * If user provides wrong input the error bar is visible and places itself in the gird row
+     * of the wrapper and before the spawn box. If user provides something valid with the next input, 
+     * the error bar gets invisible and is removed from the grid flow. 
+     * 
+     * @param {!boolean} errorRaised - true if the user provided wrong input
+     * @returns {void} 
+     */
+    function manageErrorBar(errorRaised) {
+        
+        const isNotErrorBarDom = errorBarInDom.classList.value.includes("beGone");
 
-    
+        if (errorRaised === true && isNotErrorBarDom === true ) {
+            console.log("ErroRaised");
+            errorBarInDom.classList.remove("beGone");                        
+        } else if (errorRaised === false && isNotErrorBarDom === false) {
+            errorBarInDom.classList.add("beGone");            
+        }
+
+    }
+   
 }) ()
