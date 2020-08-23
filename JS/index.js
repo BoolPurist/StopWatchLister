@@ -1,5 +1,6 @@
 
 import { StopWatch } from "./Modules/StopWatch.js";
+import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
 
 (function() {
     "use strict";
@@ -158,17 +159,21 @@ import { StopWatch } from "./Modules/StopWatch.js";
 
     function CreateStopWatch(lableText="Stop Watch") {
         // Getting values from the input fields for the starting time
-        const numberOrZero = (stringValue) => {
-            stringValue = stringValue.includes(",") ? 
-            stringValue.replace(",", ".") : stringValue;
-            let possibleNumber = Number(stringValue);
-            return Number.isNaN(possibleNumber) === false ? possibleNumber : 0;
-        }
-        
-        let startingSeconds =  numberOrZero(startSecondsInput.value);
-        let startingMinutes = numberOrZero(startMinutesInput.value);
-        let startingHours = numberOrZero(startHoursInput.value);
+         
+        const totalSeconds = textTimeUnitsToSeconds(
+            startSecondsInput.value,
+            startMinutesInput.value,
+            startHoursInput.value
+        );
 
+        startSecondsInput.value = 0;
+        startMinutesInput.value = 0;
+        startHoursInput.value = 0;
+        
+        if (totalSeconds === null) {
+            console.log("Invalid input");
+            return;
+        }
 
         const stopWatch = new StopWatch(
             QSListSW,
@@ -182,13 +187,11 @@ import { StopWatch } from "./Modules/StopWatch.js";
 
         stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
         stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
-
-
-        stopWatch.setUpTimer(startingSeconds, startingMinutes, startingHours, countDown);
         stopWatch[counterArrow].classList.add(countArrowClasses.get(countDown)); 
-        startSecondsInput.value = 0;
-        startMinutesInput.value = 0;
-        startHoursInput.value = 0;
+
+        stopWatch.setUpTimer(totalSeconds);
+        stopWatch.countDown = countDown;
+
 
         stopWatchList.push( stopWatch ); 
         populateDomElementWithTextContent(
@@ -197,27 +200,10 @@ import { StopWatch } from "./Modules/StopWatch.js";
         );
     }
 
-    /**
-     * 
-     * @param {!string} numberString
-     * @returns {number | NaN} 
-     */
-    function handleCommaNumber(numberString) {
-        if (numberString === null || typeof numberString !== "string") {
-            throw new TypeError("handleCommaNumber needs an argument of type string");
+    function roundUnitToTotalSec(number) {
+        if (number === null || typeof number !== "number"  ) {
+            throw new TypeError("Function roundUnitToTotalSec");
         }
-        const numberParts = numberString.split(",");
-        
-        if (numberParts.length !== 2) return Number.NaN;
-
-        const leftNumber = Number(numberParts[0]);
-        const rightNumber = Number(numberParts[1]);
-
-        if (Number.isNaN(leftNumber) === false || Number.isNaN(rightNumber) ) return Number.NaN;
-
-        return (
-            Number.parseFloat(numberString.replace(",", "."))
-        );
     }
 
     

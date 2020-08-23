@@ -1,5 +1,6 @@
 // @ts-check
 import {Timer } from "./Timer.js";
+import { stopWatchDom } from "./DomBlueprints.js";
 
 class StopWatch {
 
@@ -11,12 +12,12 @@ class StopWatch {
      * @param {object} [DomSubReferences]
      */
     constructor(whereToAppend, querySelectorForTimeStamp , ...DomSubReferences) {
-        
-        this.domReference = GetContainerForStopWatch().children[0];        
+        this.domReference = stopWatchDom().children[0];        
         this._timerIsActive = false;
         this._timer = null;
         this._timeStampField = this._GetDomSubReference(querySelectorForTimeStamp);
-        this._countDown = false;
+        
+        this.countDown = false;
         this.setUpTimer(0, 0, 0);
                         
         for ( const dynamicProperty of DomSubReferences ) {
@@ -41,20 +42,21 @@ class StopWatch {
         let negative = false;
 
         if (timer.TotalSeconds < 0) {
+
             seconds *= -1;
             minutes *= -1;
             hours *= -1;
             negative = true;
         }
 
-        let normalizedSeconds = timer.Seconds >= 10 ? 
-        timer.Seconds.toString() : `0${seconds.toString()}`
+        let normalizedSeconds = seconds >= 10 ? 
+        seconds.toString() : `0${seconds.toString()}`
 
-        let normalizedMinutes = timer.Minutes >= 10 ? 
-        timer.Minutes.toString() : `0${minutes.toString()}`
+        let normalizedMinutes = minutes >= 10 ? 
+        minutes.toString() : `0${minutes.toString()}`
 
-        let normalizedHours = timer.Hours >= 10 ? 
-        timer.Hours.toString() : `0${hours.toString()}`;
+        let normalizedHours = hours >= 10 ? 
+        hours.toString() : `0${hours.toString()}`;
 
         let normalizedTime = `${normalizedHours}:${normalizedMinutes}:${normalizedSeconds}`;
 
@@ -79,11 +81,9 @@ class StopWatch {
      * @param {!number} [seconds=0] 
      * @param {!number} [minutes=0] 
      * @param {!number} [hours=0]
-     * @param {!boolean} [countDown=false]
      * @returns {void}
      */
-    setUpTimer(seconds, minutes, hours, countDown) {
-        this._countDown = countDown;
+    setUpTimer(seconds, minutes, hours) {
         this._timer = new Timer(seconds, minutes, hours);
         this._timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
         this._timeStampField.textContent = StopWatch.
@@ -92,7 +92,7 @@ class StopWatch {
 
     start() {
         if (this._timerIsActive === false) {            
-            this._timer.start(this._countDown);
+            this._timer.start(this.countDown);
             this._timerIsActive = true;
             return true;
         } else return false;        
@@ -138,40 +138,5 @@ class StopWatch {
     // }
 
 }
-
-
-function GetContainerForStopWatch()  {
-    const container = document.createElement("div");
-
-    container.innerHTML = `
-<div class="stop-watch">
-    <div class="stop-watch-row-label">
-        <p class="stop-watch-label-text"></p>
-        <i class="btn trash-btn fas fa-trash-alt"></i>
-    </div>
-    <div class="stop-watch-row-timer">
-        <i class="btn play-btn fas fa-play"></i>
-        <i class="btn pause-btn fas fa-pause"></i>
-        <i class="btn reset-btn fas fa-stop"></i> 
-        <i class="fas counter-arrow"></i>       
-        <p class="text-timer">23:54:02</p>
-    </div>
-</div>
-`;
-
-    return container;
-}
-
-// <!-- html structure for StopWatch -->
-// <div class="stop-watch">
-//     <div class="stop-watch-row-label">
-//         <p class="stop-watch-label-text">1. Stop-Watch</p>
-//         <i class="trash-btn fas fa-trash-alt"></i>
-//     </div>
-//     <div class="stop-watch-row-timer">
-//         <i class="play-btn fas fa-play"></i>
-//         <p class="text-timer">23:54:02</p>
-//     </div>
-// </div>
 
 export { StopWatch }
