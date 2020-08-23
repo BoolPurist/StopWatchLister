@@ -13,14 +13,11 @@ class StopWatch {
     constructor(whereToAppend, querySelectorForTimeStamp , ...DomSubReferences) {
         
         this.domReference = GetContainerForStopWatch().children[0];        
-        this._timer = new Timer();
-        this._timeStampField = this._GetDomSubReference(querySelectorForTimeStamp);
         this._timerIsActive = false;
-        
-        this._timeStampField.textContent = StopWatch.
-        _normalizeTimeUnitAtLeast2Digits(this._timer);
-        this._timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
-                
+        this._timer = null;
+        this._timeStampField = this._GetDomSubReference(querySelectorForTimeStamp);
+        this.setUpTimer(0, 0, 0);
+                        
         for ( const dynamicProperty of DomSubReferences ) {
             this._CreateSubElementReference(dynamicProperty);
         }
@@ -63,8 +60,35 @@ class StopWatch {
         return negative === false ? normalizedTime : `-${normalizedTime}`         
     }
 
+
+    _GetTimer(seconds, minutes, hours) {
+        if (this._timerIsActive === true ) {
+            this.reset();
+        }
+
+        let timer = new Timer(seconds, minutes, hours);
+        timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
+        return timer;        
+    }
+
+    /**
+     * Stops the timers counting and resets it to
+     * to a new starting time given by the parameters
+     * 
+     * @param {!number} [seconds=0] 
+     * @param {!number} [minutes=0] 
+     * @param {!number} [hours=0]
+     * @returns {void}
+     */
+    setUpTimer(seconds, minutes, hours) {
+        this._timer = new Timer(seconds, minutes, hours);
+        this._timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
+        this._timeStampField.textContent = StopWatch.
+        _normalizeTimeUnitAtLeast2Digits(this._timer); 
+    }
+
     start(countDown) {
-        if (this._timerIsActive === false) {
+        if (this._timerIsActive === false) {            
             this._timer.start(countDown);
             this._timerIsActive = true;
             return true;
@@ -112,7 +136,6 @@ class StopWatch {
 
 }
 
-StopWatch.prototype._defaultEventHandler = [];
 
 function GetContainerForStopWatch()  {
     const container = document.createElement("div");

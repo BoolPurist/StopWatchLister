@@ -19,6 +19,9 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const QSPauseButton = ".pause-btn";
     const QSResetBtn = ".reset-btn";
     const QSCountDirectionBtn = "#check-count-direction";
+    const QSInputSeconds = "#input-seconds";
+    const QSInputMinutes = "#input-minutes";
+    const QSInputHours = "#input-hours";
 
     // Names of the properties which are created on every stop watch at runtime
     const playButtonName = "playButton";
@@ -32,6 +35,9 @@ import { StopWatch } from "./Modules/StopWatch.js";
     const spawnBtn = document.querySelector(QSSpawnBtn);
     const trashAllBtn = document.querySelector(QSTrashAllBtn);
     const countDirectionBtn = document.querySelector(QSCountDirectionBtn);
+    const startSecondsInput = document.querySelector(QSInputSeconds);
+    const startMinutesInput = document.querySelector(QSInputMinutes);
+    const startHoursInput = document.querySelector(QSInputHours);
     
     let countDown = false;
     const countDirectionNames = new Map()
@@ -54,27 +60,33 @@ import { StopWatch } from "./Modules/StopWatch.js";
         
         if ( targetClass.includes(QSPlayBtn.substring(1)) ) {
             for (const stopWatch of stopWatchList) {
+
                 if (stopWatch[playButtonName] === target) {
                     
                     stopWatch[playButtonName].classList.add(toggleClassNameFocus);
                     stopWatch[pauseButtonName].classList.remove(toggleClassNameFocus);
-
-                    if (stopWatch.start(countDown)) {                        
-                        stopWatch[resetBtnName].classList.remove(toggleClassNameFocus);
+                    
+                    if (stopWatch.start(countDown)) {                                              
+                        stopWatch[resetBtnName].classList.remove(toggleClassNameFocus);                        
                     }
                     
                 }                
             }
         } else if (targetClass.includes(QSTrashBtn.substring(1))) {
+
             for (const stopWatch of stopWatchList) {
+
                 if (stopWatch[deleteButtonName] === target) {                    
                     stopWatch.remove();
                                         
-                }                
+                }
             }                                    
         } else if (targetClass.includes(QSPauseButton.substring(1))) {
+
             for (const stopWatch of stopWatchList) {
-                if (stopWatch[pauseButtonName] === target) {                                        
+
+                if (stopWatch[pauseButtonName] === target) {   
+
                     if (stopWatch.pause()) {
                         stopWatch[playButtonName].classList.remove(toggleClassNameFocus);
                         stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
@@ -83,8 +95,11 @@ import { StopWatch } from "./Modules/StopWatch.js";
                 }                
             }                                    
         } else if (targetClass.includes(QSResetBtn.substring(1))) {
+
             for (const stopWatch of stopWatchList) {
+
                 if (stopWatch[resetBtnName] === target) {
+
                     stopWatch[playButtonName].classList.remove(toggleClassNameFocus);
                     stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
                     stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
@@ -102,8 +117,8 @@ import { StopWatch } from "./Modules/StopWatch.js";
 
         if (target === spawnBtn) {
             const lableText = inputFieldLableStopWatch.value.trim();
-            inputFieldLableStopWatch.value = "";            
-
+            inputFieldLableStopWatch.value = "";
+            
             CreateStopWatch(lableText);
         } else if (target.parentNode === trashAllBtn) {
             
@@ -150,7 +165,17 @@ import { StopWatch } from "./Modules/StopWatch.js";
         stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
         stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
 
+        // Getting values from the input fields for the starting time
+        const startingSeconds = parseInt(startSecondsInput.value);
+        const startingMinutes = parseInt(startMinutesInput.value);
+        const startingHours = parseInt(startHoursInput.value);
 
+
+        stopWatch.setUpTimer(startingSeconds, startingMinutes, startingHours);
+        
+        startSecondsInput.value = 0;
+        startMinutesInput.value = 0;
+        startHoursInput.value = 0;
 
         stopWatchList.push( stopWatch ); 
         populateDomElementWithTextContent(
