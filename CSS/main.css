@@ -123,11 +123,15 @@ h1 {
 }
 #SpawnStopWatchBox #SpawnManage-btnS {
   display: grid;
-  grid-template: "spawnBtn countDirectionBtn inputTimeCont . trashAllBtn" auto/auto auto auto 1fr auto;
+  grid-template: "spawnBtn counterArrowSpawn countDirectionBtn . inputTimeCont . trashAllBtn" auto/auto auto auto 1fr auto 1fr auto;
   column-gap: 10px;
 }
 #SpawnStopWatchBox #SpawnManage-btnS #spawn-btn {
   grid-area: spawnBtn;
+}
+#SpawnStopWatchBox #SpawnManage-btnS #counter-arrow-spawn {
+  grid-area: counterArrowSpawn;
+  font-size: 3rem;
 }
 #SpawnStopWatchBox #SpawnManage-btnS #check-count-direction {
   grid-area: countDirectionBtn;
@@ -277,7 +281,7 @@ h1 {
   grid-area: textTimer;
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 900px) {
   #navTop {
     justify-self: center;
   }
@@ -293,7 +297,7 @@ h1 {
   }
   #SpawnStopWatchBox #SpawnManage-btnS {
     display: grid;
-    grid-template: "spawnBtn countDirectionBtn . trashAllBtn" auto "inputTimeCont inputTimeCont inputTimeCont inputTimeCont" auto/auto auto 1fr auto;
+    grid-template: "spawnBtn counterArrowSpawn countDirectionBtn  trashAllBtn" auto "inputTimeCont inputTimeCont inputTimeCont inputTimeCont" auto/auto auto 1fr auto;
     row-gap: 15px;
   }
   #SpawnStopWatchBox #SpawnManage-btnS #cont-time-input {
@@ -315,8 +319,9 @@ h1 {
   }
   #SpawnStopWatchBox #SpawnManage-btnS {
     display: grid;
-    grid-template: "spawnBtn countDirectionBtn trashAllBtn" auto "inputTimeCont inputTimeCont inputTimeCont" auto/auto auto auto;
+    grid-template: "spawnBtn counterArrowSpawn countDirectionBtn trashAllBtn" auto "inputTimeCont inputTimeCont inputTimeCont inputTimeCont" auto/auto auto auto auto;
     row-gap: 15px;
+    column-gap: 10px;
   }
   #SpawnStopWatchBox #SpawnManage-btnS #cont-time-input {
     grid-template: ". startTime ." auto "seconds minutes hours" auto "inputSeconds inputMinutes inputHours" auto/auto auto auto;

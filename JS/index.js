@@ -223,8 +223,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
         
         const isNotErrorBarDom = errorBarInDom.classList.value.includes("beGone");
 
-        if (errorRaised === true && isNotErrorBarDom === true ) {
-            console.log("ErroRaised");
+        if (errorRaised === true && isNotErrorBarDom === true ) {            
             errorBarInDom.classList.remove("beGone");                        
         } else if (errorRaised === false && isNotErrorBarDom === false) {
             errorBarInDom.classList.add("beGone");            
