@@ -3,14 +3,18 @@
 
 /**
  * Converts text time unites into seconds as one number value
- * Can also convert comma numbers.
- * 
+ * Can also convert comma numbers. 
+ * It only contains digits with 2 exceptions
+ * 1. Valid time unit has one comma or point at most. Such sign must not be
+ * at the start or end of the time unit.
+ * 2. Has one plus or minus at most. Such sign must be at the start of the unit. 
+ *  
  * @param {!string} seconds - supposed seconds as a string 
  * @param {!string} minutes - supposed minutes as a string
  * @param {!string} hours - supposed hours as a string
  * @returns {?number} Returns total seconds from seconds, minutes and 
  * hours or null if one the parameter can not be converted into a valid 
- * number value.
+ * number value.  
  */
 export function textTimeUnitsToSeconds(seconds, minutes, hours) {
 

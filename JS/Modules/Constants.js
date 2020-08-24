@@ -124,5 +124,6 @@ const DYN_PROP_NAMES = {
 }
 
 Object.freeze(QS);
+Object.freeze(DYN_PROP_NAMES);
 
 export { QS, DYN_PROP_NAMES };

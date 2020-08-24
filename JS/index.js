@@ -8,7 +8,6 @@ window.addEventListener("DOMContentLoaded", () => {
         // SW = stopwatch
         // QS = querySelector
              
-    
         const toggleClassNameFocus = "minorFocus";
     
         /**
@@ -115,6 +114,7 @@ window.addEventListener("DOMContentLoaded", () => {
         const separationBar = document.querySelector(QS.SEPARATION_BAR);
         
         let countDown = false;
+
         const countDirectionNames = new Map()
         countDirectionNames.set(false, "Count Down ?");
         countDirectionNames.set(true, "Count Up ?");
@@ -136,15 +136,7 @@ window.addEventListener("DOMContentLoaded", () => {
     
         containerForStopWatches.addEventListener("click", callBackStopWatchContainer);
     
-    
-    
-    
-        // Debug Area
-                
-
-        
-        
-    
+        // Debug Area    
         /* Functions */
     
         /**
@@ -258,6 +250,17 @@ window.addEventListener("DOMContentLoaded", () => {
     
         }
         
+        /**
+         * Inserts a test as textContent into a dom element as a child of the given 
+         * dom element via the help of a given css selector
+         * 
+         * @param {object} startDomElement - dom element which 
+         * has the children to search through 
+         * @param  {...object} Data - Following Properties are needed: 
+         * querSelector - css selector to find the dom element to insert the text into.
+         * textContent - text to insert
+         * @returns {void} 
+         */
         function populateDomElementWithTextContent (startDomElement, ...Data) {
             
             Data.forEach(
@@ -268,30 +271,28 @@ window.addEventListener("DOMContentLoaded", () => {
             );
         }
     
+        /**
+         * 1. Constructs a dom element which displays a box with a stop watch.
+         * 2. It then combines it with the logic of timer instance for counting time.
+         * 3. If the first stop watch is created it enables the separation bar 
+         * between the spawn box and the stop watches
+         * 
+         * @param {!string} [lableText="Stop Watch"] - Title of stop watch box to be spawned 
+         * @returns {void} 
+         */
         function CreateStopWatch(lableText="Stop Watch") {
-            // Getting values from the input fields for the starting time
-             
-            const totalSeconds = textTimeUnitsToSeconds(
-                startSecondsInput.value,
-                startMinutesInput.value,
-                startHoursInput.value
-            );
     
-            startSecondsInput.value = "0";
-            startMinutesInput.value = "0";
-            startHoursInput.value = "0";
-            
+            const totalSeconds = validateStartingTime();
+
             if (totalSeconds === null) {
-                manageErrorBar(true);
                 return;
-            }
-            else { 
-                manageErrorBar(false);
             }
     
             const stopWatch = new StopWatch(
                 QS.LIST_SW,
                 QS.CLASS_TEXT_TIMER, 
+                // Attaching the dynamic properties to reference the children dom elements
+                // of the stop watch later
                 { propertyName: DYN_PROP_NAMES.PLAY_BUTTON, domQuerySelector: QS.PLAY_BTN },                       
                 { propertyName: DYN_PROP_NAMES.DELETE_BUTTON, domQuerySelector:  QS.TRASH_BTN},                       
                 { propertyName: DYN_PROP_NAMES.PAUSE_BUTTON, domQuerySelector:  QS.PAUSE_BTN},                       
@@ -299,27 +300,80 @@ window.addEventListener("DOMContentLoaded", () => {
                 { propertyName: DYN_PROP_NAMES.COUNTER_ARROW, domQuerySelector:  QS.COUNTER_ARROW},                       
             );
     
+            // Making the pause and reset buttons half transparent.
             stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON].classList.add(toggleClassNameFocus);
             stopWatch[DYN_PROP_NAMES.RESET_BTN].classList.add(toggleClassNameFocus);
+            
+            // Giving the arrow which indicates the counting direction, the right appearance  
             stopWatch[DYN_PROP_NAMES.COUNTER_ARROW].classList.add(countArrowClasses.get(countDown)); 
     
+            // Giving the stop watch its starting time
             stopWatch.setUpTimer(totalSeconds);
             stopWatch.countDown = countDown;
     
-    
+            
             stopWatchList.push( stopWatch ); 
+
+            // Giving the new stop watch its title if it was provided
             populateDomElementWithTextContent(
                 stopWatch.domReference,
                 {querySelector: QS.LABLE_TEXT_SW, textContent: lableText}
             );
     
+            // As soon as the 1. stop watch is spawned, a separation bar is shown
+            // between the spawn box and the stop watches.
             if (stopWatchList.length === 1) toggleVisibility(separationBar, true); 
         }
+
+        /**
+         * Grabs the starting time units from the spawn box and checks if
+         * they are valid. If invalid does not create a stop watch box and shows
+         * an error bar for the user.
+         * 
+         * @returns {?number} - if valid input: totalSeconds of the seconds, minutes and hours 
+         * read from the input field for starting time 
+         * from the stop watch spawn box. 
+         * if invalid input: null 
+         */
+        function validateStartingTime() {
+            // Getting values from the input fields for the starting time
+            const totalSeconds = textTimeUnitsToSeconds(
+            startSecondsInput.value,
+            startMinutesInput.value,
+            startHoursInput.value
+            );
     
+            // Resting the input field for starting time
+            startSecondsInput.value = "0";
+            startMinutesInput.value = "0";
+            startHoursInput.value = "0";
+            
+            // In case of invalid input for starting time an error bar
+            // as message is displayed to user.
+            if (totalSeconds === null) {
+                manageErrorBar(true);
+                return null;
+            }
+            else { 
+                manageErrorBar(false);
+                return totalSeconds;
+            }
+        }
+    
+        /**
+         * Makes a dom element invisible and removes it from the document flow
+         * Or makes an element visible again and reintegrates into the document flow 
+         * 
+         * @param {!HTMLElement} domElement - Dom element to change 
+         * @param {!boolean} makeVisible - If true dom element will be made invisible and put out 
+         * of the document flow if false vise versa
+         * @returns {void} 
+         */
         function toggleVisibility(domElement,makeVisible) {
             if (makeVisible === true) domElement.classList.remove("beGone");
             else domElement.classList.add("beGone");        
         }
+
     
         /**
          * Toggles visibility and influence on the document flow for the error bar. 
@@ -342,6 +396,15 @@ window.addEventListener("DOMContentLoaded", () => {
     
         }
     
+        /**
+         * Changes the appearance of the arrow in the spawn box to
+         * represents the counting sense for the next stop watch to be 
+         * spawned 
+         * 
+         * @param {!boolean} countDown - If true the arrow will represent counting up
+         * if false the arrow will represent counting down
+         * @returns {void} 
+         */
         function toggleCounterSpawnerArrow(countDown) {
             const classListArrow = counterArrowSpawn.classList; 
             
