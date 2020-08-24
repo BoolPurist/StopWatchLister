@@ -22,7 +22,11 @@ export function textTimeUnitsToSeconds(seconds, minutes, hours) {
     const minutesNumber = parseStringToTimeUnit(minutes);
     const hoursNumber = parseStringToTimeUnit(hours);
 
-    if (secondsNumber === null || minutesNumber === null || hoursNumber === null) {
+    if (
+        secondsNumber === null || 
+        minutesNumber === null || 
+        hoursNumber === null
+    ) {
         return null;
     }
 

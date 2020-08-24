@@ -1,7 +1,15 @@
+/**
+ * Creates a box which serves as a stop watch. It has a title, 
+ * time stamp lable for showing time and widgets as buttons the 
+ * for user to control it. 
+ * 
+ * @returns {HTMLDivElement} - dom elements a stop watch
+ */
 export function stopWatchDom()  {
     const container = document.createElement("div");
 
-    container.innerHTML = `
+    container.innerHTML = 
+`
 <div class="stop-watch">
     <div class="stop-watch-row-label">
         <p class="stop-watch-label-text"></p>
@@ -17,5 +25,5 @@ export function stopWatchDom()  {
 </div>
 `;
 
-    return container;
+    return container.children[0];
 }

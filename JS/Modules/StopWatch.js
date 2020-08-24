@@ -12,10 +12,11 @@ class StopWatch {
      * @param {...object} [DomSubReferences]
      */
     constructor(whereToAppend, querySelectorForTimeStamp , ...DomSubReferences) {
-        this.domReference = stopWatchDom().children[0];        
+        this.domReference = stopWatchDom();        
         this._timerIsActive = false;
         this._timer = null;
-        this._timeStampField = this._GetDomSubReference(querySelectorForTimeStamp);
+        this._timeStampField = this.
+        _GetDomSubReference(querySelectorForTimeStamp);
         
         this.countDown = false;
         this.setUpTimer(0, 0, 0);

@@ -33,7 +33,8 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLInputElement}
          */ 
-        const inputFieldLableStopWatch = document.querySelector("#InputFieldLableStopWatch");
+        const inputFieldLableStopWatch = document
+        .querySelector("#InputFieldLableStopWatch");
         /**
          * Resides in the spawn box
          * On clicking it, it spawns a stop watch and appends as child
@@ -52,8 +53,8 @@ window.addEventListener("DOMContentLoaded", () => {
          */
         const trashAllBtn = document.querySelector(QS.TRASH_ALL_BTN);
         /**
-         * On clicking it in the spawn box, it toggles the counting direction of up or down
-         * of the next stop watch to be spawned
+         * On clicking it in the spawn box, it toggles the counting direction 
+         * of up or down of the next stop watch to be spawned
          * 
          * @const
          * @type {HTMLElement}
@@ -134,7 +135,8 @@ window.addEventListener("DOMContentLoaded", () => {
             
         spawnBoxStopWatch.addEventListener("click", callBackSpawnBox);
     
-        containerForStopWatches.addEventListener("click", callBackStopWatchContainer);
+        containerForStopWatches
+        .addEventListener("click", callBackStopWatchContainer);
     
         // Debug Area    
         /* Functions */
@@ -171,7 +173,8 @@ window.addEventListener("DOMContentLoaded", () => {
     
                 countDown = !countDown;
                 toggleCounterSpawnerArrow(countDown);
-                countDirectionBtn.textContent = countDirectionNames.get(countDown);
+                countDirectionBtn.textContent = countDirectionNames
+                .get(countDown);
             }
         }
     
@@ -197,11 +200,14 @@ window.addEventListener("DOMContentLoaded", () => {
     
                     if (stopWatch[DYN_PROP_NAMES.PLAY_BUTTON] === target) {
                         
-                        stopWatch[DYN_PROP_NAMES.PLAY_BUTTON].classList.add(toggleClassNameFocus);
-                        stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON].classList.remove(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+                        .classList.add(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+                        .classList.remove(toggleClassNameFocus);
                         
                         if (stopWatch.start()) {                                              
-                            stopWatch[DYN_PROP_NAMES.RESET_BTN].classList.remove(toggleClassNameFocus);                        
+                            stopWatch[DYN_PROP_NAMES.RESET_BTN]
+                            .classList.remove(toggleClassNameFocus);                        
                         }
                         
                     }                
@@ -214,7 +220,9 @@ window.addEventListener("DOMContentLoaded", () => {
                     if (stopWatchList[i][DYN_PROP_NAMES.DELETE_BUTTON] === target) {                                       
                         stopWatchList[i].remove();
                         stopWatchList.splice(i, 1);                                            
-                        if (stopWatchList.length === 0) toggleVisibility(separationBar, false);             
+                        if (stopWatchList.length === 0) {
+                            toggleVisibility(separationBar, false);
+                        }             
                     }
     
                 } 
@@ -226,8 +234,10 @@ window.addEventListener("DOMContentLoaded", () => {
                     if (stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON] === target) {   
     
                         if (stopWatch.pause()) {
-                            stopWatch[DYN_PROP_NAMES.PLAY_BUTTON].classList.remove(toggleClassNameFocus);
-                            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON].classList.add(toggleClassNameFocus);
+                            stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+                            .classList.remove(toggleClassNameFocus);
+                            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+                            .classList.add(toggleClassNameFocus);
                         }
     
                     }                
@@ -239,9 +249,12 @@ window.addEventListener("DOMContentLoaded", () => {
     
                     if (stopWatch[DYN_PROP_NAMES.RESET_BTN] === target) {
     
-                        stopWatch[DYN_PROP_NAMES.PLAY_BUTTON].classList.remove(toggleClassNameFocus);
-                        stopWatch[DYN_PROP_NAMES.RESET_BTN].classList.add(toggleClassNameFocus);
-                        stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON].classList.add(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+                        .classList.remove(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.RESET_BTN]
+                        .classList.add(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+                        .classList.add(toggleClassNameFocus);
                         stopWatch.reset();
                     }
     
@@ -251,14 +264,14 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         
         /**
-         * Inserts a test as textContent into a dom element as a child of the given 
-         * dom element via the help of a given css selector
+         * Inserts a test as textContent into a dom element as a child 
+         * of the given dom element via the help of a given css selector
          * 
          * @param {object} startDomElement - dom element which 
          * has the children to search through 
          * @param  {...object} Data - Following Properties are needed: 
-         * querSelector - css selector to find the dom element to insert the text into.
-         * textContent - text to insert
+         * querSelector - css selector to find the dom element to insert 
+         * the text into textContent - text to insert
          * @returns {void} 
          */
         function populateDomElementWithTextContent (startDomElement, ...Data) {
@@ -266,18 +279,21 @@ window.addEventListener("DOMContentLoaded", () => {
             Data.forEach(
                 object => {
                 const {querySelector, textContent} = object;
-                startDomElement.querySelector(querySelector).textContent = textContent;
+                startDomElement.querySelector(querySelector)
+                .textContent = textContent;
                 }
             );
         }
     
         /**
          * 1. Constructs a dom element which displays a box with a stop watch.
-         * 2. It then combines it with the logic of timer instance for counting time.
+         * 2. It then combines it with the logic of 
+         * timer instance for counting time.
          * 3. If the first stop watch is created it enables the separation bar 
          * between the spawn box and the stop watches
          * 
-         * @param {!string} [lableText="Stop Watch"] - Title of stop watch box to be spawned 
+         * @param {!string} [lableText="Stop Watch"] - Title of stop watch box 
+         * to be spawned 
          * @returns {void} 
          */
         function CreateStopWatch(lableText="Stop Watch") {
@@ -291,21 +307,40 @@ window.addEventListener("DOMContentLoaded", () => {
             const stopWatch = new StopWatch(
                 QS.LIST_SW,
                 QS.CLASS_TEXT_TIMER, 
-                // Attaching the dynamic properties to reference the children dom elements
-                // of the stop watch later
-                { propertyName: DYN_PROP_NAMES.PLAY_BUTTON, domQuerySelector: QS.PLAY_BTN },                       
-                { propertyName: DYN_PROP_NAMES.DELETE_BUTTON, domQuerySelector:  QS.TRASH_BTN},                       
-                { propertyName: DYN_PROP_NAMES.PAUSE_BUTTON, domQuerySelector:  QS.PAUSE_BTN},                       
-                { propertyName: DYN_PROP_NAMES.RESET_BTN, domQuerySelector:  QS.RESET_BTN},                       
-                { propertyName: DYN_PROP_NAMES.COUNTER_ARROW, domQuerySelector:  QS.COUNTER_ARROW},                       
+                // Attaching the dynamic properties to reference the children 
+                // dom elements of the stop watch later
+                { 
+                    propertyName: DYN_PROP_NAMES.PLAY_BUTTON,
+                    domQuerySelector: QS.PLAY_BTN
+                },                       
+                { 
+                    propertyName: DYN_PROP_NAMES.DELETE_BUTTON,
+                    domQuerySelector:  QS.TRASH_BTN
+                },                       
+                { 
+                    propertyName: DYN_PROP_NAMES.PAUSE_BUTTON,
+                    domQuerySelector:  QS.PAUSE_BTN
+                },                       
+                { 
+                    propertyName: DYN_PROP_NAMES.RESET_BTN, 
+                    domQuerySelector:  QS.RESET_BTN
+                },                       
+                { 
+                    propertyName: DYN_PROP_NAMES.COUNTER_ARROW,
+                    domQuerySelector:  QS.COUNTER_ARROW
+                },                       
             );
     
             // Making the pause and reset buttons half transparent.
-            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON].classList.add(toggleClassNameFocus);
-            stopWatch[DYN_PROP_NAMES.RESET_BTN].classList.add(toggleClassNameFocus);
+            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+            .classList.add(toggleClassNameFocus);
+            stopWatch[DYN_PROP_NAMES.RESET_BTN]
+            .classList.add(toggleClassNameFocus);
             
-            // Giving the arrow which indicates the counting direction, the right appearance  
-            stopWatch[DYN_PROP_NAMES.COUNTER_ARROW].classList.add(countArrowClasses.get(countDown)); 
+            // Giving the arrow which indicates the counting direction, 
+            // the right appearance  
+            stopWatch[DYN_PROP_NAMES.COUNTER_ARROW]
+            .classList.add(countArrowClasses.get(countDown)); 
     
             // Giving the stop watch its starting time
             stopWatch.setUpTimer(totalSeconds);
@@ -330,8 +365,8 @@ window.addEventListener("DOMContentLoaded", () => {
          * they are valid. If invalid does not create a stop watch box and shows
          * an error bar for the user.
          * 
-         * @returns {?number} - if valid input: totalSeconds of the seconds, minutes and hours 
-         * read from the input field for starting time 
+         * @returns {?number} - if valid input: totalSeconds of the seconds, 
+         * minutes and hours read from the input field for starting time 
          * from the stop watch spawn box. 
          * if invalid input: null 
          */
@@ -362,11 +397,12 @@ window.addEventListener("DOMContentLoaded", () => {
     
         /**
          * Makes a dom element invisible and removes it from the document flow
-         * Or makes an element visible again and reintegrates into the document flow 
+         * Or makes an element visible again and reintegrates 
+         * into the document flow 
          * 
          * @param {!HTMLElement} domElement - Dom element to change 
-         * @param {!boolean} makeVisible - If true dom element will be made invisible and put out 
-         * of the document flow if false vise versa
+         * @param {!boolean} makeVisible - If true dom element will be made
+         * invisible and put out of the document flow if false vise versa
          * @returns {void} 
          */
         function toggleVisibility(domElement,makeVisible) {
@@ -377,8 +413,9 @@ window.addEventListener("DOMContentLoaded", () => {
     
         /**
          * Toggles visibility and influence on the document flow for the error bar. 
-         * If user provides wrong input the error bar is visible and places itself in the gird row
-         * of the wrapper and before the spawn box. If user provides something valid with the next input, 
+         * If user provides wrong input the error bar is visible and 
+         * places itself in the gird row of the wrapper and before the spawn box. 
+         * If user provides something valid with the next input, 
          * the error bar gets invisible and is removed from the grid flow. 
          * 
          * @param {!boolean} errorRaised - true if the user provided wrong input
@@ -386,7 +423,8 @@ window.addEventListener("DOMContentLoaded", () => {
          */
         function manageErrorBar(errorRaised) {
             
-            const isNotErrorBarDom = errorBarInDom.classList.value.includes("beGone");
+            const isNotErrorBarDom = errorBarInDom
+            .classList.value.includes("beGone");
     
             if (errorRaised === true && isNotErrorBarDom === true ) {            
                 errorBarInDom.classList.remove("beGone");                        
@@ -401,8 +439,8 @@ window.addEventListener("DOMContentLoaded", () => {
          * represents the counting sense for the next stop watch to be 
          * spawned 
          * 
-         * @param {!boolean} countDown - If true the arrow will represent counting up
-         * if false the arrow will represent counting down
+         * @param {!boolean} countDown - If true the arrow will represent 
+         * counting up if false the arrow will represent counting down
          * @returns {void} 
          */
         function toggleCounterSpawnerArrow(countDown) {

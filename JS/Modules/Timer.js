@@ -24,7 +24,9 @@ class Timer {
 
         if ( seconds === null || minutes === null || hours === null ) {
 
-            throw new TypeError('Constructor does not take a parameter which is null.');
+            throw new TypeError(`
+            Constructor does not take a parameter which is null.
+            `);
         } else if (
 
             typeof(seconds) !== wantedType || typeof(minutes) !== wantedType || 
@@ -32,7 +34,8 @@ class Timer {
             )  {
 
             throw new TypeError(
-                `Constructor does only take parameters of the type \"${wantedType}\"`
+                `Constructor does only take parameters of the type 
+                "${wantedType}"`
             );
         } else {
             
@@ -42,7 +45,8 @@ class Timer {
             this._intervalId = null;
 
             // Holds references of the callback functions attached from outside
-            // via this.addFuncOnChange and the arguments for the callback functions. 
+            // via this.addFuncOnChange and the arguments 
+            // for the callback functions. 
             this._funcs = [];
         }
                 
@@ -69,7 +73,10 @@ class Timer {
      */
     get Minutes() {
         let minutes = this._totalSeconds / 60;
-        minutes = this._totalSeconds >= 0 ? Math.floor(minutes) : Math.ceil(minutes);        
+        
+        minutes = this._totalSeconds >= 0 
+        ? Math.floor(minutes) : Math.ceil(minutes);        
+        
         minutes%=60
         return minutes === -0 ? 0 : minutes; 
     }
@@ -161,8 +168,8 @@ class Timer {
 
     /**
     * Starts/Resume counting the time up or down every second.
-    * @param {?boolean} [countDown=null] - if true the timer counts up every second
-    * if false the timer counts down every second
+    * @param {?boolean} [countDown=null] - if true the timer 
+    * counts up every second if false the timer counts down every second
     * if null the counting direction will be the same before the time was stopped
     * if the timer was not stopped yet then the timer counts up by default 
     * @return {void}
@@ -235,7 +242,9 @@ class Timer {
      */
     addFuncOnChange(func, ...objAsArgue) {
         if (func === null || typeof(func) !== "function") {
-            throw new TypeError("func as callback function must be of type function");
+            throw new TypeError(`
+            func as callback function must be of type function
+            `);
         }
 
         this._funcs.push(
