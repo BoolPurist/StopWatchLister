@@ -108,9 +108,10 @@ class StopWatch {
 
     reset() {
         if (this._timerIsActive === true) {
-            this._timer.reset();
             this._timerIsActive = false;
         }
+        
+        this._timer.reset();
     }
 
     remove() {

@@ -1,4 +1,4 @@
-
+// @ts-check
 import { StopWatch } from "./Modules/StopWatch.js";
 import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
 
@@ -26,6 +26,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
     const QSCounterArrow = ".counter-arrow";
     const QSErrorBarStarTime = ".error-bar-start-time";
     const QSCounterArrowSpawn = "#counter-arrow-spawn";
+    const QSSeparationBar = ".separation-bar";
 
     // Names of the properties which are created on every stop watch at runtime
     const playButtonName = "playButton";
@@ -33,20 +34,101 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
     const pauseButtonName = "pauseButton";
     const resetBtnName = "resetButton";
     const counterArrow = "counterArrow";
+    
 
     const toggleClassNameFocus = "minorFocus";
 
-    const spawnBoxStopWatch = document.querySelector(QSSpawnBox); 
+    /**
+     * The box which holds all widgets for the user to spawn stop watches 
+     * and configure how spawned stop watches will behave 
+     *  
+     * @type {HTMLElement}
+     */
+    const spawnBoxStopWatch = document.querySelector(QSSpawnBox);
+    /**
+     * List for holding all spawned stop watches on the page
+     * 
+     * @type {HTMLElement}
+     */
+    const containerForStopWatches = document.querySelector(QSListSW);
+    /**
+     * Resides in the spawn box
+     * Text input field in which the user can enter a name for the 
+     * next stop watch to be spawned
+     * 
+     * @type {HTMLInputElement}
+     */ 
     const inputFieldLableStopWatch = document.querySelector("#InputFieldLableStopWatch");
+    /**
+     * Resides in the spawn box
+     * On clicking it, it spawns a stop watch and appends as child
+     * into containerForStopWatches
+     * 
+     * @type {HTMLElement}
+     */
     const spawnBtn = document.querySelector(QSSpawnBtn);
+    /**
+     * Resides in the spawn box
+     * On clicking it, it removes all spawned stop watches
+     * 
+     * @type {HTMLElement}
+     */
     const trashAllBtn = document.querySelector(QSTrashAllBtn);
+    /**
+     * On clicking it in the spawn box, it toggles the counting direction of up or down
+     * of the next stop watch to be spawned
+     * 
+     * @type {HTMLElement}
+     */
     const countDirectionBtn = document.querySelector(QSCountDirectionBtn);
+    /**
+     * Resides in the spawn box
+     * Input field where the user provides the seconds for the starting time 
+     * of the next stopwatch
+     * 
+     * @type {HTMLInputElement}
+     */
     const startSecondsInput = document.querySelector(QSInputSeconds);
+    /**
+     * Resides in the spawn box
+     * Input field where the user provides the minutes for the starting time 
+     * of the next stopwatch
+     * 
+     * @type {HTMLInputElement}
+     */
     const startMinutesInput = document.querySelector(QSInputMinutes);
+    /**
+     * Resides in the spawn box
+     * Input field where the user provides the hours for the starting time 
+     * of the next stopwatch
+     * 
+     * @type {HTMLInputElement}
+     */
     const startHoursInput = document.querySelector(QSInputHours);
+    /**
+     * If user provides invalid input for the starting time this dom
+     * element appears always under the spawn box. if the next input 
+     * for starting time is valid it disappears.
+     * 
+     * @type {HTMLElement}
+     */
     const errorBarInDom = document.querySelector(QSErrorBarStarTime);
+    /**
+     * Resides in the spawn box
+     * Indicates if the stop watch will count up or down. It is indicates 
+     * the direction with its color and pointing up or down
+     *   
+     * @type {HTMLElement}
+     */
     const counterArrowSpawn = document.querySelector(QSCounterArrowSpawn);
-         
+    /**
+     * Is placed below the spawn box or the error bar to show
+     * separation between spawn box and actual stop watches
+     * 
+     * @type {HTMLElement}
+     */
+    const separationBar = document.querySelector(QSSeparationBar);
+    
     let countDown = false;
     const countDirectionNames = new Map()
     countDirectionNames.set(false, "Count Down ?");
@@ -64,11 +146,70 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
     /* Attaching events */
     // Attaching events for the spawn watch box    
     // Adding event for spawn manage button
+        
+    spawnBoxStopWatch.addEventListener("click", callBackSpawnBox);
+
+    containerForStopWatches.addEventListener("click", callBackStopWatchContainer);
+
+
+
+
+    // Debug Area
     
     
 
-    document.querySelector(QSListSW).addEventListener("click", (event) => {
+    /* Functions */
+
+    /**
+     * 
+     * 
+     * @param {Event} event - is fired by a widget of the spawn box 
+     * for stop watches
+     * @returns {void}   
+     */
+    function callBackSpawnBox(event) {    
+        /**
+         * @type {any}
+         */
         const target = event.target;
+
+        if (target === spawnBtn) {
+
+            const lableText = inputFieldLableStopWatch.value.trim();
+            inputFieldLableStopWatch.value = "";
+            
+            CreateStopWatch(lableText);             
+        } else if (target.parentNode === trashAllBtn) {
+            
+            for (const stopWatch of stopWatchList) {
+                stopWatch.remove();
+                stopWatchList = [];
+                toggleVisibility(separationBar, false);
+            }
+            
+            stopWatchList = [];
+        } else if (target === countDirectionBtn) {
+
+            countDown = !countDown;
+            toggleCounterSpawnerArrow(countDown);
+            countDirectionBtn.textContent = countDirectionNames.get(countDown);
+        }
+    }
+
+
+    /**
+     * 
+     * @param {Event} event - is fired by widgets of a stop watch 
+     * @returns {void}
+     */
+    function callBackStopWatchContainer(event) {
+        /**
+         * @type {any}
+         */
+        const target = event.target;
+        /**
+         * @type {string}
+         */
         const targetClass = target.className;
         
         if ( targetClass.includes(QSPlayBtn.substring(1)) ) {
@@ -88,13 +229,15 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
             }
 
         } else if (targetClass.includes(QSTrashBtn.substring(1))) {
+            
+            for (let i = 0; i < stopWatchList.length; i++) {
 
-            for (const stopWatch of stopWatchList) {
-
-                if (stopWatch[deleteButtonName] === target) {                    
-                    stopWatch.remove();
-                                        
+                if (stopWatchList[i][deleteButtonName] === target) {                                       
+                    stopWatchList[i].remove();
+                    stopWatchList.splice(i, 1);                                            
+                    if (stopWatchList.length === 0) toggleVisibility(separationBar, false);             
                 }
+
             } 
 
         } else if (targetClass.includes(QSPauseButton.substring(1))) {
@@ -126,40 +269,7 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
             }
         }
 
-    });
-
-    spawnBoxStopWatch.addEventListener("click", (event) => {    
-        
-        const target = event.target;
-
-        if (target === spawnBtn) {
-
-            const lableText = inputFieldLableStopWatch.value.trim();
-            inputFieldLableStopWatch.value = "";
-            
-            CreateStopWatch(lableText);
-        } else if (target.parentNode === trashAllBtn) {
-            
-            for (const stopWatch of stopWatchList) {
-                stopWatch.remove();
-            }
-            
-            stopWatchList = [];
-        } else if (target === countDirectionBtn) {
-
-            countDown = !countDown;
-            toggleCounterSpawnerArrow(countDown);
-            countDirectionBtn.textContent = countDirectionNames.get(countDown);
-        }
-    });
-
-
-
-    // Debug Area
-    
-    CreateStopWatch();
-
-    /* Functions */
+    }
     
     function populateDomElementWithTextContent (startDomElement, ...Data) {
         
@@ -180,9 +290,9 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
             startHoursInput.value
         );
 
-        startSecondsInput.value = 0;
-        startMinutesInput.value = 0;
-        startHoursInput.value = 0;
+        startSecondsInput.value = "0";
+        startMinutesInput.value = "0";
+        startHoursInput.value = "0";
         
         if (totalSeconds === null) {
             manageErrorBar(true);
@@ -215,6 +325,13 @@ import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
             stopWatch.domReference,
             {querySelector: QSLableTextSW, textContent: lableText}
         );
+
+        if (stopWatchList.length === 1) toggleVisibility(separationBar, true); 
+    }
+
+    function toggleVisibility(domElement,makeVisible) {
+        if (makeVisible === true) domElement.classList.remove("beGone");
+        else domElement.classList.add("beGone");        
     }
 
     /**
