@@ -3,21 +3,18 @@
 @use "base" as *;
 
 .fas {
-    font-size: 2rem;                        
+    font-size: $font-awesome-size;                        
     margin: auto;
 
 }
 
 .fa-angle-double-up {
-    color: green;
+    color: $arrow-up-color;
 }
 
 .fa-angle-double-down {
-    color: red;
+    color: $arrow-down-color;
 }
-
-
-
 
 .btn {
     background-color: $btn-background-color;
@@ -27,7 +24,7 @@
 }
 
 .btn.minorFocus {
-    opacity: 50%;
+    opacity: $btn-minor-focus-opacity;
 }
 
 #navTop {
@@ -42,10 +39,8 @@
 
     background-color: $sub-background-color;
 
-    a { 
-        $navTopA-height: 50px;
-        height: $navTopA-height;
-        line-height: $navTopA-height;
+    a {         
+        @include mixin-navbar-height-scaler($navbar-height);
 
         @include mixin-padding-sides($navBar-side-padding-desktop);
 
@@ -81,13 +76,12 @@ h1 {
         p {
             margin-right: 10px;
             font-size: $spawner-lable-font-size;
-            font-weight: bold;
-            
+            font-weight: bold;            
         }
     
         input {
             @include mixin-reduce-border-to-bottom-color-bottom();
-            width: 40ch;
+            width: $spawner-lable-field-width;
             height: 20px;
             font-size: 18px;
             align-self: center;
@@ -128,8 +122,9 @@ h1 {
             @include mixin-render-alternative-rendering();
 
             font-weight: bold;
-            height: 65%;
-            padding: $tmp-padding;
+            height: $spawner-count-direction-btn-height;
+            padding: 10px;
+            
                 
         }
 
@@ -157,7 +152,7 @@ h1 {
 
             input {
                 width: $time-input-field-input-width;
-                border-radius: 5px;                                
+                border-radius: $time-input-field-input-border-radius;                                
             }
 
             #lable- {
@@ -219,21 +214,21 @@ h1 {
 }
 
 .error-bar-start-time {
-  background-color: rgb(175, 28, 28);
+  background-color: $error-bar-bc-color;
   border-radius: $widget-border-radius;
   padding: 10px;
 
   p {
       font-weight: bold;
-      font-size: 2rem;
-      color: white;
+      font-size: $error-bar-font-size;
+      color: $error-bar-font-color;
       text-align: center;
   }
 }
 
 .separation-bar {
     width: 100%;
-    height: 20px;
+    height: $separations-bar-height;
     border-radius: $widget-border-radius;
     background-color: $separations-bar-color;    
 }
@@ -241,7 +236,7 @@ h1 {
 #stop-watch-list {
     display:grid;
     grid-auto-rows: auto;
-    row-gap: 10px;
+    row-gap: $stop-watch-list-row-gap;
 
     .stop-watch {
         @include mixin-render-stop-watch-body(-5px);
@@ -249,7 +244,6 @@ h1 {
         .stop-watch-row-label{
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 10px;
     
             p {
                 @include mixin-stop-watch-font();
@@ -273,7 +267,7 @@ h1 {
             .text-timer {
                 justify-self: right;
                 @include mixin-stop-watch-font();
-                font-size: $stop-watch-time-font-size;
+                font-size: $stop-watch-font-size-time-stamp;
             }
 
             .play-btn {
@@ -290,7 +284,7 @@ h1 {
 
             .counter-arrow {
                 grid-area: counterArrow;
-                font-size: 3rem;
+                font-size: $stop-watch-size-arrow;
             }
 
             .text-timer {
@@ -302,6 +296,7 @@ h1 {
     }
 }
 
+// tablet-size
 
 @media screen and (max-width: 900px) {
         
@@ -309,6 +304,7 @@ h1 {
         justify-self: center;
         
         a {
+            @include mixin-navbar-height-scaler($navbar-height-tablet);
             @include mixin-padding-sides($navBar-side-padding-mobile);
         }
     }
@@ -319,9 +315,8 @@ h1 {
 
             grid-template-rows: auto auto;
             grid-template-columns: 1fr;
-            row-gap: 10px;
+            row-gap: $spawner-lable-field-row-gap-tab;
         }
-
 
         #SpawnManage-btnS {
             display: grid;
@@ -330,10 +325,6 @@ h1 {
             "inputTimeCont inputTimeCont inputTimeCont inputTimeCont" auto
             / auto auto  1fr auto;
             row-gap: 15px;
-
-            #cont-time-input {
-                column-gap: 5px;
-            }
 
             #TrashAllButtons i {
                 @include mixin-margin-sides(0px);
@@ -345,20 +336,7 @@ h1 {
 
 }
 
-@media screen and (max-width: 550px) {
-    #SpawnStopWatchBox {
-
-        #SpawnLableField {
-
-            p {
-                font-size: 16px;
-            }
-        }
-    }
-        
-            
-
-}
+// mobile-size
 
 @media screen and (max-width: 450px) {
 
@@ -368,7 +346,7 @@ h1 {
         #SpawnLableField {
 
             input {
-                width: 30ch;
+                width: $spawner-lable-field-width-mob;
             }
         }
 
@@ -378,7 +356,7 @@ h1 {
             "spawnBtn counterArrowSpawn countDirectionBtn trashAllBtn" auto
             "inputTimeCont inputTimeCont inputTimeCont inputTimeCont" auto            
             / auto auto auto auto;
-            row-gap: 15px;
+            row-gap: $spawner-btn-bar-row-gap-mob;
             column-gap: $spawner-btn-bar-column-gap-mob;
 
             #cont-time-input {
@@ -389,7 +367,7 @@ h1 {
                     "inputSeconds inputMinutes inputHours" auto
                     / auto auto auto;
                 
-                row-gap:  5px;
+                row-gap:  $spawner-input-start-time-row-gab-mob;
 
             }
         }

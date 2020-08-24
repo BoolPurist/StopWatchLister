@@ -39,6 +39,12 @@
 }
 
 @mixin mixin-stop-watch-font {
-    font-size: $stop-watch-font-size;
-    font-weight: $stop-watch-font-weight;
+    font-size: $stop-watch-font-size-lable;
+    font-weight: $stop-watch-font-weight-lable;
+}
+
+@mixin mixin-navbar-height-scaler($height) {
+    height: $height;
+    line-height: $height;
+    
 }

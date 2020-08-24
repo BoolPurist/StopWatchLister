@@ -4,34 +4,44 @@ $wrapper-row-gab-mobile: $wrapper-row-gab-desktop / 2;
 
 $standard-font-size: 18px;
 $mobile-font-size: 12px;
+
+// Coloring
 $standard-font-color: white;
 
-$stop-watch-font-size: 2rem;
-$stop-watch-font-weight: bold;
-$stop-watch-time-font-size: 4rem;
 
 $site-background-color: black;
 
 $sub-background-color: white;
 $sub-foreground-color: black;
 
+$arrow-down-color: red;
+$arrow-up-color: green;
+$separations-bar-color: #bebcbc;
+
 $btn-background-color: rgb(190, 188, 188);
+
+
 $btn-padding: 10px;
 $btn-border-radius: 5px;
 
 $border-bottom-color: rgb(3, 3, 3); 
+
+$font-awesome-size: 2rem;
+
 $widget-border-radius: 10px;
 $widget-padding: 20px;
+$btn-minor-focus-opacity: 50%;
 
 $navBar-side-padding-desktop: 20px;
 $navBar-side-padding-mobile: $navBar-side-padding-desktop / 3;
 $navBar-border-color: black;
 $navbar-style: solid;
 $navbar-width: 1px;
+$navbar-height: 50px;
+$navbar-height-tablet: 40px;
 
 $spawner-lable-font-size: 2rem;
 
-$separations-bar-color: #bebcbc;
 
 // box is a stopwatch or the spawn box for sw's
 $box-grid-column-gap: 5px; 
@@ -40,11 +50,36 @@ $box-grid-row-gap: 20px;
 // time-input-field is the box where the user can
 // type in the starting time at which a stopwatch
 // starts.
+
+$spawner-lable-field-width: 40ch;
+$spawner-lable-field-width-mob: 30ch;
+$spawner-lable-field-row-gap-tab: 10px;
+
+$spawner-count-direction-btn-height: 85%;
+
 $time-input-field-padding: 10px;
 $time-input-field-column-gap: 20px;
 $time-input-field-input-width: 12ch;
+$time-input-field-input-border-radius: 5px;
 
 $spawner-btn-bar-column-gap: 10px;
 $spawner-btn-bar-column-gap-mob: 10px;
+$spawner-btn-bar-row-gap-mob: 15px;
 
 $spawner-btn-counter-arrow-size: 3rem;
+
+$spawner-input-start-time-row-gab-mob: 3px;
+
+$stop-watch-list-row-gap: 20px;
+
+$stop-watch-font-size-lable: 2rem;
+$stop-watch-font-weight-lable: bold;
+$stop-watch-font-size-time-stamp: 3rem;
+
+$stop-watch-size-arrow: 3rem;
+
+$separations-bar-height: 20px;
+
+$error-bar-font-size: 2rem;
+$error-bar-font-color: white;
+$error-bar-bc-color: rgb(175, 28, 28);
