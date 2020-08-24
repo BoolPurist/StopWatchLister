@@ -9,7 +9,7 @@ class StopWatch {
      * @param {!string} whereToAppend - valid querySelector
      * @param {!string} querySelectorForTimeStamp - valid querySelector to find the dom element to 
      * apply current time regularally once started 
-     * @param {object} [DomSubReferences]
+     * @param {...object} [DomSubReferences]
      */
     constructor(whereToAppend, querySelectorForTimeStamp , ...DomSubReferences) {
         this.domReference = stopWatchDom().children[0];        
@@ -27,6 +27,8 @@ class StopWatch {
         document.querySelector(whereToAppend).appendChild(this.domReference);
     }
 
+    // Used to apply changes of internal timer to the stop watch dom element
+    // so the user can see the new time
     static _callbackUpdateTimeStamp(stopWatchRef) {
         stopWatchRef = stopWatchRef[0];
         
@@ -48,6 +50,13 @@ class StopWatch {
         this._timeStampField.textContent = this._timer.TimeStamp; 
     }
 
+    /**
+     * Starts the internal timer if timer has not started yet.
+     * 
+     * @returns {!boolean} - Returns true if the internal timer was started
+     * by this call. 
+     * Returns false if the timer was already started before this call
+     */
     start() {
         if (this._timerIsActive === false) {            
             this._timer.start(this.countDown);
@@ -56,6 +65,13 @@ class StopWatch {
         } else return false;        
     }
 
+    /**
+     * Pauses the internal timer if the timer is not already paused.
+     * 
+     * @returns {!boolean} - Returns true if internal timer was paused 
+     * by this call.
+     * Returns false if the internal timer was already paused before this call
+     */
     pause() {
         if (this._timerIsActive === true) {
             this._timer.stop();
@@ -64,6 +80,11 @@ class StopWatch {
         } else return false;
     }
 
+    /**
+     * Stops the internal timer and sets its value back the starting time
+     * 
+     * @returns {void}
+     */
     reset() {
         if (this._timerIsActive === true) {
             this._timerIsActive = false;
@@ -72,6 +93,12 @@ class StopWatch {
         this._timer.reset();
     }
 
+    /**
+     * Stops the internal timer and then removes the 
+     * stop watch dom element from the dom
+     * 
+     * @returns {void}
+     */
     remove() {
         this.pause();
         this.domReference.remove();
@@ -81,6 +108,8 @@ class StopWatch {
         return this.domReference.querySelector(querySelector);
     }
 
+    // Used to create properties with dom references as values 
+    // on the instance at runtime
     _CreateSubElementReference({ propertyName, domQuerySelector }) {
         Object.defineProperty(this, propertyName, {
             value: this._GetDomSubReference(domQuerySelector),
