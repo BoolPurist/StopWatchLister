@@ -1,41 +1,13 @@
 // @ts-check
 import { StopWatch } from "./Modules/StopWatch.js";
 import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
-import { QS } from "./Modules/Constants.js";
+import { QS, DYN_PROP_NAMES } from "./Modules/Constants.js";
 
 window.addEventListener("DOMContentLoaded", () => {
         "use strict";
         // SW = stopwatch
         // QS = querySelector
-            
-        
-        // Names of the properties which are created on every stop watch at runtime
-        /**
-         * @const
-         * @type {string}
-         */
-        const playButtonName = "playButton";
-        /**
-         * @const
-         * @type {string}
-         */    
-        const deleteButtonName = "trashButton";
-        /**
-         * @const
-         * @type {string}
-         */
-        const pauseButtonName = "pauseButton";
-        /**
-         * @const
-         * @type {string}
-         */
-        const resetBtnName = "resetButton";
-        /**
-         * @const
-         * @type {string}
-         */
-        const counterArrow = "counterArrow";
-        
+             
     
         const toggleClassNameFocus = "minorFocus";
     
@@ -231,13 +203,13 @@ window.addEventListener("DOMContentLoaded", () => {
     
                 for (const stopWatch of stopWatchList) {
     
-                    if (stopWatch[playButtonName] === target) {
+                    if (stopWatch[DYN_PROP_NAMES.PLAY_BUTTON] === target) {
                         
-                        stopWatch[playButtonName].classList.add(toggleClassNameFocus);
-                        stopWatch[pauseButtonName].classList.remove(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.PLAY_BUTTON].classList.add(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON].classList.remove(toggleClassNameFocus);
                         
                         if (stopWatch.start()) {                                              
-                            stopWatch[resetBtnName].classList.remove(toggleClassNameFocus);                        
+                            stopWatch[DYN_PROP_NAMES.RESET_BTN].classList.remove(toggleClassNameFocus);                        
                         }
                         
                     }                
@@ -247,7 +219,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 
                 for (let i = 0; i < stopWatchList.length; i++) {
     
-                    if (stopWatchList[i][deleteButtonName] === target) {                                       
+                    if (stopWatchList[i][DYN_PROP_NAMES.DELETE_BUTTON] === target) {                                       
                         stopWatchList[i].remove();
                         stopWatchList.splice(i, 1);                                            
                         if (stopWatchList.length === 0) toggleVisibility(separationBar, false);             
@@ -259,11 +231,11 @@ window.addEventListener("DOMContentLoaded", () => {
     
                 for (const stopWatch of stopWatchList) {
     
-                    if (stopWatch[pauseButtonName] === target) {   
+                    if (stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON] === target) {   
     
                         if (stopWatch.pause()) {
-                            stopWatch[playButtonName].classList.remove(toggleClassNameFocus);
-                            stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
+                            stopWatch[DYN_PROP_NAMES.PLAY_BUTTON].classList.remove(toggleClassNameFocus);
+                            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON].classList.add(toggleClassNameFocus);
                         }
     
                     }                
@@ -273,11 +245,11 @@ window.addEventListener("DOMContentLoaded", () => {
     
                 for (const stopWatch of stopWatchList) {
     
-                    if (stopWatch[resetBtnName] === target) {
+                    if (stopWatch[DYN_PROP_NAMES.RESET_BTN] === target) {
     
-                        stopWatch[playButtonName].classList.remove(toggleClassNameFocus);
-                        stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
-                        stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.PLAY_BUTTON].classList.remove(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.RESET_BTN].classList.add(toggleClassNameFocus);
+                        stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON].classList.add(toggleClassNameFocus);
                         stopWatch.reset();
                     }
     
@@ -320,16 +292,16 @@ window.addEventListener("DOMContentLoaded", () => {
             const stopWatch = new StopWatch(
                 QS.LIST_SW,
                 QS.CLASS_TEXT_TIMER, 
-                { propertyName: playButtonName, domQuerySelector: QS.PLAY_BTN },                       
-                { propertyName: deleteButtonName, domQuerySelector:  QS.TRASH_BTN},                       
-                { propertyName: pauseButtonName, domQuerySelector:  QS.PAUSE_BTN},                       
-                { propertyName: resetBtnName, domQuerySelector:  QS.RESET_BTN},                       
-                { propertyName: counterArrow, domQuerySelector:  QS.COUNTER_ARROW},                       
+                { propertyName: DYN_PROP_NAMES.PLAY_BUTTON, domQuerySelector: QS.PLAY_BTN },                       
+                { propertyName: DYN_PROP_NAMES.DELETE_BUTTON, domQuerySelector:  QS.TRASH_BTN},                       
+                { propertyName: DYN_PROP_NAMES.PAUSE_BUTTON, domQuerySelector:  QS.PAUSE_BTN},                       
+                { propertyName: DYN_PROP_NAMES.RESET_BTN, domQuerySelector:  QS.RESET_BTN},                       
+                { propertyName: DYN_PROP_NAMES.COUNTER_ARROW, domQuerySelector:  QS.COUNTER_ARROW},                       
             );
     
-            stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
-            stopWatch[resetBtnName].classList.add(toggleClassNameFocus);
-            stopWatch[counterArrow].classList.add(countArrowClasses.get(countDown)); 
+            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON].classList.add(toggleClassNameFocus);
+            stopWatch[DYN_PROP_NAMES.RESET_BTN].classList.add(toggleClassNameFocus);
+            stopWatch[DYN_PROP_NAMES.COUNTER_ARROW].classList.add(countArrowClasses.get(countDown)); 
     
             stopWatch.setUpTimer(totalSeconds);
             stopWatch.countDown = countDown;

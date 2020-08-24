@@ -1,3 +1,4 @@
+// query selector strings for getting dom elements.
 const QS = {
 
         /**
@@ -93,6 +94,35 @@ const QS = {
 
 }
 
+// Names of the properties which are created on every stop watch at runtime
+const DYN_PROP_NAMES = {
+        /**
+         * @const
+         * @type {string}
+         */
+        PLAY_BUTTON: "playButton",
+        /**
+         * @const
+         * @type {string}
+         */    
+        DELETE_BUTTON: "trashButton",
+        /**
+         * @const
+         * @type {string}
+         */
+        PAUSE_BUTTON: "pauseButton",
+        /**
+         * @const
+         * @type {string}
+         */
+        RESET_BTN: "resetButton",
+        /**
+         * @const
+         * @type {string}
+         */
+        COUNTER_ARROW: "counterArrow",
+}
+
 Object.freeze(QS);
 
-export { QS };
+export { QS, DYN_PROP_NAMES };
