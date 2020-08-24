@@ -1,101 +1,14 @@
 // @ts-check
 import { StopWatch } from "./Modules/StopWatch.js";
 import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
+import { QS } from "./Modules/Constants.js";
 
 window.addEventListener("DOMContentLoaded", () => {
         "use strict";
         // SW = stopwatch
         // QS = querySelector
+            
         
-        // querySelector strings for accessing certain dom elements 
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSListSW = "#stop-watch-list";
-        /**
-         * @const
-         * @type {string}
-         */    
-        const QSSpawnBox = "#SpawnStopWatchBox";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSSpawnBtn = "#spawn-btn";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSTrashAllBtn = "#TrashAllButtons";
-    
-        const QSClassTextTimer = ".text-timer";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSPlayBtn = ".play-btn";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSTrashBtn = ".trash-btn";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSLableTextSW = ".stop-watch-label-text";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSPauseButton = ".pause-btn";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSResetBtn = ".reset-btn";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSCountDirectionBtn = "#check-count-direction";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSInputSeconds = "#input-seconds";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSInputMinutes = "#input-minutes";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSInputHours = "#input-hours";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSCounterArrow = ".counter-arrow";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSErrorBarStarTime = ".error-bar-start-time";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSCounterArrowSpawn = "#counter-arrow-spawn";
-        /**
-         * @const
-         * @type {string}
-         */
-        const QSSeparationBar = ".separation-bar";
-    
         // Names of the properties which are created on every stop watch at runtime
         /**
          * @const
@@ -133,14 +46,14 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLElement}
          */
-        const spawnBoxStopWatch = document.querySelector(QSSpawnBox);
+        const spawnBoxStopWatch = document.querySelector(QS.SPAWN_BOX);
         /**
          * List for holding all spawned stop watches on the page
          * 
          * @const
          * @type {HTMLElement}
          */
-        const containerForStopWatches = document.querySelector(QSListSW);
+        const containerForStopWatches = document.querySelector(QS.LIST_SW);
         /**
          * Resides in the spawn box
          * Text input field in which the user can enter a name for the 
@@ -158,7 +71,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLElement}
          */
-        const spawnBtn = document.querySelector(QSSpawnBtn);
+        const spawnBtn = document.querySelector(QS.SPAWN_BTN);
         /**
          * Resides in the spawn box
          * On clicking it, it removes all spawned stop watches
@@ -166,7 +79,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLElement}
          */
-        const trashAllBtn = document.querySelector(QSTrashAllBtn);
+        const trashAllBtn = document.querySelector(QS.TRASH_ALL_BTN);
         /**
          * On clicking it in the spawn box, it toggles the counting direction of up or down
          * of the next stop watch to be spawned
@@ -174,7 +87,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLElement}
          */
-        const countDirectionBtn = document.querySelector(QSCountDirectionBtn);
+        const countDirectionBtn = document.querySelector(QS.COUNT_DIRECTION_BTN);
         /**
          * Resides in the spawn box
          * Input field where the user provides the seconds for the starting time 
@@ -183,7 +96,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLInputElement}
          */
-        const startSecondsInput = document.querySelector(QSInputSeconds);
+        const startSecondsInput = document.querySelector(QS.INPUT_SECONDS);
         /**
          * Resides in the spawn box
          * Input field where the user provides the minutes for the starting time 
@@ -192,7 +105,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLInputElement}
          */
-        const startMinutesInput = document.querySelector(QSInputMinutes);
+        const startMinutesInput = document.querySelector(QS.INPUT_MINUTES);
         /**
          * Resides in the spawn box
          * Input field where the user provides the hours for the starting time 
@@ -201,7 +114,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLInputElement}
          */
-        const startHoursInput = document.querySelector(QSInputHours);
+        const startHoursInput = document.querySelector(QS.INPUT_HOURS);
         /**
          * If user provides invalid input for the starting time this dom
          * element appears always under the spawn box. if the next input 
@@ -210,7 +123,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLElement}
          */
-        const errorBarInDom = document.querySelector(QSErrorBarStarTime);
+        const errorBarInDom = document.querySelector(QS.ERROR_BAR_STARTIME);
         /**
          * Resides in the spawn box
          * Indicates if the stop watch will count up or down. It is indicates 
@@ -219,7 +132,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const  
          * @type {HTMLElement}
          */
-        const counterArrowSpawn = document.querySelector(QSCounterArrowSpawn);
+        const counterArrowSpawn = document.querySelector(QS.COUNTER_ARROW_SPAWN);
         /**
          * Is placed below the spawn box or the error bar to show
          * separation between spawn box and actual stop watches
@@ -227,7 +140,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLElement}
          */
-        const separationBar = document.querySelector(QSSeparationBar);
+        const separationBar = document.querySelector(QS.SEPARATION_BAR);
         
         let countDown = false;
         const countDirectionNames = new Map()
@@ -255,6 +168,8 @@ window.addEventListener("DOMContentLoaded", () => {
     
     
         // Debug Area
+                
+
         
         
     
@@ -312,7 +227,7 @@ window.addEventListener("DOMContentLoaded", () => {
              */
             const targetClass = target.className;
             
-            if ( targetClass.includes(QSPlayBtn.substring(1)) ) {
+            if ( targetClass.includes(QS.PLAY_BTN.substring(1)) ) {
     
                 for (const stopWatch of stopWatchList) {
     
@@ -328,7 +243,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     }                
                 }
     
-            } else if (targetClass.includes(QSTrashBtn.substring(1))) {
+            } else if (targetClass.includes(QS.TRASH_BTN.substring(1))) {
                 
                 for (let i = 0; i < stopWatchList.length; i++) {
     
@@ -340,7 +255,7 @@ window.addEventListener("DOMContentLoaded", () => {
     
                 } 
     
-            } else if (targetClass.includes(QSPauseButton.substring(1))) {
+            } else if (targetClass.includes(QS.PAUSE_BTN.substring(1))) {
     
                 for (const stopWatch of stopWatchList) {
     
@@ -354,7 +269,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     }                
                 }   
     
-            } else if (targetClass.includes(QSResetBtn.substring(1))) {
+            } else if (targetClass.includes(QS.RESET_BTN.substring(1))) {
     
                 for (const stopWatch of stopWatchList) {
     
@@ -403,13 +318,13 @@ window.addEventListener("DOMContentLoaded", () => {
             }
     
             const stopWatch = new StopWatch(
-                QSListSW,
-                QSClassTextTimer, 
-                { propertyName: playButtonName, domQuerySelector: QSPlayBtn },                       
-                { propertyName: deleteButtonName, domQuerySelector:  QSTrashBtn},                       
-                { propertyName: pauseButtonName, domQuerySelector:  QSPauseButton},                       
-                { propertyName: resetBtnName, domQuerySelector:  QSResetBtn},                       
-                { propertyName: counterArrow, domQuerySelector:  QSCounterArrow},                       
+                QS.LIST_SW,
+                QS.CLASS_TEXT_TIMER, 
+                { propertyName: playButtonName, domQuerySelector: QS.PLAY_BTN },                       
+                { propertyName: deleteButtonName, domQuerySelector:  QS.TRASH_BTN},                       
+                { propertyName: pauseButtonName, domQuerySelector:  QS.PAUSE_BTN},                       
+                { propertyName: resetBtnName, domQuerySelector:  QS.RESET_BTN},                       
+                { propertyName: counterArrow, domQuerySelector:  QS.COUNTER_ARROW},                       
             );
     
             stopWatch[pauseButtonName].classList.add(toggleClassNameFocus);
@@ -423,7 +338,7 @@ window.addEventListener("DOMContentLoaded", () => {
             stopWatchList.push( stopWatch ); 
             populateDomElementWithTextContent(
                 stopWatch.domReference,
-                {querySelector: QSLableTextSW, textContent: lableText}
+                {querySelector: QS.LABLE_TEXT_SW, textContent: lableText}
             );
     
             if (stopWatchList.length === 1) toggleVisibility(separationBar, true); 
