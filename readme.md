@@ -7,7 +7,7 @@ webpage for managing several stop watches for counting time down or up
 ## Features list
 
 - On clicking the plus button you can create a stop watch
-- In this box you start the counting per second by clicking on the play button
+- In a stop watch box you start the counting per second by clicking on the play button
 - Can be paused by clicking on the pause button
 - Can be reset to the initial time by clicking on the reset button
 - In the spawn box one can enter a starting time for a stop watch

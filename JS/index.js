@@ -116,10 +116,12 @@ window.addEventListener("DOMContentLoaded", () => {
         
         let countDown = false;
 
-        const countDirectionNames = new Map()
+        const countDirectionNames = new Map();
+        // The 2 possible texts the button for counting direction can show
         countDirectionNames.set(false, "Count Down ?");
         countDirectionNames.set(true, "Count Up ?");
         const countArrowClasses = new Map();
+        // class names for toggling an arrow for indicating the counting sense
         countArrowClasses.set(false, "fa-angle-double-up");
         countArrowClasses.set(true, "fa-angle-double-down");
         
