@@ -100,13 +100,45 @@ class Timer {
 
     /**
      * Format for the time, Hours:Minutes:Seconds
+     * if the time is negative 1 minus will be prepended 
+     * to the time stamp 
      * @member {string} 
      * @readonly
+     * 
      * @example  
-     * // 20:45:02 for Seconds: 02, Minutes: 45, Hours: 20  
+     * 20:45:02 for Seconds: 02, Minutes: 45, Hours: 20
+     * -0:10:20 for Seconds: -20, Minutes: -10, Hours: 0
      */
     get TimeStamp() {
-        return `${this.Hours}:${this.Minutes}:${this.Seconds}`;
+
+        let seconds = this.Seconds;
+        let minutes = this.Minutes;
+        let hours = this.Hours;
+        let negative = false;
+
+        if (this.TotalSeconds < 0) {
+
+            seconds *= -1;
+            minutes *= -1;
+            hours *= -1;
+            negative = true;
+        }
+
+        let normalizedSeconds = seconds >= 10 ? 
+        seconds.toString() : `0${seconds.toString()}`
+
+        let normalizedMinutes = minutes >= 10 ? 
+        minutes.toString() : `0${minutes.toString()}`
+
+        let normalizedHours = hours >= 10 ? 
+        hours.toString() : `0${hours.toString()}`;
+
+        let normalizedTime = 
+        `
+        ${normalizedHours}:${normalizedMinutes}:${normalizedSeconds}
+        `;
+
+        return negative === false ? normalizedTime : `-${normalizedTime}`;
     }
 
     // Routines

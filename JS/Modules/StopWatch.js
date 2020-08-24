@@ -30,48 +30,7 @@ class StopWatch {
     static _callbackUpdateTimeStamp(stopWatchRef) {
         stopWatchRef = stopWatchRef[0];
         
-        stopWatchRef._timeStampField.textContent = StopWatch.
-        _normalizeTimeUnitAtLeast2Digits(stopWatchRef._timer);
-    }
-
-    static _normalizeTimeUnitAtLeast2Digits(timer) {
-        
-        let seconds = timer.Seconds;
-        let minutes = timer.Minutes;
-        let hours = timer.Hours;
-        let negative = false;
-
-        if (timer.TotalSeconds < 0) {
-
-            seconds *= -1;
-            minutes *= -1;
-            hours *= -1;
-            negative = true;
-        }
-
-        let normalizedSeconds = seconds >= 10 ? 
-        seconds.toString() : `0${seconds.toString()}`
-
-        let normalizedMinutes = minutes >= 10 ? 
-        minutes.toString() : `0${minutes.toString()}`
-
-        let normalizedHours = hours >= 10 ? 
-        hours.toString() : `0${hours.toString()}`;
-
-        let normalizedTime = `${normalizedHours}:${normalizedMinutes}:${normalizedSeconds}`;
-
-        return negative === false ? normalizedTime : `-${normalizedTime}`         
-    }
-
-
-    _GetTimer(seconds, minutes, hours) {
-        if (this._timerIsActive === true ) {
-            this.reset();
-        }
-
-        let timer = new Timer(seconds, minutes, hours);
-        timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
-        return timer;        
+        stopWatchRef._timeStampField.textContent = stopWatchRef._timer.TimeStamp;
     }
 
     /**
@@ -86,8 +45,7 @@ class StopWatch {
     setUpTimer(seconds, minutes, hours) {
         this._timer = new Timer(seconds, minutes, hours);
         this._timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
-        this._timeStampField.textContent = StopWatch.
-        _normalizeTimeUnitAtLeast2Digits(this._timer); 
+        this._timeStampField.textContent = this._timer.TimeStamp; 
     }
 
     start() {
@@ -125,18 +83,11 @@ class StopWatch {
 
     _CreateSubElementReference({ propertyName, domQuerySelector }) {
         Object.defineProperty(this, propertyName, {
-            value: this.domReference.querySelector(domQuerySelector),
+            value: this._GetDomSubReference(domQuerySelector),
             writable: false
         });
         
     }
-    
-    // _PopulateDomElementWithTextContent (...Data) {
-    //     Data.forEach(object => {
-    //         const {querySelector, textContent} = object;
-    //         this._GetDomSubReference(querySelector).textContent = textContent;
-    //     })
-    // }
 
 }
 
