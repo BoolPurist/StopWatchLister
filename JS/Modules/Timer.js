@@ -156,7 +156,6 @@ class Timer {
         else this._totalSeconds--;
     }
 
-
     // Intended exposed methods.
 
     /**
@@ -208,6 +207,31 @@ class Timer {
         this._countDown = false;
         this.onTimeChange._executeCallbacks(this);
         this.stop();
+    }
+
+    /**
+     * Gets the current starting time at which 
+     * the timer starts counting from if started.
+     * 
+     * @type {!number} 
+     */
+    get totalSecondsStarting() {
+        return this._totalSecondsStarting;
+    }
+
+    /**
+     * Set up a new time so in case the timer gets restarted,
+     * timer starts counting at this new time
+     * 
+     * @param {!number} totalSeconds - new time at which the
+     * timers starts counting after a reset
+    */    
+    set totalSecondsStarting(totalSeconds) {
+        if (totalSeconds === null || typeof totalSeconds !== "number") {
+            throw new TypeError("New starting time must be of type number");
+        }
+
+        this._totalSecondsStarting = totalSeconds;
     }
 
 }

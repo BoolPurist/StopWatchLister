@@ -40,6 +40,7 @@ class StopWatch {
             totalSeconds: this._timer.TotalSeconds,
             countingDown: this.countDown,
             lable: this.lableText,
+            startingSeconds: this._timer.totalSecondsStarting,
         };
     }
 
@@ -53,7 +54,12 @@ class StopWatch {
      * @returns {void}
      */
     setUpTimer(seconds, minutes, hours) {
-        this._timer = new Timer(seconds, minutes, hours);
+        if (arguments.length === 1) {
+            this._timer = new Timer(seconds);
+        } else {
+            this._timer = new Timer(seconds, minutes, hours);
+        }
+        
         this._timer.onTimeChange.addCallback(StopWatch._callbackUpdateTimeStamp, this);
         this._timeStampField.textContent = this._timer.TimeStamp; 
     }
@@ -111,6 +117,11 @@ class StopWatch {
         this.pause();
         this.domReference.remove();
     }
+
+    setResetTime(totalSeconds) {
+        this._timer.totalSecondsStarting = totalSeconds;
+    }
+
 
     _GetDomSubReference (querySelector) {
         return this.domReference.querySelector(querySelector);

@@ -158,13 +158,13 @@ window.addEventListener("DOMContentLoaded", () => {
         
         if (stopWatchesState !== null && stopWatchesState !== "") {
             const stopWatchesObjList = JSON.parse(stopWatchesState); 
-            stopWatchesObjList.forEach(uncreatedStopWatch => {
-                console.log(uncreatedStopWatch.totalSeconds);
-                CreateStopWatch(
+            stopWatchesObjList.forEach(uncreatedStopWatch => {                
+                const stopWatch = CreateStopWatch(
                     uncreatedStopWatch.lableText,
                     uncreatedStopWatch.totalSeconds,
                     uncreatedStopWatch.countingDown
-                );
+                );                
+                stopWatch.setResetTime(uncreatedStopWatch.startingSeconds);                
             });
         }
         
@@ -175,13 +175,13 @@ window.addEventListener("DOMContentLoaded", () => {
         const intervall = setInterval( () => {
             if (stopWatchList.length === 0) {
                 sessionStorage.setItem("stop-watches", "");
-            } else {
-                
+            } else {            
                 const stateList = stopWatchList.map(
                     stopWatch => stopWatch.jsObjectState 
                 );
                 const stateString = JSON.stringify(stateList);
                 sessionStorage.setItem("stop-watches", stateString);
+
                 
             }         
         },1000)
@@ -349,7 +349,8 @@ window.addEventListener("DOMContentLoaded", () => {
          * if true the stop watch will count down. if not provided the countDownGlobal variable
          * is taken for this parameter
          *
-         * @returns {void} 
+         * @returns {?StopWatch} Returns the created stop watch instance.
+         * Returns null if the starting time from input starting time widget was not valid
          */
         function CreateStopWatch(lableText="Stop Watch", totalSeconds=null, countDown=countDownGlobal) {
     
@@ -361,7 +362,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
             // if null here the the string from the spawn box is not valid for conversion into numbers
             if (totalSeconds === null) {
-                return;
+                return null;
             }
     
             const stopWatch = new StopWatch(
@@ -418,7 +419,9 @@ window.addEventListener("DOMContentLoaded", () => {
     
             // As soon as the 1. stop watch is spawned, a separation bar is shown
             // between the spawn box and the stop watches.
-            if (stopWatchList.length === 1) toggleVisibility(separationBar, true); 
+            if (stopWatchList.length === 1) toggleVisibility(separationBar, true);
+            
+            return stopWatch;
         }
 
         /**
