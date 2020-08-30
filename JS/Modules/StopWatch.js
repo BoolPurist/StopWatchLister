@@ -39,7 +39,7 @@ class StopWatch {
         return {
             totalSeconds: this._timer.TotalSeconds,
             countingDown: this.countDown,
-            lable: this.lableText,
+            lableText: this.lableText,
             startingSeconds: this._timer.totalSecondsStarting,
         };
     }

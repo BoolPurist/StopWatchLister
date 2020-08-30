@@ -124,10 +124,19 @@ const DYN_PROP_NAMES = {
 }
 
 const TOGGLE_CLASSES = {
-        
+        /**
+         * @const
+         * @type {string}
+         */
+        PARTLY_OPACITY: "minorFocus",
+        /**
+         * @const
+         * @type {string}
+         */
+        BE_GONE: "beGone",
 }
 
 Object.freeze(QS);
 Object.freeze(DYN_PROP_NAMES);
 
-export { QS, DYN_PROP_NAMES };
+export { QS, DYN_PROP_NAMES, TOGGLE_CLASSES };

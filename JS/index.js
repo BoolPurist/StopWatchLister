@@ -1,15 +1,13 @@
 // @ts-check
 import { StopWatch } from "./Modules/StopWatch.js";
 import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
-import { QS, DYN_PROP_NAMES } from "./Modules/Constants.js";
+import { QS, DYN_PROP_NAMES, TOGGLE_CLASSES } from "./Modules/Constants.js";
 
 window.addEventListener("DOMContentLoaded", () => {
         "use strict";
         // SW = stopwatch
         // QS = querySelector
-             
-        const toggleClassNameFocus = "minorFocus";
-    
+                 
         /**
          * The box which holds all widgets for the user to spawn stop watches 
          * and configure how spawned stop watches will behave 
@@ -252,13 +250,13 @@ window.addEventListener("DOMContentLoaded", () => {
                     if (stopWatch[DYN_PROP_NAMES.PLAY_BUTTON] === target) {
                         
                         stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
-                        .classList.add(toggleClassNameFocus);
+                        .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
                         stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
-                        .classList.remove(toggleClassNameFocus);
+                        .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
                         
                         if (stopWatch.start()) {                                              
                             stopWatch[DYN_PROP_NAMES.RESET_BTN]
-                            .classList.remove(toggleClassNameFocus);                        
+                            .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);                        
                         }
                         
                     }                
@@ -392,9 +390,9 @@ window.addEventListener("DOMContentLoaded", () => {
     
             // Making the pause and reset buttons half transparent.
             stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
-            .classList.add(toggleClassNameFocus);
+            .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
             stopWatch[DYN_PROP_NAMES.RESET_BTN]
-            .classList.add(toggleClassNameFocus);
+            .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
             
             // Giving the arrow which indicates the counting direction, 
             // the right appearance  
@@ -467,26 +465,26 @@ window.addEventListener("DOMContentLoaded", () => {
          * @returns {void} 
          */
         function toggleVisibility(domElement,makeVisible) {
-            if (makeVisible === true) domElement.classList.remove("beGone");
-            else domElement.classList.add("beGone");        
+            if (makeVisible === true) domElement.classList.remove(TOGGLE_CLASSES.BE_GONE);
+            else domElement.classList.add(TOGGLE_CLASSES.BE_GONE);        
         }
 
         function setToPauseBtnState(stopWatch) {            
             stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
-            .classList.remove(toggleClassNameFocus);            
+            .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);            
             stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
-            .classList.add(toggleClassNameFocus);
+            .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
             stopWatch[DYN_PROP_NAMES.RESET_BTN]
-            .classList.remove(toggleClassNameFocus);
+            .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
         }
 
         function setToResetBtnState(stopWatch) {
             stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
-            .classList.remove(toggleClassNameFocus);
+            .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
             stopWatch[DYN_PROP_NAMES.RESET_BTN]
-            .classList.add(toggleClassNameFocus);
+            .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
             stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
-            .classList.add(toggleClassNameFocus);
+            .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
         }
 
         /**
@@ -502,12 +500,12 @@ window.addEventListener("DOMContentLoaded", () => {
         function manageErrorBar(errorRaised) {
             
             const isNotErrorBarDom = errorBarInDom
-            .classList.value.includes("beGone");
+            .classList.value.includes(TOGGLE_CLASSES.BE_GONE);
     
             if (errorRaised === true && isNotErrorBarDom === true ) {            
-                errorBarInDom.classList.remove("beGone");                        
+                errorBarInDom.classList.remove(TOGGLE_CLASSES.BE_GONE);                        
             } else if (errorRaised === false && isNotErrorBarDom === false) {
-                errorBarInDom.classList.add("beGone");            
+                errorBarInDom.classList.add(TOGGLE_CLASSES.BE_GONE);            
             }
     
         }
