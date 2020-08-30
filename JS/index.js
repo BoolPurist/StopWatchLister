@@ -114,7 +114,16 @@ window.addEventListener("DOMContentLoaded", () => {
          */
         const separationBar = document.querySelector(QS.SEPARATION_BAR);
         
-        let countDown = false;
+        /**
+         * If true the next stop watch to spawn will count down
+         * If false it will count up
+         * 
+         * The value is toggled whenever the user clicks on the button 
+         * accessible via variable countDirectionBtn 
+         * 
+         * @type {!boolean} 
+         */
+        let countDownGlobal = false;
 
         const countDirectionNames = new Map();
         // The 2 possible texts the button for counting direction can show
@@ -140,7 +149,43 @@ window.addEventListener("DOMContentLoaded", () => {
         containerForStopWatches
         .addEventListener("click", callBackStopWatchContainer);
     
-        // Debug Area    
+        // Debug Area   
+        
+        // Managing the session storage
+
+        // Recreating stored stop watches from session storage
+        const stopWatchesState = sessionStorage.getItem("stop-watches");
+        
+        if (stopWatchesState !== null && stopWatchesState !== "") {
+            const stopWatchesObjList = JSON.parse(stopWatchesState); 
+            stopWatchesObjList.forEach(uncreatedStopWatch => {
+                console.log(uncreatedStopWatch.totalSeconds);
+                CreateStopWatch(
+                    uncreatedStopWatch.lableText,
+                    uncreatedStopWatch.totalSeconds,
+                    uncreatedStopWatch.countingDown
+                );
+            });
+        }
+        
+
+        // Saving the states of stop watches for recreating stop watches
+        // after page reload
+
+        const intervall = setInterval( () => {
+            if (stopWatchList.length === 0) {
+                sessionStorage.setItem("stop-watches", "");
+            } else {
+                
+                const stateList = stopWatchList.map(
+                    stopWatch => stopWatch.jsObjectState 
+                );
+                const stateString = JSON.stringify(stateList);
+                sessionStorage.setItem("stop-watches", stateString);
+                
+            }         
+        },1000)
+
         /* Functions */
     
         /**
@@ -173,10 +218,10 @@ window.addEventListener("DOMContentLoaded", () => {
                 stopWatchList = [];
             } else if (target === countDirectionBtn) {
     
-                countDown = !countDown;
-                toggleCounterSpawnerArrow(countDown);
+                countDownGlobal = !countDownGlobal;
+                toggleCounterSpawnerArrow(countDownGlobal);
                 countDirectionBtn.textContent = countDirectionNames
-                .get(countDown);
+                .get(countDownGlobal);
             }
         }
     
@@ -294,14 +339,27 @@ window.addEventListener("DOMContentLoaded", () => {
          * 3. If the first stop watch is created it enables the separation bar 
          * between the spawn box and the stop watches
          * 
-         * @param {!string} [lableText="Stop Watch"] - Title of stop watch box 
-         * to be spawned 
+         * @param {!string} [lableText="Stop Watch"] - (optional) Title of stop watch box 
+         * to be spawned.
+         * @param {?number} [totalSeconds=null] - (optional) the time which a stop watch starts
+         * counting from 
+         * if not provided the starting time
+         * for a stop watch will taken from the input starting time widget in the spawn box
+         * @param {!boolean} [countDown] (optional) if false the stop watch will count up
+         * if true the stop watch will count down. if not provided the countDownGlobal variable
+         * is taken for this parameter
+         *
          * @returns {void} 
          */
-        function CreateStopWatch(lableText="Stop Watch") {
+        function CreateStopWatch(lableText="Stop Watch", totalSeconds=null, countDown=countDownGlobal) {
     
-            const totalSeconds = validateStartingTime();
+            // If null here the stop watch is created through clicking on the spawn button
+            // Grabbing starting time from the input starting time widget in the spawn box 
+            if (totalSeconds === null) {
+                totalSeconds = validateStartingTime();
+            }
 
+            // if null here the the string from the spawn box is not valid for conversion into numbers
             if (totalSeconds === null) {
                 return;
             }
@@ -309,6 +367,7 @@ window.addEventListener("DOMContentLoaded", () => {
             const stopWatch = new StopWatch(
                 QS.LIST_SW,
                 QS.CLASS_TEXT_TIMER, 
+                lableText, 
                 // Attaching the dynamic properties to reference the children 
                 // dom elements of the stop watch later
                 { 

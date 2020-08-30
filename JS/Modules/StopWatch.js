@@ -11,8 +11,9 @@ class StopWatch {
      * apply current time regularally once started 
      * @param {...object} [DomSubReferences]
      */
-    constructor(whereToAppend, querySelectorForTimeStamp , ...DomSubReferences) {
-        this.domReference = stopWatchDom();        
+    constructor(whereToAppend, querySelectorForTimeStamp , lableText , ...DomSubReferences) {
+        this.domReference = stopWatchDom(); 
+        this.lableText = lableText;       
         this._timerIsActive = false;
         this._timer = null;
         this._timeStampField = this.
@@ -32,6 +33,14 @@ class StopWatch {
     // so the user can see the new time
     static _callbackUpdateTimeStamp(event) {
         event.subscriber._timeStampField.textContent = event.invoker.TimeStamp;
+    }
+
+    get jsObjectState() {
+        return {
+            totalSeconds: this._timer.TotalSeconds,
+            countingDown: this.countDown,
+            lable: this.lableText,
+        };
     }
 
     /**
