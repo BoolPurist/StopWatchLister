@@ -164,7 +164,11 @@ window.addEventListener("DOMContentLoaded", () => {
                     uncreatedStopWatch.totalSeconds,
                     uncreatedStopWatch.countingDown
                 );                
-                stopWatch.setResetTime(uncreatedStopWatch.startingSeconds);                
+                stopWatch.setResetTime(uncreatedStopWatch.startingSeconds);
+                
+                if (uncreatedStopWatch.totalSeconds !== uncreatedStopWatch.startingSeconds) {            
+                    setToPauseBtnState(stopWatch);
+                }
             });
         }
         
@@ -281,10 +285,8 @@ window.addEventListener("DOMContentLoaded", () => {
                     if (stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON] === target) {   
     
                         if (stopWatch.pause()) {
-                            stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
-                            .classList.remove(toggleClassNameFocus);
-                            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
-                            .classList.add(toggleClassNameFocus);
+                            setToPauseBtnState(stopWatch);
+
                         }
     
                     }                
@@ -296,12 +298,7 @@ window.addEventListener("DOMContentLoaded", () => {
     
                     if (stopWatch[DYN_PROP_NAMES.RESET_BTN] === target) {
     
-                        stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
-                        .classList.remove(toggleClassNameFocus);
-                        stopWatch[DYN_PROP_NAMES.RESET_BTN]
-                        .classList.add(toggleClassNameFocus);
-                        stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
-                        .classList.add(toggleClassNameFocus);
+                        setToResetBtnState(stopWatch);
                         stopWatch.reset();
                     }
     
@@ -474,7 +471,24 @@ window.addEventListener("DOMContentLoaded", () => {
             else domElement.classList.add("beGone");        
         }
 
-    
+        function setToPauseBtnState(stopWatch) {            
+            stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+            .classList.remove(toggleClassNameFocus);            
+            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+            .classList.add(toggleClassNameFocus);
+            stopWatch[DYN_PROP_NAMES.RESET_BTN]
+            .classList.remove(toggleClassNameFocus);
+        }
+
+        function setToResetBtnState(stopWatch) {
+            stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+            .classList.remove(toggleClassNameFocus);
+            stopWatch[DYN_PROP_NAMES.RESET_BTN]
+            .classList.add(toggleClassNameFocus);
+            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+            .classList.add(toggleClassNameFocus);
+        }
+
         /**
          * Toggles visibility and influence on the document flow for the error bar. 
          * If user provides wrong input the error bar is visible and 

@@ -123,6 +123,10 @@ const DYN_PROP_NAMES = {
         COUNTER_ARROW: "counterArrow",
 }
 
+const TOGGLE_CLASSES = {
+        
+}
+
 Object.freeze(QS);
 Object.freeze(DYN_PROP_NAMES);
 
