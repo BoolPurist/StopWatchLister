@@ -1,5 +1,5 @@
 // @ts-check
-
+import { DelegateHolder } from "./DelegateHolder.js";
 /** @module Timer */
 
 /** 
@@ -49,7 +49,8 @@ class Timer {
             // for the callback functions. 
             this._funcs = [];
         }
-                
+
+        this.onTimeChange = new DelegateHolder();
         this._countDown = false;
         this._totalSecondsStarting = this._totalSeconds; 
     }
@@ -155,14 +156,6 @@ class Timer {
         else this._totalSeconds--;
     }
 
-    // Executes all callback functions stored in this._func
-    _executeFuncs() {        
-        for (const invocationEnv of this._funcs) {
-            // possible arguments for a function call is provided
-            // via invocationEnv.objAsArgue === this._funcs[i].objAsArgue             
-            invocationEnv.func(invocationEnv.objAsArgue);
-        }
-    }
 
     // Intended exposed methods.
 
@@ -179,7 +172,7 @@ class Timer {
         
         this._intervalId = setInterval(() => {
             this._incrementSeconds(); 
-            this._executeFuncs();
+            this.onTimeChange._executeCallbacks(this);
         }, 1000);
     }
     
@@ -213,76 +206,8 @@ class Timer {
     reset() {
         this._totalSeconds = this._totalSecondsStarting;
         this._countDown = false;
-        this._executeFuncs();
+        this.onTimeChange._executeCallbacks(this);
         this.stop();
-    }
-
-    /**
-     * Attaches a functions to the instance. this function is then
-     * invocated whenever the time changes 
-     * ( Every second when started until stopped )
-     *  
-     * @param {!Function} func - Function to be executed 
-     * when the time of this instance changes 
-     * @param {Array<any>} [objAsArgue] - collection of arguments to be given 
-     * for a call of a function
-     * @returns {void} 
-     * @throws {TypeError} - if parameter func is not of type "function"
-     * 
-     * @example const function = (arrayOfArguments) => {
-     *  const timer = arrayOfArguments[0];
-     *  console.log(timer.TimeStamp);
-     * }
-     * 
-     * let timer = new Timer();
-     * timer.addFuncOnChange(function, timer);
-     * timer.start();
-     * // Every second the console will show something like 
-     * // 0:0:0, 0:0:1, 0:0:2 ... etc
-     */
-    addFuncOnChange(func, ...objAsArgue) {
-        if (func === null || typeof(func) !== "function") {
-            throw new TypeError(`
-            func as callback function must be of type function
-            `);
-        }
-
-        this._funcs.push(
-             {func: func, objAsArgue: objAsArgue} 
-        );
-    }
-
-    /**
-     * Removes an added callback function which is executed on timer changing  
-     * If the function is not attached in the first place. Nothing happens
-     * 
-     * @param {Function} func - reference of an added callback function that is 
-     * to be executed on timer changing 
-     * @returns {void} 
-     */
-    removeFuncOnChange(func) {
-
-        const length = this._funcs.length;
-        
-        for (let i = 0; i < length; i++ ) {
-
-            if (this._funcs[i].func === func) {
-
-                this._funcs.splice(i, 1);
-
-                return;
-            }
-        }
-    }
-
-    /**
-     * Removes and stops all added callback functions which 
-     * are executed on timer changing 
-     * 
-     * @returns {void}
-     */
-    clearFuncOnChange() {
-        this._funcs = [];
     }
 
 }

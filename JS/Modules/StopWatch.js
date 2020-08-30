@@ -30,10 +30,8 @@ class StopWatch {
 
     // Used to apply changes of internal timer to the stop watch dom element
     // so the user can see the new time
-    static _callbackUpdateTimeStamp(stopWatchRef) {
-        stopWatchRef = stopWatchRef[0];
-        
-        stopWatchRef._timeStampField.textContent = stopWatchRef._timer.TimeStamp;
+    static _callbackUpdateTimeStamp(event) {
+        event.subscriber._timeStampField.textContent = event.invoker.TimeStamp;
     }
 
     /**
@@ -47,7 +45,7 @@ class StopWatch {
      */
     setUpTimer(seconds, minutes, hours) {
         this._timer = new Timer(seconds, minutes, hours);
-        this._timer.addFuncOnChange(StopWatch._callbackUpdateTimeStamp, this);
+        this._timer.onTimeChange.addCallback(StopWatch._callbackUpdateTimeStamp, this);
         this._timeStampField.textContent = this._timer.TimeStamp; 
     }
 
