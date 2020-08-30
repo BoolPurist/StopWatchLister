@@ -1,8 +1,10 @@
+$standard-font-size: 18px;
+
 $wrapper-margin: 25px 2%;
 $wrapper-row-gab-desktop: 40px;
 $wrapper-row-gab-mobile: $wrapper-row-gab-desktop / 2;
 
-$standard-font-size: 18px;
+
 $mobile-font-size: 12px;
 
 // Coloring
@@ -19,6 +21,7 @@ $arrow-up-color: green;
 $separations-bar-color: #bebcbc;
 
 $btn-background-color: rgb(190, 188, 188);
+
 
 
 $btn-padding: 10px;
@@ -54,6 +57,7 @@ $box-grid-row-gap: 20px;
 $spawner-lable-field-width: 40ch;
 $spawner-lable-field-width-mob: 30ch;
 $spawner-lable-field-row-gap-tab: 10px;
+
 
 $spawner-count-direction-btn-height: 85%;
 

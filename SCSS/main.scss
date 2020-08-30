@@ -79,14 +79,18 @@ h1 {
             font-weight: bold;            
         }
     
-        input {
+        #InputFieldLableStopWatch {
             @include mixin-reduce-border-to-bottom-color-bottom();
             width: $spawner-lable-field-width;
             height: 20px;
             font-size: 18px;
             align-self: center;
+
+            
             
         }
+
+
     }
 
     #SpawnManage-btnS {
@@ -331,6 +335,8 @@ h1 {
             }
             
         }
+
+        
     
     }
 
@@ -345,7 +351,7 @@ h1 {
         
         #SpawnLableField {
 
-            input {
+            #InputFieldLableStopWatch {
                 width: $spawner-lable-field-width-mob;
             }
         }
@@ -353,8 +359,9 @@ h1 {
         #SpawnManage-btnS {
             display: grid;
             grid-template:
-            "spawnBtn counterArrowSpawn countDirectionBtn trashAllBtn" auto
-            "inputTimeCont inputTimeCont inputTimeCont inputTimeCont" auto            
+            "spawnBtn counterArrowSpawn countDirectionBtn " auto
+            "inputTimeCont inputTimeCont inputTimeCont " auto
+            "trashAllBtn trashAllBtn trashAllBtn" auto           
             / auto auto auto auto;
             row-gap: $spawner-btn-bar-row-gap-mob;
             column-gap: $spawner-btn-bar-column-gap-mob;
@@ -362,16 +369,18 @@ h1 {
             #cont-time-input {
                 
                 grid-template: 
-                    ". startTime ." auto
-                    "seconds minutes hours" auto
-                    "inputSeconds inputMinutes inputHours" auto
-                    / auto auto auto;
+                    " startTime startTime" auto
+                    " seconds inputSeconds " auto
+                    " minutes inputMinutes " auto
+                    " hours inputHours" auto
+                    / auto auto;
                 
                 row-gap:  $spawner-input-start-time-row-gab-mob;
 
             }
         }
 
+       
     }
 
     #stop-watch-list {

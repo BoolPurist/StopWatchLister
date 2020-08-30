@@ -110,7 +110,7 @@ h1 {
   font-size: 2rem;
   font-weight: bold;
 }
-#SpawnStopWatchBox #SpawnLableField input {
+#SpawnStopWatchBox #SpawnLableField #InputFieldLableStopWatch {
   border-style: solid;
   border-top-style: none;
   border-left-style: none;
@@ -307,17 +307,17 @@ h1 {
   }
 }
 @media screen and (max-width: 450px) {
-  #SpawnStopWatchBox #SpawnLableField input {
+  #SpawnStopWatchBox #SpawnLableField #InputFieldLableStopWatch {
     width: 30ch;
   }
   #SpawnStopWatchBox #SpawnManage-btnS {
     display: grid;
-    grid-template: "spawnBtn counterArrowSpawn countDirectionBtn trashAllBtn" auto "inputTimeCont inputTimeCont inputTimeCont inputTimeCont" auto/auto auto auto auto;
+    grid-template: "spawnBtn counterArrowSpawn countDirectionBtn " auto "inputTimeCont inputTimeCont inputTimeCont " auto "trashAllBtn trashAllBtn trashAllBtn" auto/auto auto auto auto;
     row-gap: 15px;
     column-gap: 10px;
   }
   #SpawnStopWatchBox #SpawnManage-btnS #cont-time-input {
-    grid-template: ". startTime ." auto "seconds minutes hours" auto "inputSeconds inputMinutes inputHours" auto/auto auto auto;
+    grid-template: " startTime startTime" auto " seconds inputSeconds " auto " minutes inputMinutes " auto " hours inputHours" auto/auto auto;
     row-gap: 3px;
   }
 
