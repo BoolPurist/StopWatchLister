@@ -30,6 +30,11 @@ const QS = {
          * @const
          * @type {string}
          */
+        INPUT_LABLE_FIELD: "#InputFieldLableStopWatch",
+        /**
+         * @const
+         * @type {string}
+         */
         INPUT_SECONDS: "#input-seconds",
         /**
          * @const
@@ -136,7 +141,28 @@ const TOGGLE_CLASSES = {
         BE_GONE: "beGone",
 }
 
+const CSS_CLASSES = {
+        /**
+         * @const
+         * @type {string}
+        */
+        ARROW_UP: "fa-angle-double-up",
+        /**
+         * @const
+         * @type {string}
+        */
+        ARROW_DOWN: "fa-angle-double-down"
+}
+
+const STORAGE_KEYS = {
+        /**
+         * @const
+         * @type {string}
+        */
+        STOP_WATCHES: "stop-watches",
+}
+
 Object.freeze(QS);
 Object.freeze(DYN_PROP_NAMES);
 
-export { QS, DYN_PROP_NAMES, TOGGLE_CLASSES };
+export { QS, DYN_PROP_NAMES, TOGGLE_CLASSES, STORAGE_KEYS, CSS_CLASSES };

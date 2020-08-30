@@ -1,7 +1,9 @@
 // @ts-check
 import { StopWatch } from "./Modules/StopWatch.js";
 import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
-import { QS, DYN_PROP_NAMES, TOGGLE_CLASSES } from "./Modules/Constants.js";
+import { 
+    QS, DYN_PROP_NAMES, TOGGLE_CLASSES, STORAGE_KEYS, CSS_CLASSES 
+} from "./Modules/Constants.js";
 
 window.addEventListener("DOMContentLoaded", () => {
         "use strict";
@@ -32,7 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @type {HTMLInputElement}
          */ 
         const inputFieldLableStopWatch = document
-        .querySelector("#InputFieldLableStopWatch");
+        .querySelector(QS.INPUT_LABLE_FIELD);
         /**
          * Resides in the spawn box
          * On clicking it, it spawns a stop watch and appends as child
@@ -129,8 +131,8 @@ window.addEventListener("DOMContentLoaded", () => {
         countDirectionNames.set(true, "Count Up ?");
         const countArrowClasses = new Map();
         // class names for toggling an arrow for indicating the counting sense
-        countArrowClasses.set(false, "fa-angle-double-up");
-        countArrowClasses.set(true, "fa-angle-double-down");
+        countArrowClasses.set(false, CSS_CLASSES.ARROW_UP);
+        countArrowClasses.set(true, CSS_CLASSES.ARROW_DOWN);
         
         
         /**
@@ -152,7 +154,7 @@ window.addEventListener("DOMContentLoaded", () => {
         // Managing the session storage
 
         // Recreating stored stop watches from session storage
-        const stopWatchesState = sessionStorage.getItem("stop-watches");
+        const stopWatchesState = sessionStorage.getItem(STORAGE_KEYS.STOP_WATCHES);
         
         if (stopWatchesState !== null && stopWatchesState !== "") {
             const stopWatchesObjList = JSON.parse(stopWatchesState); 
@@ -176,13 +178,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const intervall = setInterval( () => {
             if (stopWatchList.length === 0) {
-                sessionStorage.setItem("stop-watches", "");
+                sessionStorage.setItem(STORAGE_KEYS.STOP_WATCHES, "");
             } else {            
                 const stateList = stopWatchList.map(
                     stopWatch => stopWatch.jsObjectState 
                 );
                 const stateString = JSON.stringify(stateList);
-                sessionStorage.setItem("stop-watches", stateString);
+                sessionStorage.setItem(STORAGE_KEYS.STOP_WATCHES, stateString);
 
                 
             }         
@@ -523,11 +525,11 @@ window.addEventListener("DOMContentLoaded", () => {
             const classListArrow = counterArrowSpawn.classList; 
             
             if (countDown === true) {
-                classListArrow.remove("fa-angle-double-up");
-                classListArrow.add("fa-angle-double-down");
+                classListArrow.remove(CSS_CLASSES.ARROW_UP);
+                classListArrow.add(CSS_CLASSES.ARROW_DOWN);
             } else {
-                classListArrow.add("fa-angle-double-up");
-                classListArrow.remove("fa-angle-double-down");
+                classListArrow.add(CSS_CLASSES.ARROW_UP);
+                classListArrow.remove(CSS_CLASSES.ARROW_DOWN);
             }
         }
        

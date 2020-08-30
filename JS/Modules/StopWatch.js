@@ -20,7 +20,7 @@ class StopWatch {
         _GetDomSubReference(querySelectorForTimeStamp);
         
         this.countDown = false;
-        this.setUpTimer(0, 0, 0);
+        this.setUpTimer(0);
                         
         for ( const dynamicProperty of DomSubReferences ) {
             this._CreateSubElementReference(dynamicProperty);
@@ -35,6 +35,15 @@ class StopWatch {
         event.subscriber._timeStampField.textContent = event.invoker.TimeStamp;
     }
 
+    /**
+     * Gets an literal object that represents the current state
+     * of its internal timer
+     * 
+     * Is used to store it and later recreate a stop watch 
+     * with the function CreateStopWatch in the index file  
+     * 
+     * @type {!object} 
+     */
     get jsObjectState() {
         return {
             totalSeconds: this._timer.TotalSeconds,
@@ -48,18 +57,15 @@ class StopWatch {
      * Stops the timers counting and resets it to
      * to a new starting time given by the parameters
      * 
-     * @param {!number} [seconds=0] 
-     * @param {!number} [minutes=0] 
-     * @param {!number} [hours=0]
+     * @param {!number} [seconds=0] - (optional) New starting time
      * @returns {void}
+     * @throws {TypeError} throws if parameter seconds is not of type number
      */
-    setUpTimer(seconds, minutes, hours) {
-        if (arguments.length === 1) {
-            this._timer = new Timer(seconds);
-        } else {
-            this._timer = new Timer(seconds, minutes, hours);
-        }
-        
+    setUpTimer(seconds) {
+        _throwForInvalidTimeUnit(seconds);
+                
+        this._timer = new Timer(seconds);
+                 
         this._timer.onTimeChange.addCallback(StopWatch._callbackUpdateTimeStamp, this);
         this._timeStampField.textContent = this._timer.TimeStamp; 
     }
@@ -117,8 +123,13 @@ class StopWatch {
         this.pause();
         this.domReference.remove();
     }
-
+    /**
+     * Sets the starting time of the internal timer of the stop watch.
+     * 
+     * @throws {TypeError} throws if parameter seconds is not of type number
+     */
     setResetTime(totalSeconds) {
+        _throwForInvalidTimeUnit(totalSeconds);
         this._timer.totalSecondsStarting = totalSeconds;
     }
 
@@ -137,6 +148,13 @@ class StopWatch {
         
     }
 
+}
+
+// Used to validate the time units as valid numbers
+function _throwForInvalidTimeUnit(timeUnit) {
+    if (timeUnit === null || typeof timeUnit !== "number") {
+        throw new TypeError("Time unit must be of type 'number' ");
+    }
 }
 
 export { StopWatch }
