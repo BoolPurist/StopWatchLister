@@ -1,15 +1,20 @@
 @use "variables" as *;
 
+// Applying padding left and right
+// $value is the pixel to apply
 @mixin mixin-padding-sides($value) {
     padding-left: $value;
     padding-right: $value;
 }
 
+// Applying margin left and right
+// $value is the pixel to apply
 @mixin mixin-margin-sides($value) {
     margin-left: $value;
     margin-right: $value;
 }
 
+// Renders only one solid border at the bottom of an element
 @mixin mixin-reduce-border-to-bottom-color-bottom() {
     border-style: solid;
     border-top-style: none;
@@ -19,13 +24,15 @@
     border-bottom-color: $border-bottom-color;
 }
 
-@mixin mixin-render-alternative-rendering() {
+// Renders a thin rounded border around a widget
+@mixin mixin-give-thin-border() {
     border-radius: $btn-border-radius;
     border-style: solid;
     border-width: 1px;
     border-color: black;
 }
 
+// Gives a stop watch and spawn box its gird config, colors, borders and padding
 @mixin mixin-render-stop-watch-body($grid-gap-row-modify: 0px) {
     background-color: $sub-background-color;
     color: $sub-foreground-color;
@@ -38,13 +45,14 @@
     row-gap: $box-grid-row-gap + $grid-gap-row-modify;
 }
 
+// Gives a font of the stop watch its font size and weight
 @mixin mixin-stop-watch-font {
     font-size: $stop-watch-font-size-lable;
     font-weight: $stop-watch-font-weight-lable;
 }
 
+//  For scaling the navigation bar of the page
 @mixin mixin-navbar-height-scaler($height) {
     height: $height;
-    line-height: $height;
-    
+    line-height: $height;    
 }
