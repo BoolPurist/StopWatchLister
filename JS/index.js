@@ -136,7 +136,10 @@ window.addEventListener("DOMContentLoaded", () => {
         
         
         /**
-         * @type {Array<StopWatch>} - array of stopwatches wich are in the dom currently
+         * List of stopwatches which are currently active. An active stop watch in placed in 
+         * the dom of the page so the can interact with it.
+         * 
+         * @type {Array<StopWatch>}
          */
         let stopWatchList = [];
             
@@ -153,9 +156,9 @@ window.addEventListener("DOMContentLoaded", () => {
         
         // Managing the session storage
 
-        // Recreating stored stop watches from session storage
+        // Recreating stored stop watches from session storage after page reload
         const stopWatchesState = sessionStorage.getItem(STORAGE_KEYS.STOP_WATCHES);
-        
+        // Check if stop watches were present before the page reload
         if (stopWatchesState !== null && stopWatchesState !== "") {
             const stopWatchesObjList = JSON.parse(stopWatchesState); 
             stopWatchesObjList.forEach(uncreatedStopWatch => {                
@@ -166,16 +169,17 @@ window.addEventListener("DOMContentLoaded", () => {
                 );                
                 stopWatch.setResetTime(uncreatedStopWatch.startingSeconds);
                 
+                // If stop watch was started before page reload once
+                // the opacity of the control buttons of the stop watch are toggled
+                // as if user clicked the pause button.  
                 if (uncreatedStopWatch.totalSeconds !== uncreatedStopWatch.startingSeconds) {            
-                    setToPauseBtnState(stopWatch);
+                    opacityAfterClickPause(stopWatch);
                 }
             });
         }
         
 
-        // Saving the states of stop watches for recreating stop watches
-        // after page reload
-
+        // Saving the states of stop watches for recreating stop watches after page reload
         const intervall = setInterval( () => {
             if (stopWatchList.length === 0) {
                 sessionStorage.setItem(STORAGE_KEYS.STOP_WATCHES, "");
@@ -184,20 +188,21 @@ window.addEventListener("DOMContentLoaded", () => {
                     stopWatch => stopWatch.jsObjectState 
                 );
                 const stateString = JSON.stringify(stateList);
-                sessionStorage.setItem(STORAGE_KEYS.STOP_WATCHES, stateString);
-
-                
+                sessionStorage.setItem(STORAGE_KEYS.STOP_WATCHES, stateString);                
             }         
         },1000)
 
         /* Functions */
     
         /**
+         * Execution for all events related to the spawn box for stop watches
          * 
+         * When clicked on spawn button, a stop watch is spawned
+         * When clicked on trash all button, all stop watches are removed
+         * When clicked on count direction, it toggles the next stop watch 
+         * between counting up or down
          * 
-         * @param {Event} event - is fired by a widget of the spawn box 
-         * for stop watches
-         * @returns {void}   
+         * @callback  
          */
         function callBackSpawnBox(event) {    
             /**
@@ -231,9 +236,14 @@ window.addEventListener("DOMContentLoaded", () => {
     
     
         /**
+         * Handles all events related to a stop watch
          * 
-         * @param {Event} event - is fired by widgets of a stop watch 
-         * @returns {void}
+         * When clicked on the play button, the stop watch starts or resumes the counting.
+         * When clicked on the pause button, the stop watch stops counting.
+         * When clicked on the reset button, the stop watch reverts back to the start time and pauses.
+         * When clicked on the trash button, the stop watch is removed on the page.
+         * 
+         * @callback
          */
         function callBackStopWatchContainer(event) {
             /**
@@ -245,6 +255,7 @@ window.addEventListener("DOMContentLoaded", () => {
              */
             const targetClass = target.className;
             
+            // If the play button is clicked
             if ( targetClass.includes(QS.PLAY_BTN.substring(1)) ) {
     
                 for (const stopWatch of stopWatchList) {
@@ -256,6 +267,8 @@ window.addEventListener("DOMContentLoaded", () => {
                         stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
                         .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
                         
+                        // Should only make reset btn apparent if the play is clicked 
+                        // while stop watch is reset or paused. 
                         if (stopWatch.start()) {                                              
                             stopWatch[DYN_PROP_NAMES.RESET_BTN]
                             .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);                        
@@ -263,7 +276,7 @@ window.addEventListener("DOMContentLoaded", () => {
                         
                     }                
                 }
-    
+            // If the trash button is clicked
             } else if (targetClass.includes(QS.TRASH_BTN.substring(1))) {
                 
                 for (let i = 0; i < stopWatchList.length; i++) {
@@ -277,7 +290,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     }
     
                 } 
-    
+            // If the pause button is clicked 
             } else if (targetClass.includes(QS.PAUSE_BTN.substring(1))) {
     
                 for (const stopWatch of stopWatchList) {
@@ -285,20 +298,19 @@ window.addEventListener("DOMContentLoaded", () => {
                     if (stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON] === target) {   
     
                         if (stopWatch.pause()) {
-                            setToPauseBtnState(stopWatch);
-
+                            opacityAfterClickPause(stopWatch);
                         }
     
                     }                
                 }   
-    
+            // If the reset button is clicked 
             } else if (targetClass.includes(QS.RESET_BTN.substring(1))) {
     
                 for (const stopWatch of stopWatchList) {
     
                     if (stopWatch[DYN_PROP_NAMES.RESET_BTN] === target) {
     
-                        setToResetBtnState(stopWatch);
+                        opacityAfterClickReset(stopWatch);
                         stopWatch.reset();
                     }
     
@@ -333,14 +345,15 @@ window.addEventListener("DOMContentLoaded", () => {
          * 1. Constructs a dom element which displays a box with a stop watch.
          * 2. It then combines it with the logic of 
          * timer instance for counting time.
-         * 3. If the first stop watch is created it enables the separation bar 
-         * between the spawn box and the stop watches
+         * 3. Adds the stop watch instance into the global list of exiting stop watches
+         * 4. If the first stop watch is created it enables the separation bar 
+         * between the spawn box and the stop watches.
+         * 
          * 
          * @param {!string} [lableText="Stop Watch"] - (optional) Title of stop watch box 
          * to be spawned.
          * @param {?number} [totalSeconds=null] - (optional) the time which a stop watch starts
-         * counting from 
-         * if not provided the starting time
+         * counting from  if not provided the starting time
          * for a stop watch will taken from the input starting time widget in the spawn box
          * @param {!boolean} [countDown] (optional) if false the stop watch will count up
          * if true the stop watch will count down. if not provided the countDownGlobal variable
@@ -471,7 +484,14 @@ window.addEventListener("DOMContentLoaded", () => {
             else domElement.classList.add(TOGGLE_CLASSES.BE_GONE);        
         }
 
-        function setToPauseBtnState(stopWatch) {            
+        /**
+         * Increases the opacity of the play buttton and the reste button
+         * Decreases the opacity of the pause button
+         * opacityAfterClickPause
+         * @param {StopWatch} stopWatch
+         * @returns {void} 
+         */
+        function opacityAfterClickPause(stopWatch) {            
             stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
             .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);            
             stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
@@ -480,7 +500,14 @@ window.addEventListener("DOMContentLoaded", () => {
             .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
         }
 
-        function setToResetBtnState(stopWatch) {
+        /**
+         * Increases the opacity of the play button
+         * Decreases the opacity of the reset button and the pause button
+         * 
+         * @param {StopWatch} stopWatch
+         * @returns {void} 
+         */
+        function opacityAfterClickReset(stopWatch) {
             stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
             .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
             stopWatch[DYN_PROP_NAMES.RESET_BTN]
