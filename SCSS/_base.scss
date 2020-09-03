@@ -36,6 +36,11 @@ a {
     
 }
 
+#NoScriptBar {
+    @include mixin-error-bar-rending($noscript-bar-bc);
+
+}
+
 @media screen and (max-width: 600px) {
     html {
         font-size: $mobile-font-size;

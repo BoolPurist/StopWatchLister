@@ -56,3 +56,16 @@
     height: $height;
     line-height: $height;    
 }
+
+@mixin mixin-error-bar-rending($bc-color: $error-bar-bc-color) {
+    background-color: $bc-color;
+    border-radius: $widget-border-radius;
+    padding: 10px;
+  
+    p {
+        font-weight: bold;
+        font-size: $error-bar-font-size;
+        color: $error-bar-font-color;
+        text-align: center;
+    }
+}

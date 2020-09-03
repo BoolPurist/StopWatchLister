@@ -33,7 +33,7 @@ $font-awesome-size: 2rem;
 
 $widget-border-radius: 10px;
 $widget-padding: 20px;
-$btn-minor-focus-opacity: 50%;
+$btn-minor-focus-opacity: 0.5;
 
 $navBar-side-padding-desktop: 20px;
 $navBar-side-padding-mobile: $navBar-side-padding-desktop / 3;
@@ -83,6 +83,8 @@ $stop-watch-font-size-time-stamp: 3rem;
 $stop-watch-size-arrow: 3rem;
 
 $separations-bar-height: 20px;
+
+$noscript-bar-bc: rgb(168, 168, 44);
 
 $error-bar-font-size: 2rem;
 $error-bar-font-color: white;
