@@ -264,15 +264,21 @@ window.addEventListener("DOMContentLoaded", () => {
             const eventTarget = event.target;
             const key = event.code;
             
+            console.log(key);
+            const pressedEnter = key === "Enter";
+            const pressedBackspace = key ==="Backspace";  
 
-            if (key === "Enter") {
+            if (pressedEnter || pressedBackspace) {
                 // Here the user presses the input field of for starting
                 // time of a stop watch
-                if (
-                    eventTarget === startSecondsInput ||
-                    eventTarget === startMinutesInput ||
-                    eventTarget === startHoursInput ||
-                    eventTarget === inputFieldLableStopWatch
+                if ( 
+                    pressedEnter &&
+                    (
+                        eventTarget === startSecondsInput ||
+                        eventTarget === startMinutesInput ||
+                        eventTarget === startHoursInput ||
+                        eventTarget === inputFieldLableStopWatch
+                    )
                 ) {
                     console.log("!");
                     const lableText = inputFieldLableStopWatch.value.trim();
@@ -285,16 +291,20 @@ window.addEventListener("DOMContentLoaded", () => {
                     );
 
                     if (typeof focusedWatch !== "undefined") {
-                        if (focusedWatch.isTimerActive) {
-                            actionBtnPause(focusedWatch);
+                        if (pressedEnter) {
+                            if (focusedWatch.isTimerActive) {
+                                actionBtnPause(focusedWatch);
+                            } else {
+                                actionBtnPlay(focusedWatch);                            
+                            }
                         } else {
-                            actionBtnPlay(focusedWatch);                            
+                            actionBtnReset(focusedWatch);
                         }
                     }
 
-                }
+                } 
 
-            }
+            } 
         }
     
     
@@ -357,8 +367,7 @@ window.addEventListener("DOMContentLoaded", () => {
     
                     if (stopWatch[DYN_PROP_NAMES.RESET_BTN] === target) {
     
-                        opacityAfterClickReset(stopWatch);
-                        stopWatch.reset();
+                        actionBtnReset(stopWatch);
                     }
     
                 }
@@ -552,22 +561,6 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         /**
-         * Increases the opacity of the play button
-         * Decreases the opacity of the reset button and the pause button
-         * 
-         * @param {StopWatch} stopWatch
-         * @returns {void} 
-         */
-        function opacityAfterClickReset(stopWatch) {
-            stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
-            .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
-            stopWatch[DYN_PROP_NAMES.RESET_BTN]
-            .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
-            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
-            .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
-        }
-
-        /**
          * Toggles visibility and influence on the document flow for the error bar. 
          * If user provides wrong input the error bar is visible and 
          * places itself in the gird row of the wrapper and before the spawn box. 
@@ -633,7 +626,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
         /**
-         * Performs all actions needed to done when the play button
+         * Performs all actions needed to be done when the play button
          * is pressed. Changing opacity of buttons and reactivate 
          * the counting of the internal timer
          * 
@@ -656,7 +649,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         /**
-         * Performs all actions needed to done when the pause button
+         * Performs all actions needed to be done when the pause button
          * is pressed. Changing opacity of buttons and stops 
          * the counting of the internal timer.
          * 
@@ -668,6 +661,25 @@ window.addEventListener("DOMContentLoaded", () => {
             if (selectedWatch.pause()) {
                 opacityAfterClickPause(selectedWatch);
             }
+        }
+
+        /**
+         * Performs all actions needed to be done when the reset button
+         * is pressed. Changing opacity of buttons and resets 
+         * the time of a stop watch
+         * 
+         * @param {!StopWatch} selectedWatch - stop watch do all the
+         * actions on 
+         * @returns {void} 
+         */
+        function actionBtnReset(selectedWatch) {            
+                selectedWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+                .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
+                selectedWatch[DYN_PROP_NAMES.RESET_BTN]
+                .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
+                selectedWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+                .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
+                selectedWatch.reset();            
         }
        
 });
