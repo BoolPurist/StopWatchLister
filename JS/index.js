@@ -168,8 +168,6 @@ window.addEventListener("DOMContentLoaded", () => {
          * 
          * @type {boolean | undefined} 
          */
-        
-
         // Checking which the counting direction the the next stop watch would have 
         // before page reload
         let countDownGlobal = JSON.parse(sessionStorage.getItem(STORAGE_KEYS.GLOBAL_COUNT_DIRECTION));
@@ -280,9 +278,22 @@ window.addEventListener("DOMContentLoaded", () => {
                     const lableText = inputFieldLableStopWatch.value.trim();
                     inputFieldLableStopWatch.value = "";
                     CreateStopWatch(lableText);
-                } else if (key === "Space") {
+                } else {
+                                                          
+                    const focusedWatch = stopWatchList.find(
+                        stopwatch => stopwatch.domReference === eventTarget
+                    );
+
+                    if (typeof focusedWatch !== "undefined") {
+                        if (focusedWatch.isTimerActive) {
+                            actionBtnPause(focusedWatch);
+                        } else {
+                            actionBtnPlay(focusedWatch);                            
+                        }
+                    }
 
                 }
+
             }
         }
     
@@ -312,20 +323,8 @@ window.addEventListener("DOMContentLoaded", () => {
     
                 for (const stopWatch of stopWatchList) {
     
-                    if (stopWatch[DYN_PROP_NAMES.PLAY_BUTTON] === target) {
-                        
-                        stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
-                        .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
-                        stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
-                        .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
-                        
-                        // Should only make reset btn apparent if the play is clicked 
-                        // while stop watch is reset or paused. 
-                        if (stopWatch.start()) {                                              
-                            stopWatch[DYN_PROP_NAMES.RESET_BTN]
-                            .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);                        
-                        }
-                        
+                    if (stopWatch[DYN_PROP_NAMES.PLAY_BUTTON] === target) {                        
+                        actionBtnPlay(stopWatch);                        
                     }                
                 }
             // If the trash button is clicked
@@ -347,12 +346,8 @@ window.addEventListener("DOMContentLoaded", () => {
     
                 for (const stopWatch of stopWatchList) {
     
-                    if (stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON] === target) {   
-    
-                        if (stopWatch.pause()) {
-                            opacityAfterClickPause(stopWatch);
-                        }
-    
+                    if (stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON] === target) {       
+                        actionBtnPause(stopWatch);
                     }                
                 }   
             // If the reset button is clicked 
@@ -634,6 +629,45 @@ window.addEventListener("DOMContentLoaded", () => {
             .get(countDown).btnText;
             countDirectionBtn.title = countDirectionInformation
             .get(countDown).titleText;
+        }
+
+
+        /**
+         * Performs all actions needed to done when the play button
+         * is pressed. Changing opacity of buttons and reactivate 
+         * the counting of the internal timer
+         * 
+         * @param {!StopWatch} selectedWatch - stop watch do all the
+         * actions on 
+         * @returns {void} 
+         */
+        function actionBtnPlay(selectedWatch) {
+            selectedWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+            .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
+            selectedWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+            .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
+            
+            // Should only make reset btn apparent if the play is clicked 
+            // while stop watch is reset or paused. 
+            if (selectedWatch.start()) {                                              
+                selectedWatch[DYN_PROP_NAMES.RESET_BTN]
+                .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);                        
+            }
+        }
+
+        /**
+         * Performs all actions needed to done when the pause button
+         * is pressed. Changing opacity of buttons and stops 
+         * the counting of the internal timer.
+         * 
+         * @param {!StopWatch} selectedWatch - stop watch do all the
+         * actions on 
+         * @returns {void} 
+         */
+        function actionBtnPause(selectedWatch) {
+            if (selectedWatch.pause()) {
+                opacityAfterClickPause(selectedWatch);
+            }
         }
        
 });

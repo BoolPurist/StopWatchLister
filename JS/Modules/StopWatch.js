@@ -54,6 +54,16 @@ class StopWatch {
     }
 
     /**
+     * Is true if the internal timer is counting currently
+     * 
+     * @readonly
+     * @type {!boolean}
+     */
+    get isTimerActive() {
+        return this._timerIsActive;
+    }
+
+    /**
      * Stops the timers counting and resets it to
      * to a new starting time given by the parameters
      * 
