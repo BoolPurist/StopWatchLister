@@ -2,6 +2,8 @@
 @use "mixin" as *;
 @use "base" as *;
 
+
+
 // All icons are from font awesome
 .fas {
     font-size: $font-awesome-size;                        
@@ -24,6 +26,11 @@
     padding: $btn-padding;
     border-radius: $btn-border-radius;
     opacity: 1;
+    @include mixin-give-thin-border();
+}
+
+.trash-all {
+    border-style: none;
 }
 
 // For making buttons partly transparent 
@@ -72,6 +79,10 @@ h1 {
 // Box which has the widgets for user to spawn and configure stop watches
 #SpawnStopWatchBox {
     @include mixin-render-stop-watch-body(8px);
+
+    &:focus-within, &:focus                   {
+        @include mixin-stop-watch-box-focus();
+    }
 
     // Row in which the user can enter the name of a stop watch to spawn
     #SpawnLableField {
@@ -264,6 +275,10 @@ h1 {
     // Box for representing a stop watch
     .stop-watch {
         @include mixin-render-stop-watch-body(-5px);
+
+        &:focus, &:focus-within {
+            @include mixin-stop-watch-box-focus()
+        }
         
         // Row for showing the name of the stop watch and the trash button
         .stop-watch-row-label{
@@ -328,6 +343,9 @@ h1 {
     
     }
 }
+
+
+
 
 // tablet-size
 
@@ -428,4 +446,6 @@ h1 {
     }
     
 }
+
+
 

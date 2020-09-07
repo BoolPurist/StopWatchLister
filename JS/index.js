@@ -156,7 +156,6 @@ window.addEventListener("DOMContentLoaded", () => {
     
         // For the user to interact with keyboard on the page
         document.addEventListener("keyup", callbackPress);
-        // Debug Area   
         
         // Reading the session storage for restoring state before page reload
 
@@ -173,7 +172,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         // Checking which the counting direction the the next stop watch would have 
         // before page reload
-        let countDownGlobal = JSON.parse(sessionStorage.getItem("nextSWCountDown"));
+        let countDownGlobal = JSON.parse(sessionStorage.getItem(STORAGE_KEYS.GLOBAL_COUNT_DIRECTION));
         countDownGlobal = countDownGlobal ?? false;
 
         // Setting the direction button up with its inner text and and its tooltip title
@@ -215,7 +214,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 const stateString = JSON.stringify(stateList);
                 sessionStorage.setItem(STORAGE_KEYS.STOP_WATCHES, stateString);                
             }         
-        },1000)
+        },1000);
+
+        // Debug Area
+
+        CreateStopWatch();
 
         /* Functions */
     
@@ -234,7 +237,7 @@ window.addEventListener("DOMContentLoaded", () => {
              * @type {any}
              */
             const target = event.target;
-    
+            
             if (target === spawnBtn) {
     
                 const lableText = inputFieldLableStopWatch.value.trim();
@@ -253,7 +256,7 @@ window.addEventListener("DOMContentLoaded", () => {
             } else if (target === countDirectionBtn) {
                 
                 countDownGlobal = !countDownGlobal;
-                sessionStorage.setItem("nextSWCountDown", JSON.stringify(countDownGlobal));
+                sessionStorage.setItem(STORAGE_KEYS.GLOBAL_COUNT_DIRECTION, JSON.stringify(countDownGlobal));
                 toggleCounterSpawnerArrow(countDownGlobal, counterArrowSpawn);
                 toggleCountDirectionBtn(countDownGlobal, countDirectionInformation);
             }
@@ -261,7 +264,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
         function callbackPress (event) {
             const eventTarget = event.target;
-            const key = event.key;
+            const key = event.code;
+            
 
             if (key === "Enter") {
                 // Here the user presses the input field of for starting
@@ -276,6 +280,8 @@ window.addEventListener("DOMContentLoaded", () => {
                     const lableText = inputFieldLableStopWatch.value.trim();
                     inputFieldLableStopWatch.value = "";
                     CreateStopWatch(lableText);
+                } else if (key === "Space") {
+
                 }
             }
         }
@@ -364,29 +370,7 @@ window.addEventListener("DOMContentLoaded", () => {
             }
     
         }
-        
-        /**
-         * Inserts a test as textContent into a dom element as a child 
-         * of the given dom element via the help of a given css selector
-         * 
-         * @param {object} startDomElement - dom element which 
-         * has the children to search through 
-         * @param  {...object} Data - Following Properties are needed: 
-         * querSelector - css selector to find the dom element to insert 
-         * the text into textContent - text to insert
-         * @returns {void} 
-         */
-        function populateDomElementWithTextContent (startDomElement, ...Data) {
             
-            Data.forEach(
-                object => {
-                const {querySelector, textContent} = object;
-                startDomElement.querySelector(querySelector)
-                .textContent = textContent;
-                }
-            );
-        }
-    
         /**
          * 1. Constructs a dom element which displays a box with a stop watch.
          * 2. It then combines it with the logic of 
@@ -480,8 +464,30 @@ window.addEventListener("DOMContentLoaded", () => {
             // As soon as the 1. stop watch is spawned, a separation bar is shown
             // between the spawn box and the stop watches.
             if (stopWatchList.length === 1) toggleVisibility(separationBar, true);
-            
+            stopWatch.domReference.tabIndex = 0;
             return stopWatch;
+        }
+
+        /**
+         * Inserts a test as textContent into a dom element as a child 
+         * of the given dom element via the help of a given css selector
+         * 
+         * @param {object} startDomElement - dom element which 
+         * has the children to search through 
+         * @param  {...object} Data - Following Properties are needed: 
+         * querSelector - css selector to find the dom element to insert 
+         * the text into textContent - text to insert
+         * @returns {void} 
+         */
+        function populateDomElementWithTextContent (startDomElement, ...Data) {
+            
+            Data.forEach(
+                object => {
+                const {querySelector, textContent} = object;
+                startDomElement.querySelector(querySelector)
+                .textContent = textContent;
+                }
+            );
         }
 
         /**

@@ -160,6 +160,7 @@ const STORAGE_KEYS = {
          * @type {string}
         */
         STOP_WATCHES: "stop-watches",
+        GLOBAL_COUNT_DIRECTION: "nextSWCountDown"
 }
 
 Object.freeze(QS);

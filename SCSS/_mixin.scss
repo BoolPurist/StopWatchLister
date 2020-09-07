@@ -32,17 +32,25 @@
     border-color: black;
 }
 
+
+
 // Gives a stop watch and spawn box its gird config, colors, borders and padding
 @mixin mixin-render-stop-watch-body($grid-gap-row-modify: 0px) {
     background-color: $sub-background-color;
     color: $sub-foreground-color;
     border-radius: $widget-border-radius;
     padding: $widget-padding;
-
     display: grid;
     grid-template-rows: auto 1fr;
+    border-style: solid;    
+    border-color: #bdb0b0;
     columns: $box-grid-column-gap;
     row-gap: $box-grid-row-gap + $grid-gap-row-modify;
+}
+
+@mixin mixin-stop-watch-box-focus() {
+    box-shadow: 0 0 0 5px rgb(137, 199, 194);
+    border-color: black;
 }
 
 // Gives a font of the stop watch its font size and weight
