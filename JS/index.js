@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
         "use strict";
         // SW = stopwatch
         // QS = querySelector
-                 
+
         /**
          * The box which holds all widgets for the user to spawn stop watches 
          * and configure how spawned stop watches will behave 
@@ -68,7 +68,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * @const
          * @type {HTMLInputElement}
          */
-        const startSecondsInput = document.querySelector(QS.INPUT_SECONDS);
+        const startSecondsInput = document.querySelector(QS.INPUT_SECONDS);        
         /**
          * Resides in the spawn box
          * Input field where the user provides the minutes for the starting time 
@@ -125,15 +125,39 @@ window.addEventListener("DOMContentLoaded", () => {
          */
         let countDownGlobal = false;
 
-        const countDirectionNames = new Map();
-        // The 2 possible texts the button for counting direction can show
-        countDirectionNames.set(false, "Count Down ?");
-        countDirectionNames.set(true, "Count Up ?");
-        const countArrowClasses = new Map();
-        // class names for toggling an arrow for indicating the counting sense
-        countArrowClasses.set(false, CSS_CLASSES.ARROW_UP);
-        countArrowClasses.set(true, CSS_CLASSES.ARROW_DOWN);
-        
+        const countDirectionInformation = new Map();
+        // The 2 possible texts and title pop ups 
+        // the button for counting direction can show
+        countDirectionInformation.set(false, 
+            {
+                btnText: "Count Down ?",
+                titleText:         
+                `
+                Currently next stop watch will count up, i.e 0, 1, 2, ..., 4.
+                Click to let next stop watch count down.
+                `
+            }
+        );
+        countDirectionInformation.set(true,
+            {
+                btnText: "Count Up ?",
+                titleText:
+                `
+                Currently next stop watch will count down, i.e 4 ,3, 2, ... 0.
+                Click to let next stop watch count up.
+                `
+            }
+        );
+        // Setting the direction button for counting up.
+        toggleCountDirectionBtn(countDownGlobal);
+
+        const countArrowInformation = new Map();
+        // 2 possible title pop ups an arrow for showing the counting direction
+        // can have
+        countArrowInformation.set(false, "Stop watch will count up");
+        countArrowInformation.set(true, "Stop watch will count down");        
+
+        toggleCounterSpawnerArrow(countDownGlobal, counterArrowSpawn);
         
         /**
          * List of stopwatches which are currently active. An active stop watch in placed in 
@@ -145,8 +169,7 @@ window.addEventListener("DOMContentLoaded", () => {
             
         /* Attaching events */
         // Attaching events for the spawn watch box    
-        // Adding event for spawn manage button
-            
+        // Adding event for spawn manage button            
         spawnBoxStopWatch.addEventListener("click", callBackSpawnBox);
     
         containerForStopWatches
@@ -178,7 +201,6 @@ window.addEventListener("DOMContentLoaded", () => {
             });
         }
         
-
         // Saving the states of stop watches for recreating stop watches after page reload
         const intervall = setInterval( () => {
             if (stopWatchList.length === 0) {
@@ -228,9 +250,8 @@ window.addEventListener("DOMContentLoaded", () => {
             } else if (target === countDirectionBtn) {
     
                 countDownGlobal = !countDownGlobal;
-                toggleCounterSpawnerArrow(countDownGlobal);
-                countDirectionBtn.textContent = countDirectionNames
-                .get(countDownGlobal);
+                toggleCounterSpawnerArrow(countDownGlobal, counterArrowSpawn);
+                toggleCountDirectionBtn(countDownGlobal);
             }
         }
     
@@ -411,8 +432,12 @@ window.addEventListener("DOMContentLoaded", () => {
             
             // Giving the arrow which indicates the counting direction, 
             // the right appearance  
-            stopWatch[DYN_PROP_NAMES.COUNTER_ARROW]
-            .classList.add(countArrowClasses.get(countDown)); 
+            toggleCounterSpawnerArrow(
+                countDownGlobal, 
+                stopWatch[DYN_PROP_NAMES.COUNTER_ARROW]
+            );
+            
+            
     
             // Giving the stop watch its starting time
             stopWatch.setUpTimer(totalSeconds);
@@ -540,24 +565,44 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     
         /**
-         * Changes the appearance of the arrow in the spawn box to
-         * represents the counting sense for the next stop watch to be 
-         * spawned 
+         * Changes the appearance and its title an arrow 
+         * for showing the counting direction of a stop watch
          * 
          * @param {!boolean} countDown - If true the arrow will represent 
          * counting up if false the arrow will represent counting down
+         * @param {HTMLElement} arrowWidget - the arrow icon to toggle its
+         * change its class for the appearance and its tile as tooltip
          * @returns {void} 
          */
-        function toggleCounterSpawnerArrow(countDown) {
-            const classListArrow = counterArrowSpawn.classList; 
+        function toggleCounterSpawnerArrow(countDown, arrowWidget) {
+            const classListArrow = arrowWidget.classList; 
             
             if (countDown === true) {
                 classListArrow.remove(CSS_CLASSES.ARROW_UP);
                 classListArrow.add(CSS_CLASSES.ARROW_DOWN);
+                arrowWidget.title = countArrowInformation
+                .get(true);
             } else {
                 classListArrow.add(CSS_CLASSES.ARROW_UP);
                 classListArrow.remove(CSS_CLASSES.ARROW_DOWN);
+                arrowWidget.title = countArrowInformation
+                .get(false);
             }
+        }
+
+        /**
+         * Toggles text content and title as tooltip of the button for
+         * setting the counting direction of the next stop watch.
+         * 
+         * @param {!boolean} countDown - the current direction in which 
+         * a stop watch is counting
+         * @returns {void}  
+         */
+        function toggleCountDirectionBtn(countDown) {
+            countDirectionBtn.textContent = countDirectionInformation
+            .get(countDown).btnText;
+            countDirectionBtn.title = countDirectionInformation
+            .get(countDown).titleText;
         }
        
 });

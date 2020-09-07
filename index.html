@@ -32,18 +32,32 @@
                 <div id="SpawnLableField">
                     <p>Lable for next stop watch: </p>
                     <input 
+                    title="Enter a name which is displayed with a stop watch "
                     id="InputFieldLableStopWatch" class="spawn-input"
                     type="text" placeholder="Enter Name here"
                     />
                 </div>
 
                 <div id="SpawnManage-btnS">
-                    <i id="spawn-btn" class="btn fas fa-plus"></i>
+                    <i 
+                    id="spawn-btn" 
+                    class="btn fas fa-plus"
+                    title="Click to here to create a stop watch"
+                    >
+                    </i>
                     <i id ="counter-arrow-spawn" 
-                    class="fas counter-arrow fa-angle-double-up">
+                    class="fas counter-arrow fa-angle-double-up"
+                    >
                     </i>                         
-                    <button id="check-count-direction">Count Down ?</button>                        
-                    <div id="cont-time-input">
+                    <button id="check-count-direction" 
+                    title="Stop watch will count down, i.e 4 ,3, 2,.. 0"
+                    >
+                        Count Down ?
+                    </button>                        
+                    <div 
+                    id="cont-time-input" 
+                    title="You can also enter negative starting time" 
+                    >
                         <p id="lable-start">Starting Time:</p>
                         <p id="lable-seconds">Seconds</p>
                         <p id="lable-minutes">Minutes</p>
@@ -64,7 +78,7 @@
                         value="0"
                         />
                     </div>
-                    <div id="TrashAllButtons">                                                                        
+                    <div title="Delete all stop watches" id="TrashAllButtons">                                                                        
                         <i class="btn trash-can fas fa-trash-alt"></i>
                         <i class="btn arrow-trash fas fa-arrow-left"></i>
                         <i class="btn list fas fa-list"></i>                
