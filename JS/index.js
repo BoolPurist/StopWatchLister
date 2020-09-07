@@ -9,7 +9,6 @@ window.addEventListener("DOMContentLoaded", () => {
         "use strict";
         // SW = stopwatch
         // QS = querySelector
-
         /**
          * The box which holds all widgets for the user to spawn stop watches 
          * and configure how spawned stop watches will behave 
@@ -150,11 +149,13 @@ window.addEventListener("DOMContentLoaded", () => {
         /* Attaching events */
         // Attaching events for the spawn watch box    
         // Adding event for spawn manage button            
-        spawnBoxStopWatch.addEventListener("click", callBackSpawnBox);
+        spawnBoxStopWatch.addEventListener("click", callbackClickSpawnBox);
     
         containerForStopWatches
         .addEventListener("click", callBackStopWatchContainer);
     
+        // For the user to interact with keyboard on the page
+        document.addEventListener("keyup", callbackPress);
         // Debug Area   
         
         // Reading the session storage for restoring state before page reload
@@ -228,7 +229,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * 
          * @callback  
          */
-        function callBackSpawnBox(event) {    
+        function callbackClickSpawnBox(event) {    
             /**
              * @type {any}
              */
@@ -255,6 +256,27 @@ window.addEventListener("DOMContentLoaded", () => {
                 sessionStorage.setItem("nextSWCountDown", JSON.stringify(countDownGlobal));
                 toggleCounterSpawnerArrow(countDownGlobal, counterArrowSpawn);
                 toggleCountDirectionBtn(countDownGlobal, countDirectionInformation);
+            }
+        }
+
+        function callbackPress (event) {
+            const eventTarget = event.target;
+            const key = event.key;
+
+            if (key === "Enter") {
+                // Here the user presses the input field of for starting
+                // time of a stop watch
+                if (
+                    eventTarget === startSecondsInput ||
+                    eventTarget === startMinutesInput ||
+                    eventTarget === startHoursInput ||
+                    eventTarget === inputFieldLableStopWatch
+                ) {
+                    console.log("!");
+                    const lableText = inputFieldLableStopWatch.value.trim();
+                    inputFieldLableStopWatch.value = "";
+                    CreateStopWatch(lableText);
+                }
             }
         }
     
@@ -507,7 +529,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * invisible and put out of the document flow if false vise versa
          * @returns {void} 
          */
-        function toggleVisibility(domElement,makeVisible) {
+        function toggleVisibility(domElement, makeVisible) {
             if (makeVisible === true) domElement.classList.remove(TOGGLE_CLASSES.BE_GONE);
             else domElement.classList.add(TOGGLE_CLASSES.BE_GONE);        
         }
