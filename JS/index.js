@@ -266,9 +266,11 @@ window.addEventListener("DOMContentLoaded", () => {
             
             console.log(key);
             const pressedEnter = key === "Enter";
-            const pressedBackspace = key ==="Backspace";  
+            const pressedBackspace = key ==="Backspace";
+            const pressedDelete = key === "Delete";
+            
 
-            if (pressedEnter || pressedBackspace) {
+            if (pressedEnter || pressedBackspace || pressedDelete) {
                 // Here the user presses the input field of for starting
                 // time of a stop watch
                 if ( 
@@ -297,8 +299,10 @@ window.addEventListener("DOMContentLoaded", () => {
                             } else {
                                 actionBtnPlay(focusedWatch);                            
                             }
-                        } else {
+                        } else if (pressedBackspace) {
                             actionBtnReset(focusedWatch);
+                        } else {
+                            actionBtnDelete(focusedWatch);
                         }
                     }
 
@@ -332,44 +336,26 @@ window.addEventListener("DOMContentLoaded", () => {
             if ( targetClass.includes(QS.PLAY_BTN.substring(1)) ) {
     
                 for (const stopWatch of stopWatchList) {
-    
                     if (stopWatch[DYN_PROP_NAMES.PLAY_BUTTON] === target) {                        
                         actionBtnPlay(stopWatch);                        
                     }                
                 }
             // If the trash button is clicked
-            } else if (targetClass.includes(QS.TRASH_BTN.substring(1))) {
-                
-                for (let i = 0; i < stopWatchList.length; i++) {
-    
-                    if (stopWatchList[i][DYN_PROP_NAMES.DELETE_BUTTON] === target) {                                       
-                        stopWatchList[i].remove();
-                        stopWatchList.splice(i, 1);                                            
-                        if (stopWatchList.length === 0) {
-                            toggleVisibility(separationBar, false);
-                        }             
-                    }
-    
-                } 
+            } else if (targetClass.includes(QS.TRASH_BTN.substring(1))) {                
+                actionBtnDelete(target);
             // If the pause button is clicked 
-            } else if (targetClass.includes(QS.PAUSE_BTN.substring(1))) {
-    
+            } else if (targetClass.includes(QS.PAUSE_BTN.substring(1))) { 
                 for (const stopWatch of stopWatchList) {
-    
                     if (stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON] === target) {       
                         actionBtnPause(stopWatch);
                     }                
                 }   
             // If the reset button is clicked 
             } else if (targetClass.includes(QS.RESET_BTN.substring(1))) {
-    
-                for (const stopWatch of stopWatchList) {
-    
-                    if (stopWatch[DYN_PROP_NAMES.RESET_BTN] === target) {
-    
+                for (const stopWatch of stopWatchList) {    
+                    if (stopWatch[DYN_PROP_NAMES.RESET_BTN] === target) {    
                         actionBtnReset(stopWatch);
-                    }
-    
+                    }    
                 }
             }
     
@@ -681,5 +667,36 @@ window.addEventListener("DOMContentLoaded", () => {
                 .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
                 selectedWatch.reset();            
         }
-       
+
+        /**
+         * Performs all actions needed to be done when the delete button
+         * is pressed. Removing the stop watch from the dom
+         * 
+         * @param {!object|!HTMLElement} selectedWatch - either an instance
+         * as stop watch or the reference to the delete icon in the dom 
+         * @returns {void} 
+         */
+        function actionBtnDelete(selectedWatch) {
+            let index = -1;
+
+            if ( selectedWatch.constructor.name === "HTMLElement") {
+                index = stopWatchList.findIndex(
+                    stopWatch => 
+                    selectedWatch === stopWatch[DYN_PROP_NAMES.DELETE_BUTTON]
+                )
+                
+            } else {
+                index = stopWatchList.indexOf(selectedWatch);
+            }
+            
+
+            if (index !== -1) {
+                stopWatchList[index].remove();
+                stopWatchList.splice(index, 1);                                            
+                if (stopWatchList.length === 0) {
+                    toggleVisibility(separationBar, false);
+                } 
+            }
+        }
+
 });
