@@ -114,16 +114,6 @@ window.addEventListener("DOMContentLoaded", () => {
          */
         const separationBar = document.querySelector(QS.SEPARATION_BAR);
         
-        /**
-         * If true the next stop watch to spawn will count down
-         * If false it will count up
-         * 
-         * The value is toggled whenever the user clicks on the button 
-         * accessible via variable countDirectionBtn 
-         * 
-         * @type {!boolean} 
-         */
-        let countDownGlobal = false;
 
         const countDirectionInformation = new Map();
         // The 2 possible texts and title pop ups 
@@ -132,32 +122,22 @@ window.addEventListener("DOMContentLoaded", () => {
             {
                 btnText: "Count Down ?",
                 titleText:         
-                `
-                Currently next stop watch will count up, i.e 0, 1, 2, ..., 4.
-                Click to let next stop watch count down.
-                `
+                "Next stop watch will count up, Click to let next stop watch count down"                                
             }
         );
         countDirectionInformation.set(true,
             {
                 btnText: "Count Up ?",
                 titleText:
-                `
-                Currently next stop watch will count down, i.e 4 ,3, 2, ... 0.
-                Click to let next stop watch count up.
-                `
+                "Next stop watch will count down, Click to let next stop watch count up"
             }
         );
-        // Setting the direction button for counting up.
-        toggleCountDirectionBtn(countDownGlobal);
-
+  
         const countArrowInformation = new Map();
         // 2 possible title pop ups an arrow for showing the counting direction
         // can have
         countArrowInformation.set(false, "Stop watch will count up");
         countArrowInformation.set(true, "Stop watch will count down");        
-
-        toggleCounterSpawnerArrow(countDownGlobal, counterArrowSpawn);
         
         /**
          * List of stopwatches which are currently active. An active stop watch in placed in 
@@ -177,7 +157,28 @@ window.addEventListener("DOMContentLoaded", () => {
     
         // Debug Area   
         
-        // Managing the session storage
+        // Reading the session storage for restoring state before page reload
+
+        /**
+         * If true the next stop watch to spawn will count down
+         * If false it will count up
+         * 
+         * The value is toggled whenever the user clicks on the button 
+         * accessible via variable countDirectionBtn 
+         * 
+         * @type {boolean | undefined} 
+         */
+        
+
+        // Checking which the counting direction the the next stop watch would have 
+        // before page reload
+        let countDownGlobal = JSON.parse(sessionStorage.getItem("nextSWCountDown"));
+        countDownGlobal = countDownGlobal ?? false;
+
+        // Setting the direction button up with its inner text and and its tooltip title
+        toggleCountDirectionBtn(countDownGlobal, countDirectionInformation);
+        // Setting up the arrow for showing the counting direction for the nex stop watch
+        toggleCounterSpawnerArrow(countDownGlobal, counterArrowSpawn);
 
         // Recreating stored stop watches from session storage after page reload
         const stopWatchesState = sessionStorage.getItem(STORAGE_KEYS.STOP_WATCHES);
@@ -200,6 +201,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 }
             });
         }
+
         
         // Saving the states of stop watches for recreating stop watches after page reload
         const intervall = setInterval( () => {
@@ -248,10 +250,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 
                 stopWatchList = [];
             } else if (target === countDirectionBtn) {
-    
+                
                 countDownGlobal = !countDownGlobal;
+                sessionStorage.setItem("nextSWCountDown", JSON.stringify(countDownGlobal));
                 toggleCounterSpawnerArrow(countDownGlobal, counterArrowSpawn);
-                toggleCountDirectionBtn(countDownGlobal);
+                toggleCountDirectionBtn(countDownGlobal, countDirectionInformation);
             }
         }
     
@@ -598,7 +601,7 @@ window.addEventListener("DOMContentLoaded", () => {
          * a stop watch is counting
          * @returns {void}  
          */
-        function toggleCountDirectionBtn(countDown) {
+        function toggleCountDirectionBtn(countDown, countDirectionInformation) {
             countDirectionBtn.textContent = countDirectionInformation
             .get(countDown).btnText;
             countDirectionBtn.title = countDirectionInformation
