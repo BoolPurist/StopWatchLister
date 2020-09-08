@@ -702,6 +702,12 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        /**
+         * Performs all actions needed to be done when the trash all button
+         * is pressed. Removing the all stop watches from the dom
+         * 
+         * @returns {void}
+         */
         function actionBtnDeleteAll() {
             for (const stopWatch of stopWatchList) {
                 stopWatch.remove();                    

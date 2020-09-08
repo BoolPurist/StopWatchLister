@@ -1,6 +1,5 @@
 // @ts-check
 import {Timer } from "./Timer.js";
-import { stopWatchDom } from "./DomBlueprints.js";
 
 class StopWatch {
 
@@ -12,7 +11,8 @@ class StopWatch {
      * @param {...object} [DomSubReferences]
      */
     constructor(whereToAppend, querySelectorForTimeStamp , lableText , ...DomSubReferences) {
-        this.domReference = stopWatchDom(); 
+        
+        this.domReference = _stopWatchDom(); 
         this.lableText = lableText;       
         this._timerIsActive = false;
         this._timer = null;
@@ -165,6 +165,36 @@ function _throwForInvalidTimeUnit(timeUnit) {
     if (timeUnit === null || typeof timeUnit !== "number") {
         throw new TypeError("Time unit must be of type 'number' ");
     }
+}
+
+/**
+ * Creates a box which serves as a stop watch. It has a title, 
+ * time stamp lable for showing time and widgets as buttons the 
+ * for user to control it. 
+ * 
+ * @returns {!object} - dom elements representing a stop watch
+ */
+function _stopWatchDom()  {
+    const container = document.createElement("div");
+
+    container.innerHTML = 
+`
+<div class="stop-watch">
+    <div class="stop-watch-row-label">
+        <p class="stop-watch-label-text"></p>
+        <i class="btn trash-btn fas fa-trash-alt"></i>
+    </div>
+    <div class="stop-watch-row-timer">
+        <i class="btn play-btn fas fa-play"></i>
+        <i class="btn pause-btn fas fa-pause"></i>
+        <i class="btn reset-btn fas fa-stop"></i> 
+        <i class="fas counter-arrow"></i>       
+        <p class="text-timer">23:54:02</p>
+    </div>
+</div>
+`;
+
+    return container.children[0];
 }
 
 export { StopWatch }
