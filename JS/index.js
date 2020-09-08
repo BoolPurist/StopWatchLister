@@ -242,15 +242,8 @@ window.addEventListener("DOMContentLoaded", () => {
                 inputFieldLableStopWatch.value = "";
                 
                 CreateStopWatch(lableText);             
-            } else if (target.parentNode === trashAllBtn) {
-                
-                for (const stopWatch of stopWatchList) {
-                    stopWatch.remove();
-                    stopWatchList = [];
-                    toggleVisibility(separationBar, false);
-                }
-                
-                stopWatchList = [];
+            } else if (target.parentNode === trashAllBtn) {                
+                actionBtnDeleteAll();
             } else if (target === countDirectionBtn) {
                 
                 countDownGlobal = !countDownGlobal;
@@ -270,29 +263,32 @@ window.addEventListener("DOMContentLoaded", () => {
         function callbackPress (event) {
             const eventTarget = event.target;
             const key = event.code;
-            
-            console.log(key);
+                        
             const pressedEnter = key === "Enter";
             const pressedBackspace = key ==="Backspace";
-            const pressedDelete = key === "Delete";
-            
-
+            const pressedDelete = key === "Delete";  
+         
             if (pressedEnter || pressedBackspace || pressedDelete) {
                 // Here the user presses the input field of for starting
                 // time of a stop watch
                 if ( 
-                    pressedEnter &&
+                    (pressedEnter || pressedDelete) &&
                     (
+                        eventTarget === inputFieldLableStopWatch ||
                         eventTarget === startSecondsInput ||
                         eventTarget === startMinutesInput ||
-                        eventTarget === startHoursInput ||
-                        eventTarget === inputFieldLableStopWatch
+                        eventTarget === startHoursInput
                     )
-                ) {
-                    console.log("!");
-                    const lableText = inputFieldLableStopWatch.value.trim();
-                    inputFieldLableStopWatch.value = "";
-                    CreateStopWatch(lableText);
+                ) {        
+                    if (pressedDelete) {
+                        console.log("Deleted all");
+                        actionBtnDeleteAll();
+                    } else {
+                        const lableText = inputFieldLableStopWatch.value.trim();
+                        inputFieldLableStopWatch.value = "";
+                        CreateStopWatch(lableText);
+                    }            
+                    
                 } else {
                                                           
                     const focusedWatch = stopWatchList.find(
@@ -704,6 +700,15 @@ window.addEventListener("DOMContentLoaded", () => {
                     toggleVisibility(separationBar, false);
                 } 
             }
+        }
+
+        function actionBtnDeleteAll() {
+            for (const stopWatch of stopWatchList) {
+                stopWatch.remove();                    
+                toggleVisibility(separationBar, false);
+            }
+            
+            stopWatchList = [];
         }
 
 });
