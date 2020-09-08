@@ -1,0 +1,46 @@
+@use "../partial-indexer" as *;
+
+// Navigation bar in the upper right corner to navigate to other pages
+
+#navTop {
+    justify-self: end;
+    
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: auto;
+    
+    
+    align-items: center;
+
+    background-color: $sub-background-color;
+
+    // Navigation bar as buttons which are links at same time
+    a {         
+        @include mixin-navbar-height-scaler($navbar-height);
+
+        @include mixin-padding-sides($navBar-side-padding-desktop);
+
+        color: $sub-foreground-color;
+
+        border-style: $navbar-style;
+        border-width: $navbar-width;
+        border-color: $navBar-border-color;
+    }
+
+    a:hover {
+        color: $sub-background-color;
+        background-color: grey;
+    }
+
+}
+
+@media screen and (max-width: 900px) {
+    #navTop {
+        justify-self: center;
+        
+        a {
+            @include mixin-navbar-height-scaler($navbar-height-tablet);
+            @include mixin-padding-sides($navBar-side-padding-mobile);
+        }
+    }
+}

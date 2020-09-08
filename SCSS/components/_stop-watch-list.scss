@@ -1,0 +1,98 @@
+@use "../partial-indexer" as *;
+
+// Container to hold all stop watches in rows
+#stop-watch-list {
+    display:grid;
+    grid-auto-rows: auto;
+    row-gap: $stop-watch-list-row-gap;
+
+    // Box for representing a stop watch
+    .stop-watch {
+        @include mixin-render-stop-watch-body(-5px);
+
+        &:focus, &:focus-within {
+            @include mixin-stop-watch-box-focus()
+        }
+        
+        // Row for showing the name of the stop watch and the trash button
+        .stop-watch-row-label{
+            display: grid;
+            grid-template-columns: 1fr auto;
+            
+            // Name of stop watch
+            p {
+                @include mixin-stop-watch-font();
+                text-decoration: underline;
+            }
+    
+            // Button to delete a stop watch
+            .trash-btn {
+                align-self: center;                
+            }
+        }
+    
+        // Row for holding the buttons to control a stop watch and the 
+        // display of the current time
+        .stop-watch-row-timer {
+            display: grid;
+            grid-template: 
+            "playBtn pauseBtn resetBtn . counterArrow textTimer ." auto
+            / auto auto auto 1fr auto auto 1fr;
+            
+            gap: 10px;
+            align-items: center;
+                     
+            // For showing the current count time of the stop watch
+            .text-timer {
+                grid-area: textTimer;
+                justify-self: right;
+                @include mixin-stop-watch-font();
+                font-size: $stop-watch-font-size-time-stamp;
+            }
+
+            // Play button to resume/start counting the time
+            .play-btn {
+                grid-area: playBtn;
+            }
+
+            // Pause button to pause the counting of time of a stop watch
+            .pause-btn {
+                grid-area: pauseBtn;
+            }
+
+            // Reset button to stop a stop watch and reverts the to the
+            // starting time 
+            .reset-btn {
+                grid-area: resetBtn;
+            }
+
+            // Arrow pointing up or down for showing the counting direction
+            // of the stop watch
+            .counter-arrow {
+                grid-area: counterArrow;
+                font-size: $stop-watch-size-arrow;
+            }
+
+        }
+    
+    }
+}
+
+@media screen and (max-width: 450px) {
+    
+    #stop-watch-list {
+        .stop-watch {
+    
+            .stop-watch-row-timer { 
+                display: grid;                       
+                grid-template: 
+                "  playBtn pauseBtn  . " auto
+                "resetBtn  counterArrow textTimer " auto
+                / auto auto auto auto 1fr;                                   
+            }
+        
+        }
+    
+    }
+}
+

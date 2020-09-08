@@ -180,7 +180,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         // Recreating stored stop watches from session storage after page reload
         const stopWatchesState = sessionStorage.getItem(STORAGE_KEYS.STOP_WATCHES);
-        // Check if stop watches were present before the page reload
+        // Checks if stop watches were present before the page reload
         if (stopWatchesState !== null && stopWatchesState !== "") {
             const stopWatchesObjList = JSON.parse(stopWatchesState); 
             stopWatchesObjList.forEach(uncreatedStopWatch => {                
@@ -260,6 +260,13 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        /**
+         * :TODO Implement deleting all stop watches by pressing keyboard
+         * Modelice code more !
+         * 
+         * @param {!object} event 
+         * @callback 
+         */
         function callbackPress (event) {
             const eventTarget = event.target;
             const key = event.code;
