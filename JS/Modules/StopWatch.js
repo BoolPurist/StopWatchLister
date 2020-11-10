@@ -15,10 +15,14 @@ class StopWatch {
         this.domReference = _stopWatchDom(); 
         this.lableText = lableText;       
         this._timerIsActive = false;
-        this._timer = null;
         this._timeStampField = this.
         _GetDomSubReference(querySelectorForTimeStamp);
-        
+        this._timer = new Timer(0);
+                 
+        this._timer.onTimeChange.addCallback(StopWatch._callbackUpdateTimeStamp, this);
+
+
+
         this.countDown = false;
         this.setUpTimer(0);
                         
@@ -72,11 +76,7 @@ class StopWatch {
      * @throws {TypeError} throws if parameter seconds is not of type number
      */
     setUpTimer(seconds) {
-        _throwForInvalidTimeUnit(seconds);
-                
-        this._timer = new Timer(seconds);
-                 
-        this._timer.onTimeChange.addCallback(StopWatch._callbackUpdateTimeStamp, this);
+        _throwForInvalidTimeUnit(seconds);                
         this._timeStampField.textContent = this._timer.TimeStamp; 
     }
 

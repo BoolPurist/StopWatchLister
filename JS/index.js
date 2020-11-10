@@ -215,8 +215,9 @@ window.addEventListener("DOMContentLoaded", () => {
         },1000);
 
         // Debug Area
-
-        CreateStopWatch();
+        if (containerForStopWatches.querySelector(".stop-watch") === null) {
+            CreateStopWatch();
+        }
 
         /* Functions */
     
