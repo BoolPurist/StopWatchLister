@@ -254,7 +254,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
         /**
          * :TODO Implement deleting all stop watches by pressing keyboard
-         * Modelice code more !
          * 
          * @param {!object} event 
          * @callback 
@@ -279,8 +278,7 @@ window.addEventListener("DOMContentLoaded", () => {
                         eventTarget === startHoursInput
                     )
                 ) {        
-                    if (pressedDelete) {
-                        console.log("Deleted all");
+                    if (pressedDelete) {                        
                         actionBtnDeleteAll();
                     } else {
                         const lableText = inputFieldLableStopWatch.value.trim();
@@ -329,14 +327,9 @@ window.addEventListener("DOMContentLoaded", () => {
              * @type {any}
              */
             const target = event.target;
-            /**
-             * @type {string}
-             */
-
-            const targetClass = target.className;
 
             // If the play button is clicked
-            if ( StopWatch.isAPlyBtn( targetClass ) === true ) {
+            if ( StopWatch.isAPlyBtn( target ) === true ) {
     
                 for (const stopWatch of stopWatchList) {
                     if (stopWatch.playBtn === target) {                        
@@ -344,19 +337,19 @@ window.addEventListener("DOMContentLoaded", () => {
                     }                
                 }
             // If the trash button is clicked
-            } else if ( StopWatch.isATrashBtn(targetClass) ) {                              
+            } else if ( StopWatch.isATrashBtn(target) ) {                              
                 actionBtnDelete(target);
             // If the pause button is clicked 
-            } else if ( StopWatch.isAPauseBtn(targetClass) ) { 
+            } else if ( StopWatch.isAPauseBtn(target) ) { 
                 for (const stopWatch of stopWatchList) {
-                    if (stopWatch.pauseBtn== target) {       
+                    if (stopWatch.pauseBtn == target) {       
                         actionBtnPause(stopWatch);
                     }                
                 }   
             // If the reset button is clicked 
-            } else if ( StopWatch.isAResetBtn(targetClass) ) {
+            } else if ( StopWatch.isAResetBtn(target) ) {
                 for (const stopWatch of stopWatchList) {    
-                    if (stopWatch.resetBtn=== target) {    
+                    if (stopWatch.resetBtn === target) {    
                         actionBtnReset(stopWatch);
                     }    
                 }

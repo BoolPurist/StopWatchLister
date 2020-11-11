@@ -1,5 +1,7 @@
 // @ts-check
-import {Timer } from "./Timer.js";
+const lodashPath = './js_browser_dependency/';
+import isObject from "../js_browser_dependency/isObject.js";
+import { Timer } from "./Timer.js";
 
 class StopWatch {
 
@@ -31,22 +33,53 @@ class StopWatch {
                                 
     }
 
-    
-
-    static isAPlyBtn (className) {
-
+    /**
+     * Checks if an html element is a play button of a stop watch dom object
+     * 
+     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
+     * for checking. 
+     * @returns {!boolean} Returns true if html element is part of the dom presentation 
+     * of a stop watch otherwise it returns false
+     */
+    static isAPlyBtn (htmlElement) {
+        const className = htmlElement.className;
         return className.includes(StopWatch._playBtnClassName);
     }
 
-    static isAPauseBtn (className) {
-        return className.includes(StopWatch._pauseBtnClassName);
-    
+    /**
+     * Checks if an html element is a pause button of a stop watch dom object
+     * 
+     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
+     * for checking. 
+     * @returns {!boolean} Returns true if html element is part of the dom presentation 
+     * of a stop watch otherwise it returns false
+     */
+    static isAPauseBtn (htmlElement) {
+        const className = htmlElement.className;
+        return className.includes(StopWatch._pauseBtnClassName);    
     }
-    static isATrashBtn (className) {
+    /**
+     * Checks if an html element is a trash button of a stop watch dom object
+     * 
+     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
+     * for checking. 
+     * @returns {!boolean} Returns true if html element is part of the dom presentation 
+     * of a stop watch otherwise it returns false
+     */
+    static isATrashBtn (htmlElement) {
+        const className = htmlElement.className;
         return className.includes(StopWatch._trashBtnClassName);
     }
 
-    static isAResetBtn (className) {
+    /**
+     * Checks if an html element is a reset button of a stop watch dom object
+     * 
+     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
+     * for checking. 
+     * @returns {!boolean} Returns true if  
+     */
+    static isAResetBtn (htmlElement) {
+        const className = htmlElement.className;
         return className.includes(StopWatch._resetBtnClassName);
     }
     
@@ -77,7 +110,8 @@ class StopWatch {
     /**
      * 
      * @param {!object} jsObject
-     * @returns {!StopWatch} 
+     * @returns {!StopWatch} Instance of a stop watch with the state before it was
+     * saved as a plain js object.
      */
     static CreateFromJSObject( jsObject ) {
 
@@ -170,16 +204,9 @@ class StopWatch {
         this.pause();
         this.domReference.remove();
     }
-    /**
-     * Sets the starting time of the internal timer of the stop watch.
-     * 
-     * @throws {TypeError} throws if parameter seconds is not of type number
-     */
-    setResetTime(totalSeconds) {
-        _throwForInvalidTimeUnit(totalSeconds);
-        this._timer.totalSecondsStarting = totalSeconds;
-    }
 
+    // Gets respective sub html element of the html model of the stop watch.
+    // querySelector - query string used for finding a html element  
     _GetDomSubReference (querySelector) {
         return this.domReference.querySelector(querySelector);
     }
@@ -196,6 +223,11 @@ class StopWatch {
 
 }
 
+// Static variables with the postfix "ClassMatch" are used to get references of the respective
+// sub html element references of the stop watch html element
+
+// Static variables with the postfix "ClassName" are used in the static function to
+// check if a html element is a respective sub html element.
 StopWatch._playBtnClassMatch = ".play-btn";
 StopWatch._playBtnClassName = StopWatch._playBtnClassMatch.substring(1);
 
@@ -217,6 +249,8 @@ function _throwForInvalidTimeUnit(timeUnit) {
         throw new TypeError("Time unit must be of type 'number' ");
     }
 }
+
+
 
 /**
  * Creates a box which serves as a stop watch. It has a title, 
@@ -247,5 +281,7 @@ function _stopWatchDom()  {
 
     return container.children[0];
 }
+
+
 
 export { StopWatch }
