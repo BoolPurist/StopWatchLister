@@ -99,34 +99,7 @@ const QS = {
 
 }
 
-// Names of the properties which are created on every stop watch at runtime
-const DYN_PROP_NAMES = {
-        /**
-         * @const
-         * @type {string}
-         */
-        PLAY_BUTTON: "playButton",
-        /**
-         * @const
-         * @type {string}
-         */    
-        DELETE_BUTTON: "trashButton",
-        /**
-         * @const
-         * @type {string}
-         */
-        PAUSE_BUTTON: "pauseButton",
-        /**
-         * @const
-         * @type {string}
-         */
-        RESET_BTN: "resetButton",
-        /**
-         * @const
-         * @type {string}
-         */
-        COUNTER_ARROW: "counterArrow",
-}
+
 
 const TOGGLE_CLASSES = {
         /**
@@ -164,6 +137,5 @@ const STORAGE_KEYS = {
 }
 
 Object.freeze(QS);
-Object.freeze(DYN_PROP_NAMES);
 
-export { QS, DYN_PROP_NAMES, TOGGLE_CLASSES, STORAGE_KEYS, CSS_CLASSES };
+export { QS, TOGGLE_CLASSES, STORAGE_KEYS, CSS_CLASSES };

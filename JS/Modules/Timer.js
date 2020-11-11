@@ -227,7 +227,8 @@ class Timer {
      * timers starts counting after a reset
     */    
     set totalSecondsStarting(totalSeconds) {
-        if (totalSeconds === null || typeof totalSeconds !== "number") {
+        
+        if ( totalSeconds === null || typeof totalSeconds !== "number" ) {
             throw new TypeError("New starting time must be of type number");
         }
 
@@ -236,4 +237,4 @@ class Timer {
 
 }
 
-export {Timer};
+export { Timer };

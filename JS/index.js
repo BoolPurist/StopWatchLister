@@ -2,7 +2,7 @@
 import { StopWatch } from "./Modules/StopWatch.js";
 import { textTimeUnitsToSeconds } from "./Modules/UtilityFunctions.js";
 import { 
-    QS, DYN_PROP_NAMES, TOGGLE_CLASSES, STORAGE_KEYS, CSS_CLASSES 
+    QS, TOGGLE_CLASSES, STORAGE_KEYS, CSS_CLASSES 
 } from "./Modules/Constants.js";
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -113,7 +113,6 @@ window.addEventListener("DOMContentLoaded", () => {
          */
         const separationBar = document.querySelector(QS.SEPARATION_BAR);
         
-
         const countDirectionInformation = new Map();
         // The 2 possible texts and title pop ups 
         // the button for counting direction can show
@@ -181,23 +180,17 @@ window.addEventListener("DOMContentLoaded", () => {
         // Recreating stored stop watches from session storage after page reload
         const stopWatchesState = sessionStorage.getItem(STORAGE_KEYS.STOP_WATCHES);
         // Checks if stop watches were present before the page reload
+
         if (stopWatchesState !== null && stopWatchesState !== "") {
             const stopWatchesObjList = JSON.parse(stopWatchesState); 
-            stopWatchesObjList.forEach(uncreatedStopWatch => {                
-                const stopWatch = CreateStopWatch(
-                    uncreatedStopWatch.lableText,
-                    uncreatedStopWatch.totalSeconds,
-                    uncreatedStopWatch.countingDown
-                );                
-                stopWatch.setResetTime(uncreatedStopWatch.startingSeconds);
-                
-                // If stop watch was started before page reload once
-                // the opacity of the control buttons of the stop watch are toggled
-                // as if user clicked the pause button.  
-                if (uncreatedStopWatch.totalSeconds !== uncreatedStopWatch.startingSeconds) {            
-                    opacityAfterClickPause(stopWatch);
-                }
+            stopWatchesObjList.forEach( uncreatedStopWatch => {                
+                const stopWatch =  StopWatch.CreateFromJSObject(uncreatedStopWatch);
+
+                containerForStopWatches.appendChild(stopWatch.domReference);
+                stopWatchList.push(stopWatch);
             });
+
+            toggleSpawnBar();
         }
 
         
@@ -206,11 +199,16 @@ window.addEventListener("DOMContentLoaded", () => {
             if (stopWatchList.length === 0) {
                 sessionStorage.setItem(STORAGE_KEYS.STOP_WATCHES, "");
             } else {            
-                const stateList = stopWatchList.map(
-                    stopWatch => stopWatch.jsObjectState 
+                let listOfSavedStopWatches = [];
+                for (const unsavedStopWatch of stopWatchList) {
+                    listOfSavedStopWatches.push(unsavedStopWatch.jsObjectState);
+                } 
+                
+                sessionStorage.setItem(
+                    STORAGE_KEYS.STOP_WATCHES, 
+                    JSON.stringify(listOfSavedStopWatches)
                 );
-                const stateString = JSON.stringify(stateList);
-                sessionStorage.setItem(STORAGE_KEYS.STOP_WATCHES, stateString);                
+
             }         
         },1000);
 
@@ -334,30 +332,31 @@ window.addEventListener("DOMContentLoaded", () => {
             /**
              * @type {string}
              */
+
             const targetClass = target.className;
-            
+
             // If the play button is clicked
-            if ( targetClass.includes(QS.PLAY_BTN.substring(1)) ) {
+            if ( StopWatch.isAPlyBtn( targetClass ) === true ) {
     
                 for (const stopWatch of stopWatchList) {
-                    if (stopWatch[DYN_PROP_NAMES.PLAY_BUTTON] === target) {                        
+                    if (stopWatch.playBtn === target) {                        
                         actionBtnPlay(stopWatch);                        
                     }                
                 }
             // If the trash button is clicked
-            } else if (targetClass.includes(QS.TRASH_BTN.substring(1))) {                
+            } else if ( StopWatch.isATrashBtn(targetClass) ) {                              
                 actionBtnDelete(target);
             // If the pause button is clicked 
-            } else if (targetClass.includes(QS.PAUSE_BTN.substring(1))) { 
+            } else if ( StopWatch.isAPauseBtn(targetClass) ) { 
                 for (const stopWatch of stopWatchList) {
-                    if (stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON] === target) {       
+                    if (stopWatch.pauseBtn== target) {       
                         actionBtnPause(stopWatch);
                     }                
                 }   
             // If the reset button is clicked 
-            } else if (targetClass.includes(QS.RESET_BTN.substring(1))) {
+            } else if ( StopWatch.isAResetBtn(targetClass) ) {
                 for (const stopWatch of stopWatchList) {    
-                    if (stopWatch[DYN_PROP_NAMES.RESET_BTN] === target) {    
+                    if (stopWatch.resetBtn=== target) {    
                         actionBtnReset(stopWatch);
                     }    
                 }
@@ -399,90 +398,39 @@ window.addEventListener("DOMContentLoaded", () => {
                 return null;
             }
     
-            const stopWatch = new StopWatch(
-                QS.LIST_SW,
-                QS.CLASS_TEXT_TIMER, 
-                lableText, 
-                // Attaching the dynamic properties to reference the children 
-                // dom elements of the stop watch later
-                { 
-                    propertyName: DYN_PROP_NAMES.PLAY_BUTTON,
-                    domQuerySelector: QS.PLAY_BTN
-                },                       
-                { 
-                    propertyName: DYN_PROP_NAMES.DELETE_BUTTON,
-                    domQuerySelector:  QS.TRASH_BTN
-                },                       
-                { 
-                    propertyName: DYN_PROP_NAMES.PAUSE_BUTTON,
-                    domQuerySelector:  QS.PAUSE_BTN
-                },                       
-                { 
-                    propertyName: DYN_PROP_NAMES.RESET_BTN, 
-                    domQuerySelector:  QS.RESET_BTN
-                },                       
-                { 
-                    propertyName: DYN_PROP_NAMES.COUNTER_ARROW,
-                    domQuerySelector:  QS.COUNTER_ARROW
-                },                       
-            );
-    
+            const stopWatch = new StopWatch( lableText );
+            containerForStopWatches.appendChild(stopWatch.domReference);
+
             // Making the pause and reset buttons half transparent.
-            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+            stopWatch.pauseBtn
             .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
-            stopWatch[DYN_PROP_NAMES.RESET_BTN]
+            stopWatch.resetBtn
             .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
             
             // Giving the arrow which indicates the counting direction, 
             // the right appearance  
             toggleCounterSpawnerArrow(
                 countDownGlobal, 
-                stopWatch[DYN_PROP_NAMES.COUNTER_ARROW]
+                stopWatch.counterArrow
             );
-            
-            
-    
+                            
             // Giving the stop watch its starting time
             stopWatch.setUpTimer(totalSeconds);
             stopWatch.countDown = countDown;
-    
-            
+                
             stopWatchList.push( stopWatch ); 
-
-            // Giving the new stop watch its title if it was provided
-            populateDomElementWithTextContent(
-                stopWatch.domReference,
-                {querySelector: QS.LABLE_TEXT_SW, textContent: lableText}
-            );
     
-            // As soon as the 1. stop watch is spawned, a separation bar is shown
-            // between the spawn box and the stop watches.
-            if (stopWatchList.length === 1) toggleVisibility(separationBar, true);
+
+            toggleSpawnBar();
             stopWatch.domReference.tabIndex = 0;
             return stopWatch;
         }
 
-        /**
-         * Inserts a test as textContent into a dom element as a child 
-         * of the given dom element via the help of a given css selector
-         * 
-         * @param {object} startDomElement - dom element which 
-         * has the children to search through 
-         * @param  {...object} Data - Following Properties are needed: 
-         * querSelector - css selector to find the dom element to insert 
-         * the text into textContent - text to insert
-         * @returns {void} 
-         */
-        function populateDomElementWithTextContent (startDomElement, ...Data) {
-            
-            Data.forEach(
-                object => {
-                const {querySelector, textContent} = object;
-                startDomElement.querySelector(querySelector)
-                .textContent = textContent;
-                }
-            );
-        }
+        // As soon as the 1. stop watch is spawned, a separation bar is shown
+        // between the spawn box and the stop watches.
+        function toggleSpawnBar() {
+            if (stopWatchList.length > 0) toggleVisibility(separationBar, true);
+        }   
 
         /**
          * Grabs the starting time units from the spawn box and checks if
@@ -542,11 +490,11 @@ window.addEventListener("DOMContentLoaded", () => {
          * @returns {void} 
          */
         function opacityAfterClickPause(stopWatch) {            
-            stopWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+            stopWatch.playBtn
             .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);            
-            stopWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+            stopWatch.pauseBtn
             .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
-            stopWatch[DYN_PROP_NAMES.RESET_BTN]
+            stopWatch.resetBtn
             .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
         }
 
@@ -625,15 +573,15 @@ window.addEventListener("DOMContentLoaded", () => {
          * @returns {void} 
          */
         function actionBtnPlay(selectedWatch) {
-            selectedWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+            selectedWatch.playBtn
             .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
-            selectedWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+            selectedWatch.pauseBtn
             .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
             
             // Should only make reset btn apparent if the play is clicked 
             // while stop watch is reset or paused. 
             if (selectedWatch.start()) {                                              
-                selectedWatch[DYN_PROP_NAMES.RESET_BTN]
+                selectedWatch.resetBtn
                 .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);                        
             }
         }
@@ -663,11 +611,11 @@ window.addEventListener("DOMContentLoaded", () => {
          * @returns {void} 
          */
         function actionBtnReset(selectedWatch) {            
-                selectedWatch[DYN_PROP_NAMES.PLAY_BUTTON]
+                selectedWatch.playBtn
                 .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
-                selectedWatch[DYN_PROP_NAMES.RESET_BTN]
+                selectedWatch.resetBtn
                 .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
-                selectedWatch[DYN_PROP_NAMES.PAUSE_BUTTON]
+                selectedWatch.pauseBtn
                 .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
                 selectedWatch.reset();            
         }
@@ -686,7 +634,7 @@ window.addEventListener("DOMContentLoaded", () => {
             if ( selectedWatch.constructor.name === "HTMLElement") {
                 index = stopWatchList.findIndex(
                     stopWatch => 
-                    selectedWatch === stopWatch[DYN_PROP_NAMES.DELETE_BUTTON]
+                    selectedWatch === stopWatch.trashBtn
                 )
                 
             } else {

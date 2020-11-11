@@ -4,35 +4,52 @@ import {Timer } from "./Timer.js";
 class StopWatch {
 
     /**
-     * 
-     * @param {!string} whereToAppend - valid querySelector
-     * @param {!string} querySelectorForTimeStamp - valid querySelector to find the dom element to 
-     * apply current time regularally once started 
-     * @param {...object} [DomSubReferences]
+     * @param {!string} lableText
      */
-    constructor(whereToAppend, querySelectorForTimeStamp , lableText , ...DomSubReferences) {
+    constructor( lableText, startingSeconds = 0 ) {
         
         this.domReference = _stopWatchDom(); 
-        this.lableText = lableText;       
+
+        this._labelText = lableText;
+        this._GetDomSubReference(".stop-watch-label-text").textContent = lableText;
+        
+        
         this._timerIsActive = false;
-        this._timeStampField = this.
-        _GetDomSubReference(querySelectorForTimeStamp);
-        this._timer = new Timer(0);
-                 
-        this._timer.onTimeChange.addCallback(StopWatch._callbackUpdateTimeStamp, this);
-
-
+        this._timeStampField = this._GetDomSubReference(".text-timer");
 
         this.countDown = false;
-        this.setUpTimer(0);
-                        
-        for ( const dynamicProperty of DomSubReferences ) {
-            this._CreateSubElementReference(dynamicProperty);
-        }
 
-        document.querySelector(whereToAppend).appendChild(this.domReference);
+        this._timer = new Timer(startingSeconds);                 
+        this._timer.onTimeChange.addCallback(StopWatch._callbackUpdateTimeStamp, this);
+        this.setUpTimer(0);
+
+        this.playBtn = this._GetDomSubReference(StopWatch._playBtnClassMatch);
+        this.pauseBtn = this._GetDomSubReference(StopWatch._pauseBtnClassMatch);
+        this.resetBtn = this._GetDomSubReference(StopWatch._resetBtnClassMatch);
+        this.trashBtn = this._GetDomSubReference(StopWatch._trashBtnClassMatch);
+        this.counterArrow = this._GetDomSubReference(StopWatch._countArrBtnClassMatch);
+                                
     }
 
+    
+
+    static isAPlyBtn (className) {
+
+        return className.includes(StopWatch._playBtnClassName);
+    }
+
+    static isAPauseBtn (className) {
+        return className.includes(StopWatch._pauseBtnClassName);
+    
+    }
+    static isATrashBtn (className) {
+        return className.includes(StopWatch._trashBtnClassName);
+    }
+
+    static isAResetBtn (className) {
+        return className.includes(StopWatch._resetBtnClassName);
+    }
+    
     // Used to apply changes of internal timer to the stop watch dom element
     // so the user can see the new time
     static _callbackUpdateTimeStamp(event) {
@@ -45,16 +62,36 @@ class StopWatch {
      * 
      * Is used to store it and later recreate a stop watch 
      * with the function CreateStopWatch in the index file  
-     * 
+     * @readonly
      * @type {!object} 
      */
     get jsObjectState() {
         return {
             totalSeconds: this._timer.TotalSeconds,
             countingDown: this.countDown,
-            lableText: this.lableText,
+            labelText: this._labelText,
             startingSeconds: this._timer.totalSecondsStarting,
         };
+    }
+
+    /**
+     * 
+     * @param {!object} jsObject
+     * @returns {!StopWatch} 
+     */
+    static CreateFromJSObject( jsObject ) {
+
+        // let checkIfThere = prop => typeof(prop) === "undefined";
+        let recreatedStopWatch = new StopWatch(
+            jsObject.labelText, 
+            jsObject.totalSeconds,            
+        );
+
+        recreatedStopWatch._timer.totalSecondsStarting = jsObject.startingSeconds;
+
+        recreatedStopWatch.countDown = jsObject.countDown;
+
+        return recreatedStopWatch;        
     }
 
     /**
@@ -143,7 +180,6 @@ class StopWatch {
         this._timer.totalSecondsStarting = totalSeconds;
     }
 
-
     _GetDomSubReference (querySelector) {
         return this.domReference.querySelector(querySelector);
     }
@@ -159,6 +195,21 @@ class StopWatch {
     }
 
 }
+
+StopWatch._playBtnClassMatch = ".play-btn";
+StopWatch._playBtnClassName = StopWatch._playBtnClassMatch.substring(1);
+
+StopWatch._pauseBtnClassMatch = ".pause-btn";
+StopWatch._pauseBtnClassName = StopWatch._pauseBtnClassMatch.substring(1);
+
+StopWatch._resetBtnClassMatch = ".reset-btn";
+StopWatch._resetBtnClassName = StopWatch._resetBtnClassMatch.substring(1);
+
+StopWatch._trashBtnClassMatch = ".trash-btn";
+StopWatch._trashBtnClassName = StopWatch._trashBtnClassMatch.substring(1);
+
+StopWatch._countArrBtnClassMatch = ".counter-arrow";
+StopWatch._countArrBtnClassName = StopWatch._countArrBtnClassMatch.substring(1);
 
 // Used to validate the time units as valid numbers
 function _throwForInvalidTimeUnit(timeUnit) {
