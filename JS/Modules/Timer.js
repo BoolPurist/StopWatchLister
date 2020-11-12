@@ -118,7 +118,6 @@ class Timer {
      * -0:10:20 for Seconds: -20, Minutes: -10, Hours: 0
      */
     get TimeStamp() {
-
         let seconds = this.Seconds;
         let minutes = this.Minutes;
         let hours = this.Hours;
@@ -183,13 +182,10 @@ class Timer {
      * will count from when started or will be set to if it already counts.
      * 
      */
-    setUpCurrentTime(currentTotaleSeconds) {
-        
+    setUpCurrentTime(currentTotaleSeconds) {        
         this._totalSeconds = currentTotaleSeconds
-
     }
-    
-    
+        
     /**
     *
     * Stops the counting but keeps the accumulated time 

@@ -9,12 +9,12 @@ class StopWatch {
      * 
      * @param {!string} lableText - Title in the upper left corner 
      * for describing the stop watch
-     * @param {!number} [startingSeconds=0] - time at which the stop watch reverts back to
+     * @param {?number} [startingSeconds=null] - time at which the stop watch reverts back to
      * if being reset
      * @param {!number} [currentSeconds=0] - time at which the stop watches starts from for
      * first time of starting it
      */
-    constructor( lableText, startingSeconds = 0, currentSeconds = 0) {
+    constructor( lableText, startingSeconds = 0, currentSeconds = null) {
         
         this._currentState = StopWatch.States.reset;
         // Creating the html model for the stop watch
@@ -30,8 +30,8 @@ class StopWatch {
         this.countingDown = false;
 
         // Inner timer for counting time.
-        this._timer = new Timer(startingSeconds);  
-        this._timer.setUpCurrentTime(currentSeconds);
+        this._timer = new Timer(startingSeconds);      
+        this._timer.setUpCurrentTime( currentSeconds ?? startingSeconds );
         this._timeStampField.textContent = this._timer.TimeStamp;
         
         this._timer.onTimeChange.addCallback(this._callbackUpdateTimeStamp, this);        
@@ -43,7 +43,7 @@ class StopWatch {
         this.trashBtn = this._GetDomSubReference(trashBtnClassMatch);
         this.counterArrow = this._GetDomSubReference(countArrBtnClassMatch);
         
-        this.reset();
+        // this.reset();
     }
 
     /**
@@ -148,7 +148,7 @@ class StopWatch {
      * @returns {void}
      */
     remove() {
-        this.pause();
+        this._timer.stop();
         this.domReference.remove();     
     }
 
