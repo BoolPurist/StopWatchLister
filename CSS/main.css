@@ -280,6 +280,7 @@ a {
   justify-self: right;
   font-size: 2rem;
   font-weight: bold;
+  color: red;
   font-size: 3rem;
 }
 #stop-watch-list .stop-watch .stop-watch-row-timer .play-btn {

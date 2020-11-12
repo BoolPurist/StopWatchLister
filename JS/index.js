@@ -184,15 +184,20 @@ window.addEventListener("DOMContentLoaded", () => {
         if (stopWatchesState !== null && stopWatchesState !== "") {
             const stopWatchesObjList = JSON.parse(stopWatchesState); 
             stopWatchesObjList.forEach( uncreatedStopWatch => {                
-                const stopWatch =  StopWatch.CreateFromJSObject(uncreatedStopWatch);
+                const createdStopWatch =  StopWatch.CreateFromJSObject(uncreatedStopWatch);
 
-                containerForStopWatches.appendChild(stopWatch.domReference);
-                stopWatchList.push(stopWatch);
+                integrateStopWatch(createdStopWatch);
+                const lastState = uncreatedStopWatch.currentState;
+
+                if ( lastState === StopWatch.States.counting ) {
+                    actionBtnPlay(createdStopWatch);                    
+                } else if ( lastState === StopWatch.States.paused ) {
+                    actionBtnPause(createdStopWatch, true);
+                } else {
+                    actionBtnReset(createdStopWatch);
+                }                                            
             });
-
-            toggleSpawnBar();
         }
-
         
         // Saving the states of stop watches for recreating stop watches after page reload
         const intervall = setInterval( () => {
@@ -294,7 +299,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
                     if (typeof focusedWatch !== "undefined") {
                         if (pressedEnter) {
-                            if (focusedWatch.isTimerActive) {
+                            if (
+                                focusedWatch.CurrentState === StopWatch.States.counting                                
+                                ) {
                                 actionBtnPause(focusedWatch);
                             } else {
                                 actionBtnPlay(focusedWatch);                            
@@ -358,12 +365,8 @@ window.addEventListener("DOMContentLoaded", () => {
         }
             
         /**
-         * 1. Constructs a dom element which displays a box with a stop watch.
-         * 2. It then combines it with the logic of 
-         * timer instance for counting time.
-         * 3. Adds the stop watch instance into the global list of exiting stop watches
-         * 4. If the first stop watch is created it enables the separation bar 
-         * between the spawn box and the stop watches.
+         * Validates the input of the user.
+         * If valid, creates the a stop watch instance and returns it .
          * 
          * 
          * @param {!string} [lableText="Stop Watch"] - (optional) Title of stop watch box 
@@ -378,7 +381,11 @@ window.addEventListener("DOMContentLoaded", () => {
          * @returns {?StopWatch} Returns the created stop watch instance.
          * Returns null if the starting time from input starting time widget was not valid
          */
-        function CreateStopWatch(lableText="Stop Watch", totalSeconds=null, countDown=countDownGlobal) {
+        function CreateStopWatch(
+            lableText="Stop Watch", 
+            totalSeconds=null, 
+            countDown=countDownGlobal
+            ) {
     
             // If null here the stop watch is created through clicking on the spawn button
             // Grabbing starting time from the input starting time widget in the spawn box 
@@ -391,36 +398,51 @@ window.addEventListener("DOMContentLoaded", () => {
                 return null;
             }
     
-            const stopWatch = new StopWatch( lableText );
-            containerForStopWatches.appendChild(stopWatch.domReference);
+            const stopWatch = new StopWatch( lableText, totalSeconds );
+            stopWatch.countingDown = countDown;
+            // Giving the stop watch its starting time            
+            
+            integrateStopWatch(stopWatch);
+
+            return stopWatch;
+        }
+
+        /**
+         * Appends the the stop watch html model in the proper position of dom tree
+         * Toggles the visibility of the action buttons of the stop watch (like play button)
+         * Adds stop watch to the global lis of all stop watch. 
+         * If needed, toggles the bar between the stop watch container and the spawn box. 
+         * 
+         * @param {!StopWatch} createdStopWatch - most recently created stop watch
+         * to integrated
+         */
+        function integrateStopWatch(createdStopWatch) {
+            
+            containerForStopWatches.appendChild(createdStopWatch.domReference);
 
             // Making the pause and reset buttons half transparent.
-            stopWatch.pauseBtn
+            createdStopWatch.pauseBtn
             .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
-            stopWatch.resetBtn
+            createdStopWatch.resetBtn
             .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
             
             // Giving the arrow which indicates the counting direction, 
             // the right appearance  
             toggleCounterSpawnerArrow(
-                countDownGlobal, 
-                stopWatch.counterArrow
+                createdStopWatch.countingDown, 
+                createdStopWatch.counterArrow
             );
-                            
-            // Giving the stop watch its starting time
-            stopWatch.setUpTimer(totalSeconds);
-            stopWatch.countDown = countDown;
-                
-            stopWatchList.push( stopWatch ); 
+                                                    
+            stopWatchList.push( createdStopWatch ); 
     
-
             toggleSpawnBar();
-            stopWatch.domReference.tabIndex = 0;
-            return stopWatch;
+
+            createdStopWatch.domReference.tabIndex = 0;
         }
 
         // As soon as the 1. stop watch is spawned, a separation bar is shown
         // between the spawn box and the stop watches.
+        
         function toggleSpawnBar() {
             if (stopWatchList.length > 0) toggleVisibility(separationBar, true);
         }   
@@ -570,13 +592,13 @@ window.addEventListener("DOMContentLoaded", () => {
             .classList.add(TOGGLE_CLASSES.PARTLY_OPACITY);
             selectedWatch.pauseBtn
             .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);
-            
+            selectedWatch.resetBtn
+            .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);    
+
+            selectedWatch.start();
             // Should only make reset btn apparent if the play is clicked 
             // while stop watch is reset or paused. 
-            if (selectedWatch.start()) {                                              
-                selectedWatch.resetBtn
-                .classList.remove(TOGGLE_CLASSES.PARTLY_OPACITY);                        
-            }
+            
         }
 
         /**
@@ -584,12 +606,17 @@ window.addEventListener("DOMContentLoaded", () => {
          * is pressed. Changing opacity of buttons and stops 
          * the counting of the internal timer.
          * 
-         * @param {!StopWatch} selectedWatch - stop watch do all the
-         * actions on 
+         * @param {!StopWatch} selectedWatch - stop watch do all the actions on 
+         * @param {!boolean} [createdFromStorage=false] - if true according 
+         * buttons will be highlighted   
          * @returns {void} 
          */
-        function actionBtnPause(selectedWatch) {
-            if (selectedWatch.pause()) {
+        function actionBtnPause(selectedWatch, createdFromStorage = false) {
+            selectedWatch.pause();            
+            if ( 
+                createdFromStorage === true  || 
+                selectedWatch.CurrentState !== StopWatch.States.reset
+                ) {
                 opacityAfterClickPause(selectedWatch);
             }
         }

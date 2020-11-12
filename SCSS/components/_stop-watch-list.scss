@@ -47,6 +47,7 @@
                 grid-area: textTimer;
                 justify-self: right;
                 @include mixin-stop-watch-font();
+                color: red;
                 font-size: $stop-watch-font-size-time-stamp;
             }
 

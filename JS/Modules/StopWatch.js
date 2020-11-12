@@ -1,92 +1,67 @@
 // @ts-check
-const lodashPath = './js_browser_dependency/';
-import isObject from "../js_browser_dependency/isObject.js";
+
 import { Timer } from "./Timer.js";
 
 class StopWatch {
 
     /**
-     * @param {!string} lableText
+     * 
+     * 
+     * @param {!string} lableText - Title in the upper left corner 
+     * for describing the stop watch
+     * @param {!number} [startingSeconds=0] - time at which the stop watch reverts back to
+     * if being reset
+     * @param {!number} [currentSeconds=0] - time at which the stop watches starts from for
+     * first time of starting it
      */
-    constructor( lableText, startingSeconds = 0 ) {
+    constructor( lableText, startingSeconds = 0, currentSeconds = 0) {
         
-        this.domReference = _stopWatchDom(); 
+        this._currentState = StopWatch.States.reset;
+        // Creating the html model for the stop watch
+        this.domReference = stopWatchDom(); 
 
+        // Stores text for possible conversion to a plain js object
         this._labelText = lableText;
         this._GetDomSubReference(".stop-watch-label-text").textContent = lableText;
-        
-        
-        this._timerIsActive = false;
+            
+        // Reference to the paragraph for presenting the current time on the stop watch
         this._timeStampField = this._GetDomSubReference(".text-timer");
+        
+        this.countingDown = false;
 
-        this.countDown = false;
+        // Inner timer for counting time.
+        this._timer = new Timer(startingSeconds);  
+        this._timer.setUpCurrentTime(currentSeconds);
+        this._timeStampField.textContent = this._timer.TimeStamp;
+        this._timer.onTimeChange.addCallback(callbackUpdateTimeStamp, this);
+        this._timer.TotalSeconds
 
-        this._timer = new Timer(startingSeconds);                 
-        this._timer.onTimeChange.addCallback(StopWatch._callbackUpdateTimeStamp, this);
-        this.setUpTimer(0);
-
-        this.playBtn = this._GetDomSubReference(StopWatch._playBtnClassMatch);
-        this.pauseBtn = this._GetDomSubReference(StopWatch._pauseBtnClassMatch);
-        this.resetBtn = this._GetDomSubReference(StopWatch._resetBtnClassMatch);
-        this.trashBtn = this._GetDomSubReference(StopWatch._trashBtnClassMatch);
-        this.counterArrow = this._GetDomSubReference(StopWatch._countArrBtnClassMatch);
+        // Public references to relevant sub html elements
+        this.playBtn = this._GetDomSubReference(playBtnClassMatch);
+        this.pauseBtn = this._GetDomSubReference(pauseBtnClassMatch);
+        this.resetBtn = this._GetDomSubReference(resetBtnClassMatch);
+        this.trashBtn = this._GetDomSubReference(trashBtnClassMatch);
+        this.counterArrow = this._GetDomSubReference(countArrBtnClassMatch);
                                 
     }
 
     /**
-     * Checks if an html element is a play button of a stop watch dom object
      * 
-     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
-     * for checking. 
-     * @returns {!boolean} Returns true if html element is part of the dom presentation 
-     * of a stop watch otherwise it returns false
+     * @readonly
+     * @type {!number} - Represents the current state of a stop watch
      */
-    static isAPlyBtn (htmlElement) {
-        const className = htmlElement.className;
-        return className.includes(StopWatch._playBtnClassName);
+    get CurrentState() {
+        return this._currentState;
     }
 
     /**
-     * Checks if an html element is a pause button of a stop watch dom object
+     * Is true if timer was not started since a reset or the creation.
      * 
-     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
-     * for checking. 
-     * @returns {!boolean} Returns true if html element is part of the dom presentation 
-     * of a stop watch otherwise it returns false
+     * @readonly 
+     * @type {!boolean}
      */
-    static isAPauseBtn (htmlElement) {
-        const className = htmlElement.className;
-        return className.includes(StopWatch._pauseBtnClassName);    
-    }
-    /**
-     * Checks if an html element is a trash button of a stop watch dom object
-     * 
-     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
-     * for checking. 
-     * @returns {!boolean} Returns true if html element is part of the dom presentation 
-     * of a stop watch otherwise it returns false
-     */
-    static isATrashBtn (htmlElement) {
-        const className = htmlElement.className;
-        return className.includes(StopWatch._trashBtnClassName);
-    }
-
-    /**
-     * Checks if an html element is a reset button of a stop watch dom object
-     * 
-     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
-     * for checking. 
-     * @returns {!boolean} Returns true if  
-     */
-    static isAResetBtn (htmlElement) {
-        const className = htmlElement.className;
-        return className.includes(StopWatch._resetBtnClassName);
-    }
-    
-    // Used to apply changes of internal timer to the stop watch dom element
-    // so the user can see the new time
-    static _callbackUpdateTimeStamp(event) {
-        event.subscriber._timeStampField.textContent = event.invoker.TimeStamp;
+    get isAtStart() {
+        return this._timer._totalSecondsStarting === this._timer.TotalSeconds;
     }
 
     /**
@@ -101,10 +76,79 @@ class StopWatch {
     get jsObjectState() {
         return {
             totalSeconds: this._timer.TotalSeconds,
-            countingDown: this.countDown,
+            countingDown: this.countingDown,
             labelText: this._labelText,
             startingSeconds: this._timer.totalSecondsStarting,
+            currentState: this._currentState,            
         };
+    }
+
+    /**
+     * Stops the timers counting and resets it to
+     * to a new starting time given by the parameters
+     * 
+     * @param {!number} [seconds=0] - (optional) New starting time
+     * @returns {void}
+     * @throws {TypeError} throws if parameter seconds is not of type number
+     */
+    setUpTimer(seconds) {
+        _throwForInvalidTimeUnit(seconds);
+        this._currentState = StopWatch.States.reset;                
+        this._timeStampField.textContent = this._timer.TimeStamp; 
+    }
+
+    /**
+     * Starts the internal timer if timer has not started yet.
+     * 
+     * @returns {!boolean} - Returns true if the internal timer was started
+     * by this call. 
+     * Returns false if the timer was already started before this call
+     */
+    start() {
+        if (this._currentState !== StopWatch.States.counting) {            
+            this._timer.start(this.countingDown);
+            this._currentState =  StopWatch.States.counting;
+            return true;
+        } else return false;        
+    }
+
+    /**
+     * Pauses the internal timer if the timer is not already paused.
+     * 
+     * @returns {!boolean} - Returns true if internal timer was paused 
+     * by this call.
+     * Returns false if the internal timer was already paused before this call
+     */
+    pause() {
+        if (
+            this._currentState !== StopWatch.States.reset &&
+            this._currentState !== StopWatch.States.paused 
+            ) {
+            this._timer.stop();
+            this._currentState = StopWatch.States.paused;
+            return true;
+        } else return false;
+    }
+
+    /**
+     * Stops the internal timer and sets its value back the starting time
+     * 
+     * @returns {void}
+     */
+    reset() {
+        this._currentState = StopWatch.States.reset;
+        this._timer.reset();
+    }
+
+    /**
+     * Stops the internal timer and then removes the 
+     * stop watch dom element from the dom
+     * 
+     * @returns {void}
+     */
+    remove() {
+        this.pause();
+        this.domReference.remove();     
     }
 
     /**
@@ -118,91 +162,72 @@ class StopWatch {
         // let checkIfThere = prop => typeof(prop) === "undefined";
         let recreatedStopWatch = new StopWatch(
             jsObject.labelText, 
-            jsObject.totalSeconds,            
+            jsObject.startingSeconds,
+            jsObject.totalSeconds           
         );
 
-        recreatedStopWatch._timer.totalSecondsStarting = jsObject.startingSeconds;
-
-        recreatedStopWatch.countDown = jsObject.countDown;
+        recreatedStopWatch.countingDown = jsObject.countingDown;
 
         return recreatedStopWatch;        
     }
 
     /**
-     * Is true if the internal timer is counting currently
+     * Checks if an html element is a play button of a stop watch dom object
      * 
-     * @readonly
-     * @type {!boolean}
+     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
+     * for checking. 
+     * @returns {!boolean} Returns true if html element is part of the dom presentation 
+     * of a stop watch otherwise it returns false
      */
-    get isTimerActive() {
-        return this._timerIsActive;
+    static isAPlyBtn (htmlElement) {
+        return checkHTMLElementByClassName(
+            htmlElement, 
+            playBtnClassName
+        );
     }
 
     /**
-     * Stops the timers counting and resets it to
-     * to a new starting time given by the parameters
+     * Checks if an html element is a pause button of a stop watch dom object
      * 
-     * @param {!number} [seconds=0] - (optional) New starting time
-     * @returns {void}
-     * @throws {TypeError} throws if parameter seconds is not of type number
+     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
+     * for checking. 
+     * @returns {!boolean} Returns true if html element is part of the dom presentation 
+     * of a stop watch otherwise it returns false
      */
-    setUpTimer(seconds) {
-        _throwForInvalidTimeUnit(seconds);                
-        this._timeStampField.textContent = this._timer.TimeStamp; 
+    static isAPauseBtn (htmlElement) {
+        return checkHTMLElementByClassName(
+            htmlElement, 
+            pauseBtnClassName
+        );   
     }
 
     /**
-     * Starts the internal timer if timer has not started yet.
+     * Checks if an html element is a trash button of a stop watch dom object
      * 
-     * @returns {!boolean} - Returns true if the internal timer was started
-     * by this call. 
-     * Returns false if the timer was already started before this call
+     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
+     * for checking. 
+     * @returns {!boolean} Returns true if html element is part of the dom presentation 
+     * of a stop watch otherwise it returns false
      */
-    start() {
-        if (this._timerIsActive === false) {            
-            this._timer.start(this.countDown);
-            this._timerIsActive = true;
-            return true;
-        } else return false;        
+    static isATrashBtn (htmlElement) {
+        return checkHTMLElementByClassName(
+            htmlElement, 
+            trashBtnClassName
+        );
     }
 
     /**
-     * Pauses the internal timer if the timer is not already paused.
+     * Checks if an html element is a reset button of a stop watch dom object
      * 
-     * @returns {!boolean} - Returns true if internal timer was paused 
-     * by this call.
-     * Returns false if the internal timer was already paused before this call
+     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
+     * for checking. 
+     * @returns {!boolean} Returns true if  
      */
-    pause() {
-        if (this._timerIsActive === true) {
-            this._timer.stop();
-            this._timerIsActive = false;
-            return true;
-        } else return false;
-    }
-
-    /**
-     * Stops the internal timer and sets its value back the starting time
-     * 
-     * @returns {void}
-     */
-    reset() {
-        if (this._timerIsActive === true) {
-            this._timerIsActive = false;
-        }
-        
-        this._timer.reset();
-    }
-
-    /**
-     * Stops the internal timer and then removes the 
-     * stop watch dom element from the dom
-     * 
-     * @returns {void}
-     */
-    remove() {
-        this.pause();
-        this.domReference.remove();
+    static isAResetBtn (htmlElement) {
+        return checkHTMLElementByClassName(
+            htmlElement, 
+            resetBtnClassName
+        );
     }
 
     // Gets respective sub html element of the html model of the stop watch.
@@ -217,31 +242,38 @@ class StopWatch {
         Object.defineProperty(this, propertyName, {
             value: this._GetDomSubReference(domQuerySelector),
             writable: false
-        });
-        
+        });        
     }
-
+    
 }
+
+/**
+ * Is a readonly object as enumerator for the current state of a stop watch
+ * The current state can be accessed by the Getter "CurrentState"
+ * 
+ * @enum {!number} - Possible states are reset, counting and paused.
+ */
+StopWatch.States = Object.freeze({
+    reset: 0,
+    counting: 1,
+    paused: 2
+});
 
 // Static variables with the postfix "ClassMatch" are used to get references of the respective
 // sub html element references of the stop watch html element
 
 // Static variables with the postfix "ClassName" are used in the static function to
 // check if a html element is a respective sub html element.
-StopWatch._playBtnClassMatch = ".play-btn";
-StopWatch._playBtnClassName = StopWatch._playBtnClassMatch.substring(1);
-
-StopWatch._pauseBtnClassMatch = ".pause-btn";
-StopWatch._pauseBtnClassName = StopWatch._pauseBtnClassMatch.substring(1);
-
-StopWatch._resetBtnClassMatch = ".reset-btn";
-StopWatch._resetBtnClassName = StopWatch._resetBtnClassMatch.substring(1);
-
-StopWatch._trashBtnClassMatch = ".trash-btn";
-StopWatch._trashBtnClassName = StopWatch._trashBtnClassMatch.substring(1);
-
-StopWatch._countArrBtnClassMatch = ".counter-arrow";
-StopWatch._countArrBtnClassName = StopWatch._countArrBtnClassMatch.substring(1);
+const playBtnClassMatch = ".play-btn";
+const playBtnClassName = playBtnClassMatch.substring(1);
+const pauseBtnClassMatch = ".pause-btn";
+const pauseBtnClassName = pauseBtnClassMatch.substring(1);
+const resetBtnClassMatch = ".reset-btn";
+const resetBtnClassName = resetBtnClassMatch.substring(1);
+const trashBtnClassMatch = ".trash-btn";
+const trashBtnClassName = trashBtnClassMatch.substring(1);
+const countArrBtnClassMatch = ".counter-arrow";
+const countArrBtnClassName = countArrBtnClassMatch.substring(1);
 
 // Used to validate the time units as valid numbers
 function _throwForInvalidTimeUnit(timeUnit) {
@@ -259,7 +291,7 @@ function _throwForInvalidTimeUnit(timeUnit) {
  * 
  * @returns {!object} - dom elements representing a stop watch
  */
-function _stopWatchDom()  {
+function stopWatchDom()  {
     const container = document.createElement("div");
 
     container.innerHTML = 
@@ -280,6 +312,27 @@ function _stopWatchDom()  {
 `;
 
     return container.children[0];
+}
+
+/**
+ * Used to apply changes of internal timer to the stop watch dom element
+ * so the user can see the new time
+ * @callback
+ */
+function callbackUpdateTimeStamp(event) {
+    event.subscriber._timeStampField.textContent = event.invoker.TimeStamp;
+}
+
+/**
+ * 
+ * @param {?HTMLElement} htmlElement
+ * @param {!string} classNameId
+ * @returns {!boolean} 
+ */
+function checkHTMLElementByClassName(htmlElement, classNameId) {
+    if (htmlElement === null) return false;
+    const className = htmlElement.className;
+    return className.includes(classNameId);    
 }
 
 

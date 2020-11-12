@@ -174,9 +174,24 @@ class Timer {
             this.onTimeChange._executeCallbacks(this);
         }, 1000);
     }
+
+    /**
+     * Sets the current time of the timer.
+     * If reset, it will revert to the Getter "totalSecondsStarting" however
+     * 
+     * @param {!number} currentTotaleSeconds - total seconds the timer
+     * will count from when started or will be set to if it already counts.
+     * 
+     */
+    setUpCurrentTime(currentTotaleSeconds) {
+        
+        this._totalSeconds = currentTotaleSeconds
+
+    }
     
     
     /**
+    *
     * Stops the counting but keeps the accumulated time 
     * 
     * @return {void} 
@@ -212,8 +227,8 @@ class Timer {
     /**
      * Gets the current starting time at which 
      * the timer starts counting from if started.
-     * 
-     * @type {!number} 
+     *
+     * @type {!number} - time which the timer should be set to
      */
     get totalSecondsStarting() {
         return this._totalSecondsStarting;
