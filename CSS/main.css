@@ -280,8 +280,13 @@ a {
   justify-self: right;
   font-size: 2rem;
   font-weight: bold;
-  color: red;
   font-size: 3rem;
+}
+#stop-watch-list .stop-watch .stop-watch-row-timer .text-timer.negative {
+  color: #521010;
+}
+#stop-watch-list .stop-watch .stop-watch-row-timer .text-timer.positive {
+  color: #2dc52d;
 }
 #stop-watch-list .stop-watch .stop-watch-row-timer .play-btn {
   grid-area: playBtn;

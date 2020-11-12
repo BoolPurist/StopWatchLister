@@ -46,10 +46,20 @@
             .text-timer {
                 grid-area: textTimer;
                 justify-self: right;
-                @include mixin-stop-watch-font();
-                color: red;
+                @include mixin-stop-watch-font();                
                 font-size: $stop-watch-font-size-time-stamp;
+
+                // Used to toggle the color for a time stamp depending 
+                // on the time under zero or not
+                &.negative {
+                    color: rgb(82, 16, 16);
+                }
+
+                &.positive {
+                    color: rgb(45, 197, 45);
+                }
             }
+
 
             // Play button to resume/start counting the time
             .play-btn {

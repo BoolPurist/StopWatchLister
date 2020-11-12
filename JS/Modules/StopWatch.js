@@ -33,8 +33,8 @@ class StopWatch {
         this._timer = new Timer(startingSeconds);  
         this._timer.setUpCurrentTime(currentSeconds);
         this._timeStampField.textContent = this._timer.TimeStamp;
-        this._timer.onTimeChange.addCallback(callbackUpdateTimeStamp, this);
-        this._timer.TotalSeconds
+        
+        this._timer.onTimeChange.addCallback(this._callbackUpdateTimeStamp, this);        
 
         // Public references to relevant sub html elements
         this.playBtn = this._GetDomSubReference(playBtnClassMatch);
@@ -42,7 +42,8 @@ class StopWatch {
         this.resetBtn = this._GetDomSubReference(resetBtnClassMatch);
         this.trashBtn = this._GetDomSubReference(trashBtnClassMatch);
         this.counterArrow = this._GetDomSubReference(countArrBtnClassMatch);
-                                
+        
+        this.reset();
     }
 
     /**
@@ -230,6 +231,36 @@ class StopWatch {
         );
     }
 
+    /**
+     * Used to apply changes of internal timer to the stop watch html element
+     * so the user can see the new time. It also applies a color to the font
+     * of the time stamp depending on the time being under zero.
+     * @callback
+     */
+    _callbackUpdateTimeStamp(event) {
+
+        const toggleClaNaPos = "positive";
+        const toggleClaNaNea = "negative";
+
+        const stopWatch = event.subscriber; 
+        const timeStampField = stopWatch._timeStampField;
+
+        timeStampField.textContent = event.invoker.TimeStamp;
+        
+        if (stopWatch._timer.TotalSeconds < 0 ) {
+            if (timeStampField.classList.contains(toggleClaNaNea) !== true) {
+                timeStampField.classList.remove(toggleClaNaPos);
+                timeStampField.classList.add(toggleClaNaNea);
+            }            
+        } else {
+            if (timeStampField.classList.contains(toggleClaNaPos) !== true) {
+                timeStampField.classList.remove(toggleClaNaNea);
+                timeStampField.classList.add(toggleClaNaPos);
+            }
+        }
+        
+    }
+
     // Gets respective sub html element of the html model of the stop watch.
     // querySelector - query string used for finding a html element  
     _GetDomSubReference (querySelector) {
@@ -273,7 +304,6 @@ const resetBtnClassName = resetBtnClassMatch.substring(1);
 const trashBtnClassMatch = ".trash-btn";
 const trashBtnClassName = trashBtnClassMatch.substring(1);
 const countArrBtnClassMatch = ".counter-arrow";
-const countArrBtnClassName = countArrBtnClassMatch.substring(1);
 
 // Used to validate the time units as valid numbers
 function _throwForInvalidTimeUnit(timeUnit) {
@@ -281,8 +311,6 @@ function _throwForInvalidTimeUnit(timeUnit) {
         throw new TypeError("Time unit must be of type 'number' ");
     }
 }
-
-
 
 /**
  * Creates a box which serves as a stop watch. It has a title, 
@@ -314,14 +342,7 @@ function stopWatchDom()  {
     return container.children[0];
 }
 
-/**
- * Used to apply changes of internal timer to the stop watch dom element
- * so the user can see the new time
- * @callback
- */
-function callbackUpdateTimeStamp(event) {
-    event.subscriber._timeStampField.textContent = event.invoker.TimeStamp;
-}
+
 
 /**
  * 
