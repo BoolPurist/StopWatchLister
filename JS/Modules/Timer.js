@@ -145,7 +145,7 @@ class Timer {
         ${normalizedHours}:${normalizedMinutes}:${normalizedSeconds}
         `;
 
-        return negative === false ? normalizedTime : `-${normalizedTime}`;
+        return negative === false ? normalizedTime : `${normalizedTime}`;
     }
 
     // Routines

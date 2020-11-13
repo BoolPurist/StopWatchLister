@@ -36,8 +36,8 @@
         .stop-watch-row-timer {
             display: grid;
             grid-template: 
-            "playBtn pauseBtn resetBtn . counterArrow textTimer ." auto
-            / auto auto auto 1fr auto auto 1fr;
+            "playBtn pauseBtn resetBtn saveBtn . counterArrow textTimer ." auto
+            / auto auto auto auto 1fr auto auto 1fr;
             
             gap: 10px;
             align-items: center;
@@ -52,11 +52,11 @@
                 // Used to toggle the color for a time stamp depending 
                 // on the time under zero or not
                 &.negative {
-                    color: rgb(82, 16, 16);
+                    color:  $stop-watch-time-stamp-neg-color;                   
                 }
 
                 &.positive {
-                    color: rgb(45, 197, 45);
+                    color: $stop-watch-time-stamp-post-color;
                 }
             }
 
@@ -77,11 +77,36 @@
                 grid-area: resetBtn;
             }
 
+            .save-btn {
+                grid-area: saveBtn;
+            }
+
             // Arrow pointing up or down for showing the counting direction
             // of the stop watch
             .counter-arrow {
                 grid-area: counterArrow;
                 font-size: $stop-watch-size-arrow;
+            }
+
+        }
+
+        .time-check-points {
+            list-style: none;
+            text-align: center;
+            font-weight: 300;
+            font-size: $stop-watch-font-size-time-stamp - 1.5rem;
+            
+            li {
+                @include mixin-reduce-border-to-bottom-color-bottom();
+                                
+                
+                &.positive {
+                    color: $stop-watch-time-stamp-post-color;
+                }
+
+                &.negative {
+                    color: $stop-watch-time-stamp-neg-color;
+                }
             }
 
         }
@@ -93,13 +118,15 @@
     
     #stop-watch-list {
         .stop-watch {
+
+            padding: $stop-watch-padding-mob;
     
             .stop-watch-row-timer { 
                 display: grid;                       
                 grid-template: 
-                "  playBtn pauseBtn  . " auto
-                "resetBtn  counterArrow textTimer " auto
-                / auto auto auto auto 1fr;                                   
+                "playBtn pauseBtn resetBtn saveBtn .  " auto                
+                ". counterArrow textTimer  . . " auto
+                / auto auto auto auto auto auto ;                                   
             }
         
         }

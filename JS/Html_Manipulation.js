@@ -66,16 +66,16 @@ export function toggleCounterSpawnerArrow(countArrowInformation, countDown, arro
 }
 
 /**
-* Toggles visibility and influence on the document flow for the error bar. 
-* If user provides wrong input the error bar is visible and 
-* is located between the spawn box and the list of stop watches. 
-* If user provides something valid with the next input, 
-* the error bar gets invisible and is removed from the grid flow. 
-* 
-* @param {!HTMLElement} errorBarInDom - html element which represents an error bar.
-* @param {!boolean} errorRaised - true if the user provided wrong input
-*
-*/
+ * Toggles visibility and influence on the document flow for the error bar. 
+ * If user provides wrong input the error bar is visible and 
+ * is located between the spawn box and the list of stop watches. 
+ * If user provides something valid with the next input, 
+ * the error bar gets invisible and is removed from the grid flow. 
+ * 
+ * @param {!HTMLElement} errorBarInDom - html element which represents an error bar.
+ * @param {!boolean} errorRaised - true if the user provided wrong input
+ *
+ */
 export function manageErrorBar(errorBarInDom, errorRaised, ) {
    
     const isNotErrorBarDom = errorBarInDom
@@ -119,7 +119,7 @@ export function actionBtnPlay(selectedWatch) {
  * 
  * @param {!StopWatch} selectedWatch - stop watch do all the
  * actions on 
- * @returns {void} 
+ * 
  */
 export function actionBtnReset(selectedWatch) {            
     selectedWatch.playBtn
@@ -139,7 +139,7 @@ export function actionBtnReset(selectedWatch) {
  * @param {!StopWatch} selectedWatch - stop watch do all the actions on 
  * @param {!boolean} [createdFromStorage=false] - if true according 
  * buttons will be highlighted   
- * @returns {void} 
+ *  
  */
 export function actionBtnPause(selectedWatch, createdFromStorage = false) {
     selectedWatch.pause();            
@@ -166,7 +166,7 @@ export function actionBtnPause(selectedWatch, createdFromStorage = false) {
  * for representing a separation bar.
  * @param {!object|!HTMLElement} selectedWatch - either an instance
  * as stop watch or the reference to the delete icon in the dom 
- * @returns {void} 
+ *  
  */
 export function actionBtnDelete(stopWatchList, separationBar, selectedWatch ) {
     let index = -1;

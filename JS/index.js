@@ -383,6 +383,12 @@ function callBackStopWatchContainer(event) {
                 actionBtnReset(stopWatch);
             }    
         }
+    } else if ( StopWatch.isASaveBtn(target) ) {
+        for (const stopWatch of stopWatchList) {    
+            if (stopWatch.saveBtn === target) {    
+                stopWatch.setCheckPoint();
+            }    
+        }
     }
 
 }

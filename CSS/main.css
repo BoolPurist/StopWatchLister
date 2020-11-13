@@ -271,7 +271,7 @@ a {
 }
 #stop-watch-list .stop-watch .stop-watch-row-timer {
   display: grid;
-  grid-template: "playBtn pauseBtn resetBtn . counterArrow textTimer ." auto/auto auto auto 1fr auto auto 1fr;
+  grid-template: "playBtn pauseBtn resetBtn saveBtn . counterArrow textTimer ." auto/auto auto auto auto 1fr auto auto 1fr;
   gap: 10px;
   align-items: center;
 }
@@ -297,15 +297,40 @@ a {
 #stop-watch-list .stop-watch .stop-watch-row-timer .reset-btn {
   grid-area: resetBtn;
 }
+#stop-watch-list .stop-watch .stop-watch-row-timer .save-btn {
+  grid-area: saveBtn;
+}
 #stop-watch-list .stop-watch .stop-watch-row-timer .counter-arrow {
   grid-area: counterArrow;
   font-size: 3rem;
 }
+#stop-watch-list .stop-watch .time-check-points {
+  list-style: none;
+  text-align: center;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+#stop-watch-list .stop-watch .time-check-points li {
+  border-style: solid;
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom-color: #030303;
+}
+#stop-watch-list .stop-watch .time-check-points li.positive {
+  color: #2dc52d;
+}
+#stop-watch-list .stop-watch .time-check-points li.negative {
+  color: #521010;
+}
 
 @media screen and (max-width: 450px) {
+  #stop-watch-list .stop-watch {
+    padding: 1rem;
+  }
   #stop-watch-list .stop-watch .stop-watch-row-timer {
     display: grid;
-    grid-template: "  playBtn pauseBtn  . " auto "resetBtn  counterArrow textTimer " auto/auto auto auto auto 1fr;
+    grid-template: "playBtn pauseBtn resetBtn saveBtn .  " auto ". counterArrow textTimer  . . " auto/auto auto auto auto auto auto;
   }
 }
 .fas {

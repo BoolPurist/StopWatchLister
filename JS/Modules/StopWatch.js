@@ -41,9 +41,10 @@ class StopWatch {
         this.pauseBtn = this._GetDomSubReference(pauseBtnClassMatch);
         this.resetBtn = this._GetDomSubReference(resetBtnClassMatch);
         this.trashBtn = this._GetDomSubReference(trashBtnClassMatch);
+        this.saveBtn = this._GetDomSubReference(saveBtnMatch);
         this.counterArrow = this._GetDomSubReference(countArrBtnClassMatch);
-        
-        // this.reset();
+        this.timeCheckPoints = this._GetDomSubReference(timeCheckPointsMatch);
+
     }
 
     /**
@@ -80,7 +81,8 @@ class StopWatch {
             countingDown: this.countingDown,
             labelText: this._labelText,
             startingSeconds: this._timer.totalSecondsStarting,
-            currentState: this._currentState,            
+            currentState: this._currentState,
+            timeCheckPoints: this.timeCheckPoints.innerHTML            
         };
     }
 
@@ -138,6 +140,12 @@ class StopWatch {
      */
     reset() {
         this._currentState = StopWatch.States.reset;
+        
+        // Removes all time check points from a stop watch
+        while (this.timeCheckPoints.firstChild !== null) {
+            this.timeCheckPoints.removeChild(this.timeCheckPoints.firstChild);
+        }
+
         this._timer.reset();
     }
 
@@ -153,6 +161,25 @@ class StopWatch {
     }
 
     /**
+     * Creates a separate time stamp from the current one and places into the stop watch
+     * These time stamps will remain until a reset.
+     */
+    setCheckPoint() {
+        const li = document.createElement('li');
+        li.innerText = `${this._timer.TimeStamp}`;
+
+        if (this._timer.TotalSeconds < 0) {
+            li.classList.add(toggleClassNumberNeg);
+        } else {
+            li.classList.add(toggleClassNumberPos);
+        }
+
+        this.timeCheckPoints.appendChild(li);
+    }
+
+    /**
+     * Can create an instance of stop watch from a correct plain js object.
+     * The getter jsObject of an instance returns such a plain js object. 
      * 
      * @param {!object} jsObject
      * @returns {!StopWatch} Instance of a stop watch with the state before it was
@@ -168,6 +195,8 @@ class StopWatch {
         );
 
         recreatedStopWatch.countingDown = jsObject.countingDown;
+
+        recreatedStopWatch.timeCheckPoints.innerHTML = jsObject.timeCheckPoints;
 
         return recreatedStopWatch;        
     }
@@ -222,7 +251,7 @@ class StopWatch {
      * 
      * @param {?HTMLElement} htmlElement - full css class string to check of the html element
      * for checking. 
-     * @returns {!boolean} Returns true if  
+     * @returns {!boolean} Returns true if the html element is button of a stop watch 
      */
     static isAResetBtn (htmlElement) {
         return checkHTMLElementByClassName(
@@ -232,6 +261,21 @@ class StopWatch {
     }
 
     /**
+     * Checks if an html element is a save button of a stop watch dom object
+     * 
+     * @param {?HTMLElement} htmlElement - full css class string to check of the html element
+     * for checking. 
+     * @returns {!boolean} Returns true if the html element is button of a stop watch
+     */
+    static isASaveBtn(htmlElement) {
+        return checkHTMLElementByClassName(
+            htmlElement, 
+            saveBtnName
+        );
+    }
+
+
+    /**
      * Used to apply changes of internal timer to the stop watch html element
      * so the user can see the new time. It also applies a color to the font
      * of the time stamp depending on the time being under zero.
@@ -239,23 +283,20 @@ class StopWatch {
      */
     _callbackUpdateTimeStamp(event) {
 
-        const toggleClaNaPos = "positive";
-        const toggleClaNaNea = "negative";
-
         const stopWatch = event.subscriber; 
         const timeStampField = stopWatch._timeStampField;
 
         timeStampField.textContent = event.invoker.TimeStamp;
         
         if (stopWatch._timer.TotalSeconds < 0 ) {
-            if (timeStampField.classList.contains(toggleClaNaNea) !== true) {
-                timeStampField.classList.remove(toggleClaNaPos);
-                timeStampField.classList.add(toggleClaNaNea);
+            if (timeStampField.classList.contains(toggleClassNumberNeg) !== true) {
+                timeStampField.classList.remove(toggleClassNumberPos);
+                timeStampField.classList.add(toggleClassNumberNeg);
             }            
         } else {
-            if (timeStampField.classList.contains(toggleClaNaPos) !== true) {
-                timeStampField.classList.remove(toggleClaNaNea);
-                timeStampField.classList.add(toggleClaNaPos);
+            if (timeStampField.classList.contains(toggleClassNumberPos) !== true) {
+                timeStampField.classList.remove(toggleClassNumberNeg);
+                timeStampField.classList.add(toggleClassNumberPos);
             }
         }
         
@@ -290,6 +331,9 @@ StopWatch.States = Object.freeze({
     paused: 2
 });
 
+const toggleClassNumberPos = "positive";
+const toggleClassNumberNeg = "negative";
+
 // Static variables with the postfix "ClassMatch" are used to get references of the respective
 // sub html element references of the stop watch html element
 
@@ -303,7 +347,13 @@ const resetBtnClassMatch = ".reset-btn";
 const resetBtnClassName = resetBtnClassMatch.substring(1);
 const trashBtnClassMatch = ".trash-btn";
 const trashBtnClassName = trashBtnClassMatch.substring(1);
+const saveBtnMatch = ".save-btn";
+const saveBtnName = saveBtnMatch.substring(1);
 const countArrBtnClassMatch = ".counter-arrow";
+const timeCheckPointsMatch = ".time-check-points" ;
+const timeCheckPointsName = timeCheckPointsMatch.substring(1);
+
+
 
 // Used to validate the time units as valid numbers
 function _throwForInvalidTimeUnit(timeUnit) {
@@ -333,9 +383,13 @@ function stopWatchDom()  {
         <i class="btn play-btn fas fa-play"></i>
         <i class="btn pause-btn fas fa-pause"></i>
         <i class="btn reset-btn fas fa-stop"></i> 
-        <i class="fas counter-arrow"></i>       
+        <i class="fas counter-arrow"></i> 
+        <i class="btn save-btn fas fa-save"></i>     
         <p class="text-timer">23:54:02</p>
     </div>
+    <ul class="time-check-points">
+        
+    </ul>
 </div>
 `;
 
