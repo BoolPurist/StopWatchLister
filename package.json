@@ -8,7 +8,7 @@
     "test": "jest --verbose",
     "liveServer": "live-server",
     "sass": "sass --watch SCSS/main.scss CSS/main.css",
-    "build": "parcel build index.html -d docs --global stop_watch_dep",
+    "build": "parcel build index.html -d dist",
     "build:start": "live-server docs"
   },
   "keywords": [],
