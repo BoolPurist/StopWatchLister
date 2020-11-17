@@ -22,10 +22,10 @@ class StopWatch {
 
         // Stores text for possible conversion to a plain js object
         this._labelText = lableText;
-        this._GetDomSubReference(".stop-watch-label-text").textContent = lableText;
+        this._GetDomSubReference("stop-watch-label-text").textContent = lableText;
             
         // Reference to the paragraph for presenting the current time on the stop watch
-        this._timeStampField = this._GetDomSubReference(".text-timer");
+        this._timeStampField = this._GetDomSubReference("text-timer");
         
         this.countingDown = false;
 
@@ -37,13 +37,13 @@ class StopWatch {
         this._timer.onTimeChange.addCallback(this._callbackUpdateTimeStamp, this);        
 
         // Public references to relevant sub html elements
-        this.playBtn = this._GetDomSubReference(playBtnClassMatch);
-        this.pauseBtn = this._GetDomSubReference(pauseBtnClassMatch);
-        this.resetBtn = this._GetDomSubReference(resetBtnClassMatch);
-        this.trashBtn = this._GetDomSubReference(trashBtnClassMatch);
-        this.saveBtn = this._GetDomSubReference(saveBtnMatch);
-        this.counterArrow = this._GetDomSubReference(countArrBtnClassMatch);
-        this.timeCheckPoints = this._GetDomSubReference(timeCheckPointsMatch);
+        this.playBtn = this._GetDomSubReference(playBtnClassName);
+        this.pauseBtn = this._GetDomSubReference(pauseBtnClassName);
+        this.resetBtn = this._GetDomSubReference(resetBtnClassName);
+        this.trashBtn = this._GetDomSubReference(trashBtnClassName);
+        this.saveBtn = this._GetDomSubReference(saveBtnName);
+        this.counterArrow = this._GetDomSubReference(countArrBtnClassName);
+        this.timeCheckPoints = this._GetDomSubReference(timeCheckPointsName);
 
     }
 
@@ -304,8 +304,8 @@ class StopWatch {
 
     // Gets respective sub html element of the html model of the stop watch.
     // querySelector - query string used for finding a html element  
-    _GetDomSubReference (querySelector) {
-        return this.domReference.querySelector(querySelector);
+    _GetDomSubReference (className) {
+        return this.domReference.getElementsByClassName(className)[0];
     }
 
     // Used to create properties with dom references as values 
@@ -334,24 +334,15 @@ StopWatch.States = Object.freeze({
 const toggleClassNumberPos = "positive";
 const toggleClassNumberNeg = "negative";
 
-// Static variables with the postfix "ClassMatch" are used to get references of the respective
-// sub html element references of the stop watch html element
+// Classnames used to get references to sub html elements
+const playBtnClassName = "play-btn";
+const pauseBtnClassName = "pause-btn";
+const resetBtnClassName = "reset-btn";
+const trashBtnClassName = "trash-btn";
+const saveBtnName = "save-btn";
+const countArrBtnClassName = "counter-arrow";
+const timeCheckPointsName = "time-check-points" ;
 
-// Static variables with the postfix "ClassName" are used in the static function to
-// check if a html element is a respective sub html element.
-const playBtnClassMatch = ".play-btn";
-const playBtnClassName = playBtnClassMatch.substring(1);
-const pauseBtnClassMatch = ".pause-btn";
-const pauseBtnClassName = pauseBtnClassMatch.substring(1);
-const resetBtnClassMatch = ".reset-btn";
-const resetBtnClassName = resetBtnClassMatch.substring(1);
-const trashBtnClassMatch = ".trash-btn";
-const trashBtnClassName = trashBtnClassMatch.substring(1);
-const saveBtnMatch = ".save-btn";
-const saveBtnName = saveBtnMatch.substring(1);
-const countArrBtnClassMatch = ".counter-arrow";
-const timeCheckPointsMatch = ".time-check-points" ;
-const timeCheckPointsName = timeCheckPointsMatch.substring(1);
 
 
 
