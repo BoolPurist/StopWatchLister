@@ -2,7 +2,7 @@
   "name": "stopwatchlister",
   "version": "1.0.0",
   "description": "webpage for managing several stop watches",
-  "browser": "JS/main.js",
+  "private": true,
   "scripts": {
     "start": "run-p sass liveServer",
     "test": "jest --verbose",

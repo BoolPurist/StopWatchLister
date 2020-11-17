@@ -24,7 +24,7 @@
     
         // Input field in which the user can enter the name of a stop watch
         #InputFieldLableStopWatch {
-            @include mixin-reduce-border-to-bottom-color-bottom();
+            @include mixin-reduce-border-to-bottom();
             width: $spawner-lable-field-width;
             height: 20px;
             font-size: 18px;

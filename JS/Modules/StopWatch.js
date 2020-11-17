@@ -344,8 +344,6 @@ const countArrBtnClassName = "counter-arrow";
 const timeCheckPointsName = "time-check-points" ;
 
 
-
-
 // Used to validate the time units as valid numbers
 function _throwForInvalidTimeUnit(timeUnit) {
     if (timeUnit === null || typeof timeUnit !== "number") {

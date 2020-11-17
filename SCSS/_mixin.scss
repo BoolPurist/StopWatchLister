@@ -15,13 +15,23 @@
 }
 
 // Renders only one solid border at the bottom of an element
-@mixin mixin-reduce-border-to-bottom-color-bottom() {
+@mixin mixin-reduce-border-to-bottom() {
     border-style: solid;
     border-top-style: none;
     border-left-style: none;
     border-right-style: none;
 
-    border-bottom-color: $border-bottom-color;
+    border-color: $border-bottom-color;
+}
+
+// Renders only one solid border at the top of an element
+@mixin mixin-reduce-border-to-top() {
+    border-style: none;
+    border-top-style: solid;
+    border-left-style: none;
+    border-right-style: none;
+
+    border-color: $border-bottom-color;
 }
 
 // Renders a thin rounded border around a widget

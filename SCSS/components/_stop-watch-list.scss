@@ -47,7 +47,7 @@
                 grid-area: textTimer;
                 justify-self: right;
                 @include mixin-stop-watch-font();                
-                font-size: $stop-watch-font-size-time-stamp;
+                font-size: $stop-watch-font-size-time-stamp;                
 
                 // Used to toggle the color for a time stamp depending 
                 // on the time under zero or not
@@ -92,13 +92,19 @@
 
         .time-check-points {
             list-style: none;
-            text-align: center;
+            
+            
             font-weight: 300;
             font-size: $stop-watch-font-size-time-stamp - 1.5rem;
             
+
             li {
-                @include mixin-reduce-border-to-bottom-color-bottom();
-                                
+                
+                display: flex;
+                justify-content:center;
+                padding: 10px;
+                @include mixin-reduce-border-to-top();
+                
                 
                 &.positive {
                     color: $stop-watch-time-stamp-post-color;
