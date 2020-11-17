@@ -8,8 +8,8 @@
     "test": "jest --verbose",
     "liveServer": "live-server",
     "sass": "sass --watch SCSS/main.scss CSS/main.css",
-    "build": "parcel build index.html",
-    "build:start": "live-server dist"
+    "build": "parcel build index.html -d docs",
+    "build:start": "live-server docs"
   },
   "keywords": [],
   "author": "BoolPurist",
