@@ -5,13 +5,16 @@ module.exports = {
     output: {
         filename: "main.js",
         publicPath: '/',
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve(__dirname, "docs")
     },
     module: {        
         rules: [
             {
                 test: /\.(woff|woff2|eot|ttf|otf|svg)$/i,
-                use: ["file-loader"]
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[contenthash].[ext]',
+                },
             },
             {
                 test: /\.s[ac]ss$/,
