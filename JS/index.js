@@ -242,9 +242,9 @@ const intervall = setInterval( () => {
 },1000);
 
 // Debug Area
-if (containerForStopWatches.querySelector(".stop-watch") === null) {
-    CreateStopWatch();
-}
+// if (containerForStopWatches.querySelector(".stop-watch") === null) {
+//     CreateStopWatch();
+// }
 
 /* Functions */
 
